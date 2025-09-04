@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
-import { UserContext } from "../App";
-import { Button, Image, Typography } from "antd";
+import { darkTheme, lightTheme, UserContext } from "../App";
+import { Button, Card, Col, Image, Row, Typography } from "antd";
 import "../assets/css/home.css";
 
-const { Title } = Typography;
+const { Title, Text } = Typography;
 
 const heroStyle = {
   position: "absolute",
@@ -76,6 +76,42 @@ const gridImg2 =
 const gridImg3 =
   "https://images.unsplash.com/photo-1618220179428-22790b461013?w=900";
 
+const homeImg1 =
+  "https://plus.unsplash.com/premium_photo-1689609950112-d66095626efb?w=900";
+const homeImg2 =
+  "https://images.unsplash.com/photo-1518733057094-95b53143d2a7?w=900";
+const homeImg3 =
+  "https://plus.unsplash.com/premium_photo-1675537856917-d662fd1ddc3a?w=900";
+
+const gridData = [
+  { key: 1, img: gridImg1, text: "Featured Listings" },
+  { key: 2, img: gridImg2, text: "AirBnbs" },
+  { key: 3, img: gridImg3, text: "More" },
+];
+
+const cardData = [
+  {
+    key: 1,
+    img: homeImg1,
+    address: "780 Kiambu Rd, Kiambu",
+    bedrooms: 3,
+    price: 300000,
+  },
+  {
+    key: 2,
+    img: homeImg2,
+    address: "210 Muthaiga, Kiambu",
+    bedrooms: 2,
+    price: 100000,
+  },
+  {
+    key: 3,
+    img: homeImg3,
+    address: "491 Lavington, Nairobi",
+    bedrooms: 2,
+    price: 200000,
+  },
+];
 function Home() {
   const { isMobile } = useContext(UserContext);
   return (
@@ -127,20 +163,38 @@ function Home() {
       </div>
       {/* home body */}
       <div>
-        <Title>HOW CAN WE HELP?</Title>
-        <Title>Explore Our Solutions</Title>
+        <div style={{ textAlign: "center" }}>
+          <Title
+            level={3}
+            style={{ ...titleStyle, color: "#333", marginBottom: 0 }}
+          >
+            HOW CAN WE HELP?
+          </Title>
+          <Title
+            level={5}
+            style={{
+              ...subTitleStyle,
+              color: "#333",
+              marginTop: 0,
+              marginBottom: 10,
+              width: "100%",
+            }}
+          >
+            Explore Our Solutions
+          </Title>
+        </div>
         <div
           style={{
             display: "flex",
             flexDirection: isMobile ? "column" : "row",
-            gap: 0,
+            gap: 10,
             justifyContent: "center",
             padding: "0px 10px",
             margin: "0px 10px",
             overflow: "hidden",
           }}
         >
-          {[gridImg1, gridImg2, gridImg3].map((img, index) => (
+          {gridData.map((grid, index) => (
             <div
               style={{
                 flex: 1, // all equal initially
@@ -149,28 +203,141 @@ function Home() {
                 justifyContent: "center",
                 alignItems: "center",
                 overflow: "hidden",
+                position: "relative",
+                boxShadow: "0 2px 12px rgba(0,0,0,0.4)",
               }}
               className="image-wrapper"
               key={index}
             >
               <img
-                src={img}
+                src={grid.img}
                 alt="img"
                 style={{
                   height: 500,
                   width: "100%",
                   transition: "transform 0.4s ease",
+                  //filter: "grayScale(80%)",
                 }}
               />
+              <div style={{ position: "absolute" }}>
+                <Text
+                  style={{
+                    fontFamily: "Alegray Sans",
+                    color: "#fff",
+                    letterSpacing: 3,
+                    fontSize: 36,
+                    fontWeight: 800,
+                  }}
+                >
+                  {grid.text}
+                </Text>
+              </div>
             </div>
           ))}
         </div>
       </div>
-      <div>
-        <Title>HANDPICKED JUST FOR YOU</Title>
-        <Title>Featured Listings</Title>
-        grid with cards here
-        <Button>View All</Button>
+      {/* Listings */}
+      <div style={{ margin: "0 20px" }}>
+        <div style={{ textAlign: "center" }}>
+          <Title
+            level={3}
+            style={{ ...titleStyle, color: "#333", marginBottom: 0 }}
+          >
+            HANDPICKED JUST FOR YOU
+          </Title>
+          <Title
+            level={5}
+            style={{
+              ...subTitleStyle,
+              color: "#333",
+              marginTop: 0,
+              marginBottom: 10,
+              width: "100%",
+            }}
+          >
+            Featured Listings
+          </Title>
+        </div>
+        <Row gutter={[16, 16]}>
+          {cardData.map((c) => (
+            <Col key={c.key} xs={24} sm={12} md={8}>
+              <Card
+                hoverable
+                style={{
+                  minHeight: 220,
+                  borderRadius: 12,
+                  display: "flex",
+                  flexDirection: "column",
+                  boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
+                  background: lightTheme.backgroundColor,
+                  border: `1px solid #fff`,
+                }}
+                cover={
+                  <div
+                    style={{
+                      position: "relative",
+                      width: "100%",
+                      height: 500,
+                      overflow: "hidden",
+                      borderTopLeftRadius: 12,
+                      borderTopRightRadius: 12,
+                      padding: 1,
+                    }}
+                  >
+                    <Image
+                      src={c.img}
+                      alt={c.key}
+                      preview={false}
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                        borderRadius: 12,
+                      }}
+                    />
+                  </div>
+                }
+              >
+                <Card.Meta
+                  title={
+                    <Title
+                      level={isMobile ? 4 : 3}
+                      style={{
+                        marginTop: 1,
+                        marginBottom: 2,
+                        whiteSpace: "nowrap",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        fontFamily: "Alegreya Sans",
+                        color: lightTheme.color,
+                      }}
+                    >
+                      {c.address}
+                    </Title>
+                  }
+                  description={
+                    <Text type="secondary" style={{ fontFamily: "Roboto" }}>
+                      {c.bedrooms} Bedrooms
+                    </Text>
+                  }
+                />
+                <div>
+                  <Title
+                    level={isMobile ? 3 : 2}
+                    style={{ fontFamily: "Raleway" }}
+                  >
+                    KES. {c.price.toLocaleString()}
+                  </Title>
+                </div>
+              </Card>
+            </Col>
+          ))}
+        </Row>
+        <div
+          style={{ alignContent: "center", textAlign: "center", marginTop: 20 }}
+        >
+          <Button>View All</Button>
+        </div>
       </div>
 
       <div>
