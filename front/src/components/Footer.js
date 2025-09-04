@@ -1,28 +1,34 @@
-import React from "react";
+import React, { useContext } from "react";
 import logo from "../assets/images/logo3.png";
 import { Typography } from "antd";
 import {
   InstagramFilled,
   FacebookFilled,
   XOutlined,
-  PinterestFilled,
-  PhoneFilled,
-  MailFilled,
   EnvironmentOutlined,
   PhoneOutlined,
   MailOutlined,
 } from "@ant-design/icons";
+import { UserContext } from "../App";
 
 const iconStyle = { fontSize: 30 };
-const { Title, Paragraph, Text, Link } = Typography;
+
+const { Title, Paragraph } = Typography;
 
 function FooterContent() {
+  const { isMobile } = useContext(UserContext);
   return (
-    <footer style={{}}>
+    <footer>
       <div
-        style={{ display: "flex", justifyContent: "space-around", padding: 10 }}
+        style={{
+          display: "flex",
+          justifyContent: "space-around",
+          padding: 10,
+          flexDirection: isMobile ? "column" : "row",
+          gap: 20,
+        }}
       >
-        <div>
+        <div style={{ textAlign: "center" }}>
           <img
             src={logo}
             alt="Logo"
@@ -71,7 +77,7 @@ function FooterContent() {
                 icon: <InstagramFilled style={iconStyle} />,
                 label: "Instagram",
                 color: "#fff",
-                link: ' "https://www.instagram.com/",',
+                link: "https://www.instagram.com/",
               },
               {
                 icon: <FacebookFilled style={iconStyle} />,
@@ -85,8 +91,9 @@ function FooterContent() {
                 color: "#fff",
                 link: "https://twitter.com/",
               },
-            ].map((item) => (
+            ].map((item, index) => (
               <div
+                key={index}
                 style={{
                   display: "flex",
                   alignItems: "center",
@@ -133,7 +140,7 @@ function FooterContent() {
             alignItems: "center",
             display: "flex",
             flexDirection: "column",
-            width: 300,
+            //width: 300,
           }}
         >
           <Title

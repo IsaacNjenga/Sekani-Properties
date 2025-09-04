@@ -1,0 +1,11 @@
+.image-wrapper:hover {
+  flex: 3; /* hovered item grows */
+}
+
+.image-wrapper:not(:hover) {
+  flex: 1; /* others shrink equally */
+}
+
+.image-wrapper:hover img {
+  transform: scale(1.08); /* subtle zoom for effect */
+}

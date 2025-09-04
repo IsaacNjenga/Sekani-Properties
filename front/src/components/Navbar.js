@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { Layout, Menu } from "antd";
 import { Link, Outlet } from "react-router-dom";
 import FooterContent from "./Footer";
@@ -16,6 +16,9 @@ const menuItems = [
 function Navbar() {
   const { darkMode } = useContext(UserContext);
   const [scrolled, setScrolled] = useState(false);
+  const [hideNavbar, setHideNavbar] = useState(false);
+  const footerRef = useRef(null);
+
   const handleScroll = () => {
     if (window.scrollY > 0) {
       setScrolled(true);
@@ -31,6 +34,27 @@ function Navbar() {
     };
   });
 
+  // Detect footer
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          setHideNavbar(entry.isIntersecting);
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    if (footerRef.current) {
+      observer.observe(footerRef.current);
+    }
+    return () => {
+      if (footerRef.current) observer.unobserve(footerRef.current);
+    };
+  }, []);
+
+  const headerHeight = 100;
+
   const headerStyle = {
     position: "fixed", // overlay instead of sticky
     top: 0,
@@ -42,6 +66,8 @@ function Navbar() {
     alignItems: "center",
     transition:
       "background 0.3s ease, backdrop-filter 0.3s ease, box-shadow 0.3s ease",
+    transform: hideNavbar ? "translateY(-100%)" : "translateY(0)", // slide up when footer shows
+    opacity: hideNavbar ? 0 : 1, // fade out
     background: scrolled
       ? darkMode
         ? "rgba(9, 12, 17, 0)" // dark semi-transparent
@@ -124,7 +150,7 @@ function Navbar() {
       <Content
         style={{
           margin: 0,
-          padding: 0,
+          //paddingTop: `${headerHeight}px`,
           minHeight: "100vh",
           background: darkMode ? "#090c11" : "#f2f5fa",
         }}
@@ -132,6 +158,7 @@ function Navbar() {
         <Outlet />
       </Content>
       <Footer
+        ref={footerRef}
         style={{
           background: "#918f76",
         }}
