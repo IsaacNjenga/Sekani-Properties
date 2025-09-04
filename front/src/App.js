@@ -24,7 +24,7 @@ export const darkTheme = {
 
 function App() {
   const location = useLocation();
-  const [darkMode, setDarkMode] = useState(false);
+  const [darkMode, setDarkMode] = useState(true);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
   useEffect(() => {

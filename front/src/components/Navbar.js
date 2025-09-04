@@ -1,9 +1,143 @@
-import React from 'react'
+import React, { useContext, useEffect, useState } from "react";
+import { Layout, Menu } from "antd";
+import { Link, Outlet } from "react-router-dom";
+import FooterContent from "./Footer";
+import { UserContext } from "../App";
+import logo from "../assets/images/logo.png";
+
+const { Header, Content, Footer } = Layout;
+
+const menuItems = [
+  { key: 1, label: "Featured Properties", path: "/properties" },
+  { key: 2, label: "About", path: "/about" },
+  { key: 3, label: "Contact", path: "/contact" },
+];
 
 function Navbar() {
+  const { darkMode } = useContext(UserContext);
+  const [scrolled, setScrolled] = useState(false);
+  const handleScroll = () => {
+    if (window.scrollY > 0) {
+      setScrolled(true);
+    } else {
+      setScrolled(false);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  });
+
+  const headerStyle = {
+    position: "sticky",
+    top: 0,
+    zIndex: 10,
+    width: "100%",
+    height: "100%",
+    padding: "0 24px",
+    display: "flex",
+    alignItems: "center",
+    transition:
+      "background 0.3s ease, backdrop-filter 0.3s ease, box-shadow 0.3s ease",
+    background: scrolled
+      ? darkMode
+        ? "rgba(9, 12, 17, 0.65)" // dark semi-transparent
+        : "rgba(242, 245, 250, 0.65)" // light semi-transparent
+      : darkMode
+      ? "#090c11"
+      : "#f2f5fa",
+    backdropFilter: scrolled ? "blur(6px)" : "none",
+    boxShadow: scrolled ? "0 2px 12px rgba(0,0,0,0.25)" : "none",
+  };
+
   return (
-    <div>Navbar</div>
-  )
+    <Layout>
+      <Header style={headerStyle}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            width: "100%",
+          }}
+        >
+          {/* Logo */}
+          <Link
+            to="/"
+            style={{
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <img
+              src={logo}
+              alt="Logo"
+              style={{
+                width: 180,
+                height: 180,
+                //borderRadius: "50%",
+                objectFit: "cover",
+                backgroundColor: "#090c11",
+                padding: 3,
+                transition: "transform 0.3s ease",
+                cursor: "pointer",
+              }}
+              onMouseEnter={(e) =>
+                (e.currentTarget.style.transform = "scale(1.05)")
+              }
+              onMouseLeave={(e) =>
+                (e.currentTarget.style.transform = "scale(1)")
+              }
+            />
+          </Link>
+
+          {/* Navigation Menu */}
+          <Menu
+            theme={darkMode ? "dark" : "light"}
+            mode="horizontal"
+            style={{
+              flex: 1,
+              justifyContent: "flex-end",
+              background: "transparent",
+              borderBottom: "none",
+            }}
+            items={menuItems.map(({ key, label, path }) => ({
+              key,
+              label: (
+                <Link
+                  to={path}
+                  style={{
+                    fontSize: 22,
+                    fontFamily: "Alegreya Sans",
+                    fontWeight: 300,
+                    color: "#919075",
+                  }}
+                >
+                  {label}
+                </Link>
+              ),
+            }))}
+          />
+        </div>
+      </Header>
+      <Content
+        style={{
+          margin: 0,
+          padding: 0,
+          minHeight: "100vh",
+          background: darkMode ? "#090c11" : "#f2f5fa",
+        }}
+      >
+        <Outlet />
+      </Content>
+      <Footer>
+        <FooterContent />
+      </Footer>
+    </Layout>
+  );
 }
 
-export default Navbar
+export default Navbar;
