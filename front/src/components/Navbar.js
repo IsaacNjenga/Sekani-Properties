@@ -32,11 +32,11 @@ function Navbar() {
   });
 
   const headerStyle = {
-    position: "sticky",
+    position: "fixed", // overlay instead of sticky
     top: 0,
-    zIndex: 10,
+    left: 0,
+    zIndex: 1000,
     width: "100%",
-    height: "100%",
     padding: "0 24px",
     display: "flex",
     alignItems: "center",
@@ -44,17 +44,16 @@ function Navbar() {
       "background 0.3s ease, backdrop-filter 0.3s ease, box-shadow 0.3s ease",
     background: scrolled
       ? darkMode
-        ? "rgba(9, 12, 17, 0.65)" // dark semi-transparent
-        : "rgba(242, 245, 250, 0.65)" // light semi-transparent
-      : darkMode
-      ? "#090c11"
-      : "#f2f5fa",
-    backdropFilter: scrolled ? "blur(6px)" : "none",
+        ? "rgba(9, 12, 17, 0)" // dark semi-transparent
+        : "rgba(242, 245, 250, 0)" // light semi-transparent
+      : "transparent", // fully overlay at top
+    backdropFilter: scrolled ? "blur(8px)" : "none",
     boxShadow: scrolled ? "0 2px 12px rgba(0,0,0,0.25)" : "none",
+    height: "auto",
   };
 
   return (
-    <Layout>
+    <Layout style={{ minHeight: "100vh" }}>
       <Header style={headerStyle}>
         <div
           style={{
@@ -76,11 +75,10 @@ function Navbar() {
               src={logo}
               alt="Logo"
               style={{
-                width: 180,
-                height: 180,
+                width: 200,
+                height: 200,
                 //borderRadius: "50%",
                 objectFit: "cover",
-                backgroundColor: "#090c11",
                 padding: 3,
                 transition: "transform 0.3s ease",
                 cursor: "pointer",
@@ -113,7 +111,7 @@ function Navbar() {
                     fontSize: 22,
                     fontFamily: "Alegreya Sans",
                     fontWeight: 300,
-                    color: "#919075",
+                    //color: "#919075",
                   }}
                 >
                   {label}

@@ -3,7 +3,8 @@ import { Routes, Route, useLocation } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import Contact from "./pages/Contact";
-import Properties from "./pages/Properties";
+import Properties from "./pages/Properties"; 
+import About from "./pages/About"; 
 import { AnimatePresence } from "framer-motion";
 
 export const UserContext = createContext();
@@ -41,6 +42,7 @@ function App() {
             <Route index element={<Home />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/properties" element={<Properties />} />
+            <Route path="/about" element={<About />} />
           </Route>
         </Routes>
       </AnimatePresence>
