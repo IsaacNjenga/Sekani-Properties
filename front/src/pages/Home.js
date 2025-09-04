@@ -134,7 +134,7 @@ function Home() {
             width="100%"
             height={isMobile ? 900 : 700}
             preview={false}
-            style={{ objectFit: "cover" }}
+            style={{ objectFit: "cover", maxWidth: "100%" }}
           />{" "}
           <div style={{ ...heroStyle }}>
             <Title
@@ -234,8 +234,9 @@ function Home() {
                   src={grid.img}
                   alt="img"
                   style={{
-                    height: 500,
-                    width: "100%",
+                    maxWidth: "100%",
+                    height: "auto",
+
                     transition: "transform 0.4s ease, filter 0.4s ease",
                   }}
                 />
@@ -418,10 +419,13 @@ function Home() {
           <div style={heroStyle}>
             <Paragraph
               style={{
-                width: 900,
+                width: "100%",
+                maxWidth: isMobile ? "100%" : 900,
                 fontFamily: "Alegreya Sans",
                 color: "#fff",
-                fontSize: 30,
+                fontSize: isMobile ? 22 : 30,
+                alignItems: "center",
+                justifyContent: "center",
               }}
             >
               "Sekani took the time to understand exactly what we wanted and
@@ -442,7 +446,7 @@ function Home() {
                   style={{
                     fontFamily: "Alegreya Sans",
                     color: "#fff",
-                    fontSize: 22,
+                    fontSize: isMobile ? 18 : 22,
                   }}
                 >
                   John Doe, <span>Buyer</span>
