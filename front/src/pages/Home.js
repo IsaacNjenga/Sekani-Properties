@@ -46,7 +46,6 @@ const subTitleStyle = {
   fontFamily: "Alegreya Sans",
   fontWeight: 300,
   textAlign: "center",
-  width: "65%",
   fontSize: 36,
 };
 
@@ -135,22 +134,32 @@ function Home() {
 
   return (
     <Motion>
-      <div style={{}}>
+      <div>
         {/* banner */}
         <div style={{ position: "relative" }}>
           <Image
             src={bgImg}
             alt="bgImg"
             width="100%"
-            height={700}
+            height={isMobile ? 900 : 700}
             preview={false}
             style={{ objectFit: "cover" }}
           />{" "}
-          <div style={heroStyle}>
-            <Title level={3} style={titleStyle}>
+          <div style={{ ...heroStyle }}>
+            <Title
+              level={3}
+              style={{ ...titleStyle, fontSize: isMobile ? 34 : 38 }}
+            >
               YOUR HOME MADE SIMPLE
             </Title>
-            <Title level={2} style={subTitleStyle}>
+            <Title
+              level={2}
+              style={{
+                ...subTitleStyle,
+                width: isMobile ? "100%" : "65%",
+                fontSize: isMobile ? 30 : 36,
+              }}
+            >
               Experience seamless real estate with Sekani. Discover dream homes,
               lucrative investments, and unforgettable stays.
             </Title>
@@ -247,7 +256,6 @@ function Home() {
                       letterSpacing: 3,
                       fontSize: 36,
                       fontWeight: 800,
-                      top: 0,
                     }}
                   >
                     {grid.text}
