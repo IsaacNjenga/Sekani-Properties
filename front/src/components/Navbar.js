@@ -3,7 +3,7 @@ import { Layout, Menu } from "antd";
 import { Link, Outlet } from "react-router-dom";
 import FooterContent from "./Footer";
 import { UserContext } from "../App";
-import logo from "../assets/images/logo.png";
+import logo from "../assets/images/logo3.png";
 
 const { Header, Content, Footer } = Layout;
 
@@ -47,8 +47,8 @@ function Navbar() {
         ? "rgba(9, 12, 17, 0)" // dark semi-transparent
         : "rgba(242, 245, 250, 0)" // light semi-transparent
       : "transparent", // fully overlay at top
-    backdropFilter: scrolled ? "blur(8px)" : "none",
-    boxShadow: scrolled ? "0 2px 12px rgba(0,0,0,0.25)" : "none",
+    backdropFilter: scrolled ? "none" : "none",
+    boxShadow: scrolled ? "0 2px 12px rgba(0,0,0,0)" : "none",
     height: "auto",
   };
 
@@ -77,9 +77,9 @@ function Navbar() {
               style={{
                 width: 200,
                 height: 200,
-                //borderRadius: "50%",
+                borderRadius: "50%",
+                border: "2px solid #918f76",
                 objectFit: "cover",
-                padding: 3,
                 transition: "transform 0.3s ease",
                 cursor: "pointer",
               }}
@@ -111,7 +111,7 @@ function Navbar() {
                     fontSize: 22,
                     fontFamily: "Alegreya Sans",
                     fontWeight: 300,
-                    //color: "#919075",
+                    color: "#ffffff",
                   }}
                 >
                   {label}
@@ -131,7 +131,11 @@ function Navbar() {
       >
         <Outlet />
       </Content>
-      <Footer>
+      <Footer
+        style={{
+          background: "#918f76",
+        }}
+      >
         <FooterContent />
       </Footer>
     </Layout>
