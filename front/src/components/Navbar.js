@@ -33,7 +33,7 @@ function Navbar() {
   });
 
   const headerStyle = {
-    position: "fixed", // overlay instead of sticky
+    position: "fixed",
     top: 0,
     left: 0,
     zIndex: 1000,
@@ -41,13 +41,12 @@ function Navbar() {
     padding: "0 24px",
     display: "flex",
     alignItems: "center",
-    transition:
-      "background 0.3s ease, backdrop-filter 0.3s ease, box-shadow 0.3s ease",
+    height: "80px", // fixed height for smoothness
+    transition: "all 0.4s ease", // smoother catch-all
     transform: "translateY(0)",
-    opacity: 1, // fade out
-    background: scrolled ? "rgba(9, 12, 17, 0.76)" : "transparent",
-    backdropFilter: scrolled ? "blur(2px)" : "none",
-    boxShadow: scrolled ? "0 2px 12px rgba(0,0,0,0.4)" : "none",
+    background: scrolled ? "rgba(9, 12, 17, 0.44)" : "rgba(9, 12, 17, 0)", // transparent with alpha instead of "transparent"
+    backdropFilter: scrolled ? "blur(2px)" : "blur(0px)", // animatable
+    boxShadow: scrolled ? "0 2px 12px rgba(0,0,0,0.4)" : "0 0 0 rgba(0,0,0,0)", // animatable baseline
     height: "auto",
   };
 
@@ -79,8 +78,9 @@ function Navbar() {
                 borderRadius: "50%",
                 border: "2px solid #918f76",
                 objectFit: "cover",
-                transition: "transform 0.3s ease",
+                transition: "all 0.3s ease",
                 cursor: "pointer",
+                margin: "10px 0",
               }}
               onMouseEnter={(e) =>
                 (e.currentTarget.style.transform = "scale(1.05)")
