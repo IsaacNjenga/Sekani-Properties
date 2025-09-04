@@ -1,15 +1,6 @@
 import React, { useContext } from "react";
-import { darkTheme, lightTheme, UserContext } from "../App";
-import {
-  Avatar,
-  Button,
-  Card,
-  Col,
-  Divider,
-  Image,
-  Row,
-  Typography,
-} from "antd";
+import { lightTheme, UserContext } from "../App";
+import { Avatar, Button, Card, Col, Image, Row, Typography } from "antd";
 import "../assets/css/home.css";
 import { useNavigate } from "react-router-dom";
 import Motion from "../components/Motion";

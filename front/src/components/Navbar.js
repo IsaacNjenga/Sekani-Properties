@@ -46,7 +46,6 @@ function Navbar() {
     padding: "0 24px",
     display: "flex",
     alignItems: "center",
-    height: "80px", // fixed height for smoothness
     transition: "all 0.4s ease", // smoother catch-all
     transform: "translateY(0)",
     background: scrolled ? "rgba(9, 12, 17, 0.44)" : "rgba(9, 12, 17, 0)", // transparent with alpha instead of "transparent"
