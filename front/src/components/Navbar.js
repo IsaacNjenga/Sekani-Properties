@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Layout, Menu } from "antd";
 import { Link, Outlet } from "react-router-dom";
 import FooterContent from "./Footer";
@@ -16,8 +16,6 @@ const menuItems = [
 function Navbar() {
   const { darkMode } = useContext(UserContext);
   const [scrolled, setScrolled] = useState(false);
-  const [hideNavbar, setHideNavbar] = useState(false);
-  const footerRef = useRef(null);
 
   const handleScroll = () => {
     if (window.scrollY > 0) {
@@ -34,27 +32,6 @@ function Navbar() {
     };
   });
 
-  // Detect footer
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          setHideNavbar(entry.isIntersecting);
-        });
-      },
-      { threshold: 0.1 }
-    );
-
-    if (footerRef.current) {
-      observer.observe(footerRef.current);
-    }
-    return () => {
-      if (footerRef.current) observer.unobserve(footerRef.current);
-    };
-  }, []);
-
-  const headerHeight = 100;
-
   const headerStyle = {
     position: "fixed", // overlay instead of sticky
     top: 0,
@@ -66,15 +43,11 @@ function Navbar() {
     alignItems: "center",
     transition:
       "background 0.3s ease, backdrop-filter 0.3s ease, box-shadow 0.3s ease",
-    transform: hideNavbar ? "translateY(-100%)" : "translateY(0)", // slide up when footer shows
-    opacity: hideNavbar ? 0 : 1, // fade out
-    background: scrolled
-      ? darkMode
-        ? "rgba(9, 12, 17, 0)" // dark semi-transparent
-        : "rgba(242, 245, 250, 0)" // light semi-transparent
-      : "transparent", // fully overlay at top
-    backdropFilter: scrolled ? "none" : "none",
-    boxShadow: scrolled ? "0 2px 12px rgba(0,0,0,0)" : "none",
+    transform: "translateY(0)",
+    opacity: 1, // fade out
+    background: scrolled ? "rgba(9, 12, 17, 0.76)" : "transparent",
+    backdropFilter: scrolled ? "blur(2px)" : "none",
+    boxShadow: scrolled ? "0 2px 12px rgba(0,0,0,0.4)" : "none",
     height: "auto",
   };
 
@@ -101,8 +74,8 @@ function Navbar() {
               src={logo}
               alt="Logo"
               style={{
-                width: 200,
-                height: 200,
+                width: scrolled ? 100 : 200,
+                height: scrolled ? 100 : 200,
                 borderRadius: "50%",
                 border: "2px solid #918f76",
                 objectFit: "cover",
@@ -158,7 +131,6 @@ function Navbar() {
         <Outlet />
       </Content>
       <Footer
-        ref={footerRef}
         style={{
           background: "#918f76",
         }}
