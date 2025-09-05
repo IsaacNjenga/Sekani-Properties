@@ -1,7 +1,8 @@
 import React, { useContext, useState } from "react";
 import Motion from "../components/Motion";
-import { Typography, Image, Input } from "antd";
-import { UserContext } from "../App";
+import { Typography, Image, Input, Tag, Row, Col, Card, Carousel } from "antd";
+import { lightTheme, UserContext } from "../App";
+import { RealEstateData } from "../assets/data/mockData.js";
 
 const { Title, Text } = Typography;
 const { Search } = Input;
@@ -39,12 +40,24 @@ const subTitleStyle = {
   fontSize: 36,
 };
 
+const tagStyle = {
+  borderRadius: 18,
+  padding: "4px 12px",
+  backgroundColor: "rgba(0,0,0,0)",
+  border: "1px solid #333",
+  fontFamily: "Raleway",
+  fontWeight: 600,
+  fontSize: 16,
+  margin: 5,
+};
+
 const bgImg =
   "https://plus.unsplash.com/premium_photo-1671269941569-7841144ee4e0?w=900";
 
 function Properties() {
   const { isMobile } = useContext(UserContext);
   const [loading, setLoading] = useState(false);
+  //console.log(RealEstateData);
   return (
     <Motion>
       <div>
@@ -77,9 +90,136 @@ function Properties() {
           </div>
         </div>
         {/* body */}
-        <div></div>
+        <div>
+          <div style={{ margin: 10, padding: 15 }}>
+            <Tag style={tagStyle}>For Sale</Tag>
+            <Tag style={tagStyle}>For Rent</Tag>
+            <Tag style={tagStyle}>Airbnb</Tag>
+            <Tag style={tagStyle}>Commercial</Tag>
+            <Tag style={tagStyle}>Land</Tag>
+          </div>
+
+          <div style={{ margin: "0 20px" }}>
+            <Row gutter={[16, 16]}>
+              {RealEstateData?.map((c) => (
+                <Col key={c.key} xs={24} sm={12} md={8}>
+                  <Card
+                    hoverable
+                    style={{
+                      minHeight: 220,
+                      borderRadius: 12,
+                      display: "flex",
+                      flexDirection: "column",
+                      boxShadow: "0 4px 12px rgba(0,0,0,0.07)",
+                      background: "#eae4ac81",
+                      border: `1px solid #ffffff7e`,
+                    }}
+                    cover={
+                      <div
+                        style={{
+                          position: "relative",
+                          width: "100%",
+                          height: 500,
+                          overflow: "hidden",
+                          borderTopLeftRadius: 12,
+                          borderTopRightRadius: 12,
+                          padding: 1,
+                        }}
+                      >
+                        <Carousel
+                          autoplay
+                          autoplaySpeed={3500}
+                          fade
+                          dots={false}
+                        >
+                          {c.img.length > 1 ? (
+                            c.img.map((img) => (
+                              <Image
+                                src={img}
+                                alt={c.key}
+                                preview={false}
+                                style={{
+                                  width: "100%",
+                                  height: "100%",
+                                  objectFit: "cover",
+                                  borderRadius: 12,
+                                }}
+                              />
+                            ))
+                          ) : (
+                            <Image
+                              src={c.img}
+                              alt={c.key}
+                              preview={false}
+                              style={{
+                                width: "100%",
+                                height: "100%",
+                                objectFit: "cover",
+                                borderRadius: 12,
+                              }}
+                            />
+                          )}
+                        </Carousel>
+
+                        {/* <Image
+                                  src={c.img}
+                                  alt={c.key}
+                                  preview={false}
+                                  style={{
+                                    width: "100%",
+                                    height: "100%",
+                                    objectFit: "cover",
+                                    borderRadius: 12,
+                                  }}
+                                /> */}
+                      </div>
+                    }
+                  >
+                    <Card.Meta
+                      title={
+                        <Title
+                          level={isMobile ? 4 : 3}
+                          style={{
+                            marginTop: 1,
+                            marginBottom: 2,
+                            whiteSpace: "nowrap",
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                            fontFamily: "Alegreya Sans",
+                            color: lightTheme.color,
+                          }}
+                        >
+                          {c.address}
+                        </Title>
+                      }
+                      description={
+                        <Text
+                          type="secondary"
+                          style={{
+                            fontFamily: "Roboto",
+                            fontWeight: 500,
+                            fontSize: 18,
+                          }}
+                        >
+                          {c.bedrooms} {c.bedrooms > 1 ? "Bedrooms" : "Bedroom"}
+                        </Text>
+                      }
+                    />
+                    <div>
+                      <Title
+                        level={isMobile ? 4 : 3}
+                        style={{ fontFamily: "Raleway" }}
+                      >
+                        KES. {c.price.toLocaleString()}
+                      </Title>
+                    </div>
+                  </Card>
+                </Col>
+              ))}
+            </Row>
+          </div>
+        </div>
       </div>
-      
     </Motion>
   );
 }

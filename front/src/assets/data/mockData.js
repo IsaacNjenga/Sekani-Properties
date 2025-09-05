@@ -1,4 +1,4 @@
-const RealEstateData = [
+export const RealEstateData = [
   {
     listingId: "KEN-001",
     address: "15 Peponi Road, Westlands",
@@ -24,7 +24,10 @@ const RealEstateData = [
     ],
     nearby: ["Sarit Centre", "Westgate Mall", "Nairobi International School"],
     status: "Available",
-    img: "",
+    img: [
+      "https://images.unsplash.com/photo-1694457269860-b7926c29e008?w=900",
+      "https://images.unsplash.com/photo-1560185127-59e4420e2c93?w=900",
+    ],
     agent: { name: "Mary Wanjiku", phone: "+254712345678" },
   },
   {
@@ -47,7 +50,11 @@ const RealEstateData = [
     amenities: ["Swimming Pool", "Gym", "24/7 Security", "High-Speed Lifts"],
     nearby: ["Yaya Centre", "Nairobi Hospital", "French School"],
     status: "Available",
-    img: "",
+    img: [
+      "https://images.unsplash.com/photo-1631901999319-efd71a712378?w=900",
+      "https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?w=900",
+      "https://plus.unsplash.com/premium_photo-1689609950071-af404daa58a0?w=900",
+    ],
     agent: { name: "John Otieno", phone: "+254701234567" },
   },
   {
