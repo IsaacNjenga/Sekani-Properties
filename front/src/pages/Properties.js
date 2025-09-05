@@ -58,13 +58,14 @@ const tagStyle = {
 const bgImg =
   "https://plus.unsplash.com/premium_photo-1671269941569-7841144ee4e0?w=900";
 
-const tagsData = ["For Sale", "For Rent", "Airbnb's", "Commercial", "Land"];
+const tagsData = ["For Sale", "Airbnb", "For Rent", "Commercial", "Land"];
 
 function Properties() {
   const { isMobile } = useContext(UserContext);
   const [openModal, setOpenModal] = useState(false);
   const [content, setContent] = useState(null);
   const [properties, setProperties] = useState(RealEstateData);
+  //  const [searchValue, setSearchValue] = useState("");
   const [selectedTags, setSelectedTags] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -83,6 +84,22 @@ function Properties() {
     }
     const filteredData = RealEstateData.filter((data) =>
       terms.includes(data.listingType)
+    );
+    setProperties(filteredData);
+  };
+
+  const handleSearch = (e) => {
+    const value = e.target.value.toLowerCase().trim();
+
+    if (!value) {
+      setProperties(RealEstateData);
+      return;
+    }
+
+    const filteredData = RealEstateData.filter((item) =>
+      Object.values(item).some(
+        (val) => typeof val === "string" && val.toLowerCase().includes(value)
+      )
     );
     setProperties(filteredData);
   };
@@ -115,10 +132,12 @@ function Properties() {
             </Title>
             <div>
               <Search
-                placeholder="Search..."
+                placeholder="Search by location, listing type..."
                 size="large"
                 loading={loading}
                 enterButton
+                //onSearch={handleSearch}
+                onChange={handleSearch}
                 style={{ width: isMobile ? 350 : 500, height: 50 }}
               />
             </div>

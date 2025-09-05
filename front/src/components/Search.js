@@ -1,9 +1,16 @@
-import React from 'react'
+import React from "react";
 
-function Search() {
-  return (
-    <div>Search</div>
-  )
+function Search({ onSearchChange, dataSource }) {
+  const [search, setSearch] = useState("");
+
+  const handleSearchChange = (e) => {
+    const value = e.target.value.toLowercase();
+    setSearch(value);
+    if (onSearchChange) {
+      onSearchChange(value);
+    }
+  };
+  return <div>Search</div>;
 }
 
-export default Search
+export default Search;
