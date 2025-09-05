@@ -1,6 +1,15 @@
 import React, { useContext } from "react";
 import { lightTheme, UserContext } from "../App";
-import { Avatar, Button, Card, Col, Image, Row, Typography } from "antd";
+import {
+  Avatar,
+  Button,
+  Card,
+  Carousel,
+  Col,
+  Image,
+  Row,
+  Typography,
+} from "antd";
 import "../assets/css/home.css";
 import { useNavigate } from "react-router-dom";
 import Motion from "../components/Motion";
@@ -13,7 +22,7 @@ const heroStyle = {
   left: 0,
   width: "100%",
   height: "100%",
-  background: "rgba(0,0,0,0.35)",
+  background: "rgba(0,0,0,0.4)",
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
@@ -83,6 +92,12 @@ const homeImg2 =
   "https://images.unsplash.com/photo-1518733057094-95b53143d2a7?w=900";
 const homeImg3 =
   "https://plus.unsplash.com/premium_photo-1675537856917-d662fd1ddc3a?w=900";
+const homeImg4 =
+  "https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6?w=900";
+const homeImg5 =
+  "https://plus.unsplash.com/premium_photo-1676823570630-be7b7e1ce1bb?w=900";
+const homeImg6 =
+  "https://images.unsplash.com/photo-1602343168117-bb8ffe3e2e9f?w=900";
 
 const bannerImg =
   "https://images.unsplash.com/photo-1503174971373-b1f69850bded?w=900";
@@ -99,21 +114,21 @@ const gridData = [
 const cardData = [
   {
     key: 1,
-    img: homeImg1,
+    img: [homeImg1, homeImg4],
     address: "780 Kiambu Rd, Kiambu",
     bedrooms: 3,
     price: 300000,
   },
   {
     key: 2,
-    img: homeImg2,
+    img: [homeImg2, homeImg5],
     address: "210 Muthaiga, Kiambu",
     bedrooms: 2,
     price: 100000,
   },
   {
     key: 3,
-    img: homeImg3,
+    img: [homeImg3, homeImg6],
     address: "491 Lavington, Nairobi",
     bedrooms: 2,
     price: 200000,
@@ -235,8 +250,8 @@ function Home() {
                   alt="img"
                   style={{
                     maxWidth: "100%",
-                    height: "auto",
-
+                    height: isMobile ? "auto" : "100%",
+                    objectFit: "cover",
                     transition: "transform 0.4s ease, filter 0.4s ease",
                   }}
                 />
@@ -305,7 +320,23 @@ function Home() {
                         padding: 1,
                       }}
                     >
-                      <Image
+                      <Carousel autoplay autoplaySpeed={3500} fade dots={false}>
+                        {c.img.map((img, index) => (
+                          <Image
+                            src={img}
+                            alt={c.key}
+                            preview={false}
+                            style={{
+                              width: "100%",
+                              height: "100%",
+                              objectFit: "cover",
+                              borderRadius: 12,
+                            }}
+                          />
+                        ))}
+                      </Carousel>
+
+                      {/* <Image
                         src={c.img}
                         alt={c.key}
                         preview={false}
@@ -315,7 +346,7 @@ function Home() {
                           objectFit: "cover",
                           borderRadius: 12,
                         }}
-                      />
+                      /> */}
                     </div>
                   }
                 >
