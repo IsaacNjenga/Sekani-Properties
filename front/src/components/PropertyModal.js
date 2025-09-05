@@ -31,7 +31,7 @@ function PropertyModal({ openModal, setOpenModal, loading, content }) {
       confirmLoading={loading}
       width={"90%"}
       bodyStyle={{ padding: 24, backgroundColor: "whitesmoke" }}
-      style={{ top: 10 }}
+      style={{ top: 8 }}
     >
       <Row gutter={[24, 24]}>
         {/* Left Column - Images */}
@@ -84,17 +84,23 @@ function PropertyModal({ openModal, setOpenModal, loading, content }) {
         <Col xs={24} md={12}>
           <Title
             level={isMobile ? 4 : 3}
-            style={{ marginBottom: 2, fontFamily: "Alegreya Sans" }}
+            style={{ marginBottom: 0, fontFamily: "Alegreya Sans" }}
           >
             {content?.propertyType} – {content?.bedrooms} BR /{" "}
             {content?.bathrooms} BA
           </Title>
-          <Text type="secondary" style={{ fontFamily: "Raleway" }}>
+          <Text
+            type="secondary"
+            style={{ fontFamily: "Raleway", fontSize: 18, marginBottom: 0 }}
+          >
             <EnvironmentOutlined /> {content?.address}, {content?.city},{" "}
             {content?.state}
           </Text>
 
-          <Divider orientation="left" style={{ borderColor: "#333" }}>
+          <Divider
+            orientation="left"
+            style={{ borderColor: "#333", marginBottom: 0 }}
+          >
             <Text
               style={{
                 fontFamily: "Raleway",
@@ -126,13 +132,11 @@ function PropertyModal({ openModal, setOpenModal, loading, content }) {
                   gap: 5,
                 }}
               >
-                <Text strong>
-                  <DollarOutlined style={{ fontSize: 22 }} /> Price:{" "}
-                  <span style={{ color: "#1890ff" }}>
-                    KES {content?.price?.toLocaleString()}
-                  </span>
+                <Text strong style={{ fontFamily: "Raleway" }}>
+                  <DollarOutlined style={{ fontSize: 22 }} /> Price: KES{" "}
+                  {content?.price?.toLocaleString()}
                 </Text>
-                <Text>
+                <Text strong style={{ fontFamily: "Raleway" }}>
                   <HomeOutlined style={{ fontSize: 22 }} /> Size:{" "}
                   {content?.squareFeet} sq. ft
                 </Text>
@@ -145,15 +149,19 @@ function PropertyModal({ openModal, setOpenModal, loading, content }) {
                   gap: 5,
                 }}
               >
-                <Text>
+                <Text strong style={{ fontFamily: "Raleway" }}>
                   <CalendarOutlined style={{ fontSize: 22 }} /> Built:{" "}
                   {content?.yearBuilt}
                 </Text>
-                <Text>
+                <Text strong style={{ fontFamily: "Raleway" }}>
                   <CheckCircleOutlined style={{ fontSize: 22 }} /> Status:{" "}
                   <Tag
                     style={{
+                      fontFamily: "Raleway",
                       color: "#fff",
+                      borderRadius: 10,
+                      border: "0px solid rgba(0,0,0,0)",
+                      padding: "2px 8px",
                       background:
                         content?.status === "For Sale"
                           ? "green"
@@ -169,15 +177,104 @@ function PropertyModal({ openModal, setOpenModal, loading, content }) {
             </div>
           </Space>
 
-          <Divider orientation="left" style={{ borderColor: "#333" }}>
-            Amenities
+          <Divider
+            orientation="left"
+            style={{ borderColor: "#333", marginBottom: 4 }}
+          >
+            <Text
+              style={{
+                fontFamily: "Raleway",
+                fontWeight: 800,
+                fontSize: 18,
+                margin: 0,
+              }}
+            >
+              Amenities
+            </Text>
           </Divider>
           <Space wrap>
             {content?.amenities?.map((item, index) => (
-              <Tag color="geekblue" key={index}>
+              <Tag
+                key={index}
+                style={{
+                  backgroundColor: "#8d8009ff",
+                  color: "#fff",
+                  borderRadius: 10,
+                  border: "0px solid rgba(0,0,0,0)",
+                  padding: "2px 10px",
+                }}
+              >
                 {item}
               </Tag>
             ))}
+          </Space>
+          <Divider
+            orientation="left"
+            style={{ borderColor: "#333", marginBottom: 4 }}
+          >
+            {" "}
+            <Text
+              style={{
+                fontFamily: "Raleway",
+                fontWeight: 800,
+                fontSize: 18,
+                margin: 0,
+              }}
+            >
+              Nearby Landmarks
+            </Text>
+          </Divider>
+          <Space wrap size={[8, 8]}>
+            {content?.nearby?.map((item, index) => (
+              <Tag
+                key={index}
+                icon={<EnvironmentOutlined />}
+                color="geekblue"
+                style={{
+                  borderRadius: 16,
+                  fontSize: 14,
+                  padding: "4px 12px",
+                  fontFamily: "Raleway",
+                }}
+              >
+                {item}
+              </Tag>
+            ))}
+          </Space>
+
+          <Divider
+            orientation="left"
+            style={{ borderColor: "#333", marginBottom: 2 }}
+          >
+            {" "}
+            <Text
+              style={{
+                fontFamily: "Raleway",
+                fontWeight: 800,
+                fontSize: 18,
+                margin: 0,
+              }}
+            >
+              Agent Info
+            </Text>
+          </Divider>
+          <Space direction="vertical" size={2}>
+            <Text
+              strong
+              style={{
+                fontFamily: "Raleway",
+              }}
+            >
+              {content?.agent?.name}
+            </Text>
+            <Text
+              type="secondary"
+              style={{
+                fontFamily: "Raleway",
+              }}
+            >
+              {content?.agent?.phone}
+            </Text>
           </Space>
         </Col>
       </Row>
