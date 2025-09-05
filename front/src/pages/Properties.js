@@ -118,7 +118,7 @@ function Properties() {
             <Tag style={tagStyle}>Land</Tag>
           </div>
 
-          <div style={{ margin: "0 20px" }}>
+          <div style={{ margin: "8px 20px" }}>
             <Row gutter={[16, 16]}>
               {RealEstateData?.map((c) => (
                 <Col key={c.key} xs={24} sm={12} md={8}>

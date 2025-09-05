@@ -77,14 +77,14 @@ function Navbar() {
               src={logo}
               alt="Logo"
               style={{
-                width: scrolled ? 100 : isMobile ? 100 : 200,
-                height: scrolled ? 100 : isMobile ? 100 : 200,
+                width: scrolled ? 80 : isMobile ? 80 : 200,
+                height: scrolled ? 80 : isMobile ? 80 : 200,
                 borderRadius: "50%",
                 border: "2px solid #918f76",
                 objectFit: "cover",
                 transition: "all 0.3s ease",
                 cursor: "pointer",
-                margin: "10px 0",
+                margin: "3px 0",
               }}
               onMouseEnter={(e) =>
                 (e.currentTarget.style.transform = "scale(1.05)")
