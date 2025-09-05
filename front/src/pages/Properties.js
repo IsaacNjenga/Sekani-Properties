@@ -97,7 +97,7 @@ function Properties() {
             src={bgImg}
             alt="bgImg"
             width="100%"
-            height={isMobile ? 400 : 500}
+            height={isMobile ? 450 : 500}
             preview={false}
             style={{ objectFit: "cover", maxWidth: "100%" }}
           />{" "}
@@ -114,7 +114,7 @@ function Properties() {
                 size="large"
                 loading={loading}
                 enterButton
-                style={{ width: isMobile ? 380 : 500, height: 50 }}
+                style={{ width: isMobile ? 350 : 500, height: 50 }}
               />
             </div>
           </div>
