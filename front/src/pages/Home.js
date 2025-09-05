@@ -321,9 +321,23 @@ function Home() {
                       }}
                     >
                       <Carousel autoplay autoplaySpeed={3500} fade dots={false}>
-                        {c.img.map((img, index) => (
+                        {c.img.length > 1 ? (
+                          c.img.map((img) => (
+                            <Image
+                              src={img}
+                              alt={c.key}
+                              preview={false}
+                              style={{
+                                width: "100%",
+                                height: "100%",
+                                objectFit: "cover",
+                                borderRadius: 12,
+                              }}
+                            />
+                          ))
+                        ) : (
                           <Image
-                            src={img}
+                            src={c.img}
                             alt={c.key}
                             preview={false}
                             style={{
@@ -333,7 +347,7 @@ function Home() {
                               borderRadius: 12,
                             }}
                           />
-                        ))}
+                        )}
                       </Carousel>
 
                       {/* <Image
