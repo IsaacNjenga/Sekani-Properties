@@ -12,7 +12,7 @@ const menuItems = [
   { key: 1, label: "Home", path: "/" },
   { key: 2, label: "Featured Properties", path: "/properties" },
   { key: 3, label: "About", path: "/about" },
-  { key: 4, label: "Contact", path: "/contact" },
+  { key: 4, label: "Contact Us", path: "/contact" },
 ];
 
 function Navbar() {
@@ -143,7 +143,7 @@ function Navbar() {
       </Header>
       <Drawer
         placement="right"
-        width={240}
+        width={300}
         onClose={toggleDrawer}
         open={drawerOpen}
         style={{ backgroundColor: "#eae4ace8" }}

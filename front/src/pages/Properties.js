@@ -4,7 +4,6 @@ import {
   Typography,
   Image,
   Input,
-  Tag,
   Row,
   Col,
   Card,
@@ -60,6 +59,7 @@ const tagStyle = {
   fontWeight: 600,
   fontSize: 16,
   margin: 5,
+  cursor: "pointer",
 };
 
 const bgImg =
@@ -70,6 +70,14 @@ function Properties() {
   const [openModal, setOpenModal] = useState(false);
   const [content, setContent] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [filter, setFilter] = useState("");
+
+  const filterProperty = (term) => {
+    const filteredData = RealEstateData.filter(
+      (data) => data.listingType === term
+    );
+    setFilter(filteredData);
+  };
 
   const viewProperty = (property) => {
     setLoading(true);
@@ -111,11 +119,24 @@ function Properties() {
         {/* body */}
         <div>
           <div style={{ margin: 10, padding: 15 }}>
-            <Tag style={tagStyle}>For Sale</Tag>
-            <Tag style={tagStyle}>For Rent</Tag>
-            <Tag style={tagStyle}>Airbnb</Tag>
-            <Tag style={tagStyle}>Commercial</Tag>
-            <Tag style={tagStyle}>Land</Tag>
+            <Button style={tagStyle} onClick={() => filterProperty("For Sale")}>
+              For Sale
+            </Button>
+            <Button style={tagStyle} onClick={() => filterProperty("For Rent")}>
+              For Rent
+            </Button>
+            <Button style={tagStyle} onClick={() => filterProperty("Airbnb")}>
+              Airbnb
+            </Button>
+            <Button
+              style={tagStyle}
+              onClick={() => filterProperty("Commercial")}
+            >
+              Commercial
+            </Button>
+            <Button style={tagStyle} onClick={() => filterProperty("Land")}>
+              Land
+            </Button>
           </div>
 
           <div style={{ margin: "8px 20px" }}>
