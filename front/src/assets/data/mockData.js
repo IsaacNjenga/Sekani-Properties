@@ -82,7 +82,9 @@ export const RealEstateData = [
     ],
     nearby: ["Nyali Beach", "City Mall", "Aga Khan Hospital"],
     status: "Under Offer",
-    img: "",
+    img: [
+      "https://plus.unsplash.com/premium_photo-1689609950069-2961f80b1e70?w=900",
+    ],
     agent: { name: "Fatma Said", phone: "+254733222111" },
   },
   {
@@ -110,7 +112,10 @@ export const RealEstateData = [
     ],
     nearby: ["Lake Basin Mall", "Maseno University Kisumu Campus"],
     status: "Pending",
-    img: "",
+    img: [
+      "https://images.unsplash.com/photo-1502005097973-6a7082348e28?w=900",
+      "https://images.unsplash.com/photo-1518733057094-95b53143d2a7?w=900",
+    ],
     agent: { name: "Peter Oloo", phone: "+254720987654" },
   },
   {
@@ -133,7 +138,7 @@ export const RealEstateData = [
     amenities: ["WiFi", "Smart TV", "Fully Equipped Kitchen", "24/7 Security"],
     nearby: ["Yaya Centre", "Adlife Plaza", "Nairobi Hospital"],
     status: "Available",
-    img: "",
+    img: ["https://images.unsplash.com/photo-1643665592005-843f3f6b4ece?w=900"],
     agent: { name: "James Mwangi", phone: "+254719876543" },
   },
   {
@@ -156,7 +161,7 @@ export const RealEstateData = [
     amenities: ["Parking", "Backup Generator", "Elevator", "Security"],
     nearby: ["Fort Jesus", "Moi Avenue Bus Station", "Banking Halls"],
     status: "Available",
-    img: "",
+    img: ["https://images.unsplash.com/photo-1695222322544-8d389d2dc43d?w=900"],
     agent: { name: "Ali Yusuf", phone: "+254722111333" },
   },
   {
@@ -179,7 +184,7 @@ export const RealEstateData = [
     amenities: ["Ready Title Deed", "Electricity on Site", "Water on Site"],
     nearby: ["Eastern Bypass", "Quickmart Kamakis", "Kenya Power Offices"],
     status: "Available",
-    img: "",
+    img: ["https://images.unsplash.com/photo-1618606338706-fc3bad33dbe6?w=900"],
     agent: { name: "Susan Kariuki", phone: "+254734555666" },
   },
 ];

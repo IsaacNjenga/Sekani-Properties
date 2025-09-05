@@ -1,8 +1,19 @@
 import React, { useContext, useState } from "react";
 import Motion from "../components/Motion";
-import { Typography, Image, Input, Tag, Row, Col, Card, Carousel } from "antd";
+import {
+  Typography,
+  Image,
+  Input,
+  Tag,
+  Row,
+  Col,
+  Card,
+  Carousel,
+  Button,
+} from "antd";
 import { lightTheme, UserContext } from "../App";
 import { RealEstateData } from "../assets/data/mockData.js";
+import PropertyModal from "../components/PropertyModal.js";
 
 const { Title, Text } = Typography;
 const { Search } = Input;
@@ -56,8 +67,16 @@ const bgImg =
 
 function Properties() {
   const { isMobile } = useContext(UserContext);
+  const [openModal, setOpenModal] = useState(false);
+  const [content, setContent] = useState(null);
   const [loading, setLoading] = useState(false);
-  //console.log(RealEstateData);
+
+  const viewProperty = (property) => {
+    setLoading(true);
+    setOpenModal(true);
+    setContent(property);
+    setTimeout(() => setLoading(false), 100);
+  };
   return (
     <Motion>
       <div>
@@ -128,7 +147,7 @@ function Properties() {
                       >
                         <Carousel
                           autoplay
-                          autoplaySpeed={3500}
+                          autoplaySpeed={3800}
                           fade
                           dots={false}
                         >
@@ -205,13 +224,32 @@ function Properties() {
                         </Text>
                       }
                     />
-                    <div>
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        marginBottom: 0,
+                      }}
+                    >
                       <Title
                         level={isMobile ? 4 : 3}
                         style={{ fontFamily: "Raleway" }}
                       >
                         KES. {c.price.toLocaleString()}
                       </Title>
+                      <Button
+                        type="primary"
+                        style={{
+                          borderRadius: 18,
+                          padding: "4px 16px",
+                          fontFamily: "Raleway",
+                          fontWeight: "bold",
+                        }}
+                        onClick={() => viewProperty(c)}
+                      >
+                        View
+                      </Button>
                     </div>
                   </Card>
                 </Col>
@@ -220,6 +258,12 @@ function Properties() {
           </div>
         </div>
       </div>
+      <PropertyModal
+        content={content}
+        openModal={openModal}
+        setOpenModal={setOpenModal}
+        loading={loading}
+      />
     </Motion>
   );
 }
