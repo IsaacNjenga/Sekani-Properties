@@ -140,7 +140,7 @@ function Home() {
 
   return (
     <Motion>
-      <div>
+      <div style={{ background: "whitesmoke" }}>
         {/* banner */}
         <div style={{ position: "relative" }}>
           <Image
