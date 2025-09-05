@@ -16,6 +16,7 @@ import {
 import { lightTheme, UserContext } from "../App";
 import { RealEstateData } from "../assets/data/mockData.js";
 import PropertyModal from "../components/PropertyModal.js";
+import { CloseOutlined } from "@ant-design/icons";
 
 const { Title, Text } = Typography;
 const { Search } = Input;
@@ -44,20 +45,9 @@ const titleStyle = {
   fontSize: 38,
 };
 
-// const subTitleStyle = {
-//   marginTop: 15,
-//   color: "#fff",
-//   fontFamily: "Alegreya Sans",
-//   fontWeight: 300,
-//   textAlign: "center",
-//   fontSize: 36,
-// };
-
 const tagStyle = {
   borderRadius: 18,
   padding: "4px 12px",
-  backgroundColor: "rgba(0,0,0,0)",
-  border: "1px solid #333",
   fontFamily: "Raleway",
   fontWeight: 600,
   fontSize: 16,
@@ -68,18 +58,33 @@ const tagStyle = {
 const bgImg =
   "https://plus.unsplash.com/premium_photo-1671269941569-7841144ee4e0?w=900";
 
+const tagsData = ["For Sale", "For Rent", "Airbnb's", "Commercial", "Land"];
+
 function Properties() {
   const { isMobile } = useContext(UserContext);
   const [openModal, setOpenModal] = useState(false);
   const [content, setContent] = useState(null);
+  const [properties, setProperties] = useState(RealEstateData);
+  const [selectedTags, setSelectedTags] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [filter, setFilter] = useState("");
 
-  const filterProperty = (term) => {
-    const filteredData = RealEstateData.filter(
-      (data) => data.listingType === term
+  const handleCheck = (tag, checked) => {
+    const nextSelectedTags = checked
+      ? [...selectedTags, tag]
+      : selectedTags.filter((t) => t !== tag);
+    setSelectedTags(nextSelectedTags);
+    filterProperty(nextSelectedTags);
+  };
+
+  const filterProperty = (terms) => {
+    if (!terms.length) {
+      setProperties(RealEstateData);
+      return;
+    }
+    const filteredData = RealEstateData.filter((data) =>
+      terms.includes(data.listingType)
     );
-    setFilter(filteredData);
+    setProperties(filteredData);
   };
 
   const viewProperty = (property) => {
@@ -90,7 +95,7 @@ function Properties() {
   };
   return (
     <Motion>
-      <div style={{background:'whitesmoke'}}>
+      <div style={{ background: "whitesmoke" }}>
         {/* banner */}
         <div style={{ position: "relative" }}>
           <Image
@@ -121,35 +126,54 @@ function Properties() {
         </div>
         {/* body */}
         <div>
+          {/* tags */}
           <div style={{ margin: 10, padding: 15 }}>
-            <Button style={tagStyle} onClick={() => filterProperty("For Sale")}>
-              For Sale
-            </Button>
-            <Button style={tagStyle} onClick={() => filterProperty("For Rent")}>
-              For Rent
-            </Button>
-            <Button style={tagStyle} onClick={() => filterProperty("Airbnb")}>
-              Airbnb
-            </Button>
-            <Button
-              style={tagStyle}
-              onClick={() => filterProperty("Commercial")}
-            >
-              Commercial
-            </Button>
-            <Button style={tagStyle} onClick={() => filterProperty("Land")}>
-              Land
-            </Button>
+            {tagsData.map((tag) => {
+              const isChecked = selectedTags?.includes(tag);
+              return (
+                <Tag.CheckableTag
+                  key={tag}
+                  checked={isChecked}
+                  onChange={(checked) => handleCheck(tag, checked)}
+                  style={{
+                    ...tagStyle,
+                    color: isChecked ? "#fff" : "#333",
+                    backgroundColor: isChecked ? "#8d8009ff" : "rgba(0,0,0,0)",
+                    border: isChecked
+                      ? "1px solid rgba(0,0,0,0)"
+                      : "1px solid #333",
+                  }}
+                >
+                  {tag}
+                  {isChecked && (
+                    <span
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleCheck(tag, false);
+                      }}
+                      style={{
+                        marginLeft: 6,
+                        cursor: "pointer",
+                        fontWeight: "bold",
+                        color: "#ffffff",
+                      }}
+                    >
+                      <CloseOutlined />
+                    </span>
+                  )}
+                </Tag.CheckableTag>
+              );
+            })}
           </div>
 
           <div style={{ margin: "8px 20px" }}>
             <Row gutter={[16, 16]}>
-              {RealEstateData?.map((c) => (
+              {properties?.map((c) => (
                 <Col key={c.key} xs={24} sm={12} md={8}>
                   <Card
                     hoverable
                     style={{
-                      minHeight: 220,
+                      minHeight: 200,
                       borderRadius: 12,
                       display: "flex",
                       flexDirection: "column",
@@ -162,7 +186,7 @@ function Properties() {
                         style={{
                           position: "relative",
                           width: "100%",
-                          height: 500,
+                          height: 350,
                           overflow: "hidden",
                           borderTopLeftRadius: 12,
                           borderTopRightRadius: 12,
