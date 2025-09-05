@@ -30,7 +30,7 @@ function PropertyModal({ openModal, setOpenModal, loading, content }) {
       onCancel={() => setOpenModal(false)}
       confirmLoading={loading}
       width={"90%"}
-      bodyStyle={{ padding: 24, backgroundColor: "whitesmoke" }}
+      bodyStyle={{ padding: isMobile ? 8 : 24, backgroundColor: "whitesmoke" }}
       style={{ top: 8 }}
     >
       <Row gutter={[24, 24]}>
@@ -53,7 +53,6 @@ function PropertyModal({ openModal, setOpenModal, loading, content }) {
                   key={index}
                   src={img}
                   alt={content?.listingId}
-                  //preview={false}
                   height={500}
                   width={500}
                   style={{
@@ -67,7 +66,6 @@ function PropertyModal({ openModal, setOpenModal, loading, content }) {
               <Image
                 src={content?.img}
                 alt={content?.listingId}
-                preview={false}
                 height={500}
                 width={500}
                 style={{
@@ -83,7 +81,7 @@ function PropertyModal({ openModal, setOpenModal, loading, content }) {
         {/* Right Column - Details */}
         <Col xs={24} md={12}>
           <Title
-            level={isMobile ? 4 : 3}
+            level={isMobile ? 3 : 2}
             style={{ marginBottom: 0, fontFamily: "Alegreya Sans" }}
           >
             {content?.propertyType} – {content?.bedrooms} BR /{" "}
