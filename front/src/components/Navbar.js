@@ -77,8 +77,8 @@ function Navbar() {
               src={logo}
               alt="Logo"
               style={{
-                width: scrolled ? 80 : isMobile ? 80 : 200,
-                height: scrolled ? 80 : isMobile ? 80 : 200,
+                width: scrolled ?85 : isMobile ? 150 : 200,
+                height: scrolled ? 85 : isMobile ? 150 : 200,
                 borderRadius: "50%",
                 border: "2px solid #918f76",
                 objectFit: "cover",

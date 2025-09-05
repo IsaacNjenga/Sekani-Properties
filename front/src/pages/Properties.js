@@ -41,14 +41,14 @@ const titleStyle = {
   fontSize: 38,
 };
 
-const subTitleStyle = {
-  marginTop: 15,
-  color: "#fff",
-  fontFamily: "Alegreya Sans",
-  fontWeight: 300,
-  textAlign: "center",
-  fontSize: 36,
-};
+// const subTitleStyle = {
+//   marginTop: 15,
+//   color: "#fff",
+//   fontFamily: "Alegreya Sans",
+//   fontWeight: 300,
+//   textAlign: "center",
+//   fontSize: 36,
+// };
 
 const tagStyle = {
   borderRadius: 18,
