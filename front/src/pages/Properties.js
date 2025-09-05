@@ -114,7 +114,7 @@ function Properties() {
                 size="large"
                 loading={loading}
                 enterButton
-                style={{ width: isMobile ? 400 : 500, height: 50 }}
+                style={{ width: isMobile ? 380 : 500, height: 50 }}
               />
             </div>
           </div>
