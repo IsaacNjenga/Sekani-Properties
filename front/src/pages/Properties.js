@@ -11,6 +11,7 @@ import {
   Button,
   Badge,
   Tag,
+  Divider,
 } from "antd";
 import { lightTheme, UserContext } from "../App";
 import { RealEstateData } from "../assets/data/mockData.js";
@@ -181,7 +182,7 @@ function Properties() {
                           <Carousel
                             autoplay
                             autoplaySpeed={3800}
-                            fade
+                            //fade
                             dots={false}
                           >
                             {c.img.length > 1 ? (
@@ -258,12 +259,21 @@ function Properties() {
                             >
                               {c.propertyType}
                             </Text>
-                            <p style={{ fontWeight: "bold", margin: 0 }}>|</p>
+                            <Divider
+                              type="vertical"
+                              style={{
+                                fontWeight: "bold",
+                                margin: 0,
+                                borderColor: "#aaa",
+                              }}
+                            />
+                            {/* <p style={{ fontWeight: "bold", margin: 0 }}>|</p> */}
                             <Tag
                               style={{
                                 background: "green",
                                 borderRadius: 10,
                                 border: "0px solid rgba(0,0,0,0)",
+                                padding: "2px 10px",
                               }}
                             >
                               <Text
