@@ -270,7 +270,12 @@ function Properties() {
                             {/* <p style={{ fontWeight: "bold", margin: 0 }}>|</p> */}
                             <Tag
                               style={{
-                                background: "green",
+                                background:
+                                  c?.status === "For Sale"
+                                    ? "green"
+                                    : c?.status === "Pending"
+                                    ? "orange"
+                                    : "green",
                                 borderRadius: 10,
                                 border: "0px solid rgba(0,0,0,0)",
                                 padding: "2px 10px",

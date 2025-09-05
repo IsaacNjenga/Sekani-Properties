@@ -10,7 +10,7 @@ export const RealEstateData = [
     bathrooms: 3,
     squareFeet: 2200,
     yearBuilt: 2018,
-    propertyType: "Maisonette",
+    propertyType: "Mansionette",
     listingType: "For Sale",
     furnished: false,
     paymentOptions: ["Cash", "Mortgage"],

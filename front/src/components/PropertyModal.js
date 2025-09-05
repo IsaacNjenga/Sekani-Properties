@@ -93,45 +93,85 @@ function PropertyModal({ openModal, setOpenModal, loading, content }) {
             <EnvironmentOutlined /> {content?.address}, {content?.city},{" "}
             {content?.state}
           </Text>
-          <Divider />
-          <Space direction="vertical" size="medium">
-            <Text strong>
-              <DollarOutlined style={{ fontSize: 22 }} /> Price:{" "}
-              <span style={{ color: "#1890ff" }}>
-                KES {content?.price?.toLocaleString()}
-              </span>
+
+          <Divider orientation="left" style={{ borderColor: "#333" }}>
+            <Text
+              style={{
+                fontFamily: "Raleway",
+                fontWeight: 800,
+                fontSize: 18,
+                margin: 0,
+              }}
+            >
+              About
             </Text>
-            <Text>
-              <HomeOutlined style={{ fontSize: 22 }} /> Size:{" "}
-              {content?.squareFeet} sq. ft
-            </Text>
-            <Text>
-              <CalendarOutlined style={{ fontSize: 22 }} /> Built:{" "}
-              {content?.yearBuilt}
-            </Text>
-            <Text>
-              <CheckCircleOutlined style={{ fontSize: 22 }} /> Status:{" "}
-              <Tag
+          </Divider>
+          <Paragraph style={{ fontFamily: "Raleway" }}>
+            {content?.description}
+          </Paragraph>
+
+          <Space direction="vertical" size="small" style={{ width: "100%" }}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                gap: 5,
+                flexDirection: isMobile ? "column" : "row",
+              }}
+            >
+              <div
                 style={{
-                  color: "#fff",
-                  background:
-                    content?.status === "For Sale"
-                      ? "green"
-                      : content?.status === "Pending"
-                      ? "orange"
-                      : "green",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 5,
                 }}
               >
-                {content?.status}
-              </Tag>
-            </Text>
+                <Text strong>
+                  <DollarOutlined style={{ fontSize: 22 }} /> Price:{" "}
+                  <span style={{ color: "#1890ff" }}>
+                    KES {content?.price?.toLocaleString()}
+                  </span>
+                </Text>
+                <Text>
+                  <HomeOutlined style={{ fontSize: 22 }} /> Size:{" "}
+                  {content?.squareFeet} sq. ft
+                </Text>
+              </div>
+
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 5,
+                }}
+              >
+                <Text>
+                  <CalendarOutlined style={{ fontSize: 22 }} /> Built:{" "}
+                  {content?.yearBuilt}
+                </Text>
+                <Text>
+                  <CheckCircleOutlined style={{ fontSize: 22 }} /> Status:{" "}
+                  <Tag
+                    style={{
+                      color: "#fff",
+                      background:
+                        content?.status === "For Sale"
+                          ? "green"
+                          : content?.status === "Pending"
+                          ? "orange"
+                          : "green",
+                    }}
+                  >
+                    {content?.status}
+                  </Tag>
+                </Text>
+              </div>
+            </div>
           </Space>
 
-          <Divider orientation="left">About</Divider>
-
-          <Paragraph>{content?.description}</Paragraph>
-
-          <Divider orientation="left">Amenities</Divider>
+          <Divider orientation="left" style={{ borderColor: "#333" }}>
+            Amenities
+          </Divider>
           <Space wrap>
             {content?.amenities?.map((item, index) => (
               <Tag color="geekblue" key={index}>
