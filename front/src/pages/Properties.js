@@ -9,6 +9,8 @@ import {
   Card,
   Carousel,
   Button,
+  Badge,
+  Tag,
 } from "antd";
 import { lightTheme, UserContext } from "../App";
 import { RealEstateData } from "../assets/data/mockData.js";
@@ -166,16 +168,39 @@ function Properties() {
                           padding: 1,
                         }}
                       >
-                        <Carousel
-                          autoplay
-                          autoplaySpeed={3800}
-                          fade
-                          dots={false}
+                        <Badge.Ribbon
+                          text={`${c.listingType}`}
+                          style={{
+                            display: "block",
+                            right: "10px",
+                            background: "#8d8009ff",
+                            padding: "2px 10px",
+                            fontFamily: "Raleway",
+                          }}
                         >
-                          {c.img.length > 1 ? (
-                            c.img.map((img) => (
+                          <Carousel
+                            autoplay
+                            autoplaySpeed={3800}
+                            fade
+                            dots={false}
+                          >
+                            {c.img.length > 1 ? (
+                              c.img.map((img) => (
+                                <Image
+                                  src={img}
+                                  alt={c.key}
+                                  preview={false}
+                                  style={{
+                                    width: "100%",
+                                    height: "100%",
+                                    objectFit: "cover",
+                                    borderRadius: 12,
+                                  }}
+                                />
+                              ))
+                            ) : (
                               <Image
-                                src={img}
+                                src={c.img}
                                 alt={c.key}
                                 preview={false}
                                 style={{
@@ -185,33 +210,9 @@ function Properties() {
                                   borderRadius: 12,
                                 }}
                               />
-                            ))
-                          ) : (
-                            <Image
-                              src={c.img}
-                              alt={c.key}
-                              preview={false}
-                              style={{
-                                width: "100%",
-                                height: "100%",
-                                objectFit: "cover",
-                                borderRadius: 12,
-                              }}
-                            />
-                          )}
-                        </Carousel>
-
-                        {/* <Image
-                                  src={c.img}
-                                  alt={c.key}
-                                  preview={false}
-                                  style={{
-                                    width: "100%",
-                                    height: "100%",
-                                    objectFit: "cover",
-                                    borderRadius: 12,
-                                  }}
-                                /> */}
+                            )}
+                          </Carousel>
+                        </Badge.Ribbon>
                       </div>
                     }
                   >
@@ -221,7 +222,7 @@ function Properties() {
                           level={isMobile ? 4 : 3}
                           style={{
                             marginTop: 1,
-                            marginBottom: 2,
+                            marginBottom: 0,
                             whiteSpace: "nowrap",
                             overflow: "hidden",
                             textOverflow: "ellipsis",
@@ -233,16 +234,63 @@ function Properties() {
                         </Title>
                       }
                       description={
-                        <Text
-                          type="secondary"
+                        <div
                           style={{
-                            fontFamily: "Roboto",
-                            fontWeight: 500,
-                            fontSize: 18,
+                            display: "flex",
+                            flexDirection: "column",
+                            marginTop: 0,
                           }}
                         >
-                          {c.bedrooms} {c.bedrooms > 1 ? "Bedrooms" : "Bedroom"}
-                        </Text>
+                          <div
+                            style={{
+                              display: "flex",
+                              justifyContent: "left",
+                              alignItems: "center",
+                              gap: 10,
+                            }}
+                          >
+                            <Text
+                              style={{
+                                fontFamily: "Roboto",
+                                fontWeight: 500,
+                                fontSize: 18,
+                              }}
+                            >
+                              {c.propertyType}
+                            </Text>
+                            <p style={{ fontWeight: "bold", margin: 0 }}>|</p>
+                            <Tag
+                              style={{
+                                background: "green",
+                                borderRadius: 10,
+                                border: "0px solid rgba(0,0,0,0)",
+                              }}
+                            >
+                              <Text
+                                style={{
+                                  color: "#fff",
+                                  fontFamily: "Roboto",
+                                  fontSize: 14,
+                                }}
+                              >
+                                {c.status}
+                              </Text>
+                            </Tag>
+                          </div>
+                          <Text
+                            type="secondary"
+                            style={{
+                              fontFamily: "Roboto",
+                              fontWeight: 500,
+                              fontSize: 18,
+                            }}
+                          >
+                            {c.bedrooms}{" "}
+                            {c.bedrooms > 1 ? "Bedrooms" : "Bedroom"},{" "}
+                            {c.bathrooms}{" "}
+                            {c.bathrooms > 1 ? "Bathrooms" : "Bathroom"}
+                          </Text>
+                        </div>
                       }
                     />
                     <div
@@ -251,6 +299,7 @@ function Properties() {
                         justifyContent: "space-between",
                         alignItems: "center",
                         marginBottom: 0,
+                        gap: 6,
                       }}
                     >
                       <Title
@@ -266,6 +315,9 @@ function Properties() {
                           padding: "4px 16px",
                           fontFamily: "Raleway",
                           fontWeight: "bold",
+                          background: "rgba(0,0,0,0)",
+                          border: "1px solid #333",
+                          color: "#333",
                         }}
                         onClick={() => viewProperty(c)}
                       >
