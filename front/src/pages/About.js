@@ -2,6 +2,7 @@ import { Image, Typography } from "antd";
 import React, { useContext } from "react";
 import { UserContext } from "../App";
 import Motion from "../components/Motion";
+import SplitText from "../components/SplitText";
 
 const { Title, Paragraph } = Typography;
 const bgImg =
@@ -70,12 +71,25 @@ function About() {
             style={{ objectFit: "cover", maxWidth: "100%" }}
           />{" "}
           <div style={{ ...heroStyle }}>
-            <Title
-              level={3}
-              style={{ ...titleStyle, fontSize: isMobile ? 34 : 38 }}
-            >
-              ABOUT US
-            </Title>
+            <SplitText
+              text={
+                <Title
+                  level={3}
+                  style={{ ...titleStyle, fontSize: isMobile ? 34 : 38 }}
+                >
+                  ABOUT US
+                </Title>
+              }
+              delay={100}
+              duration={0.6}
+              ease="power3.out"
+              splitType="chars"
+              from={{ opacity: 0, y: 40 }}
+              to={{ opacity: 1, y: 0 }}
+              threshold={0.1}
+              rootMargin="-100px"
+              textAlign="center"
+            />
           </div>
         </div>
         <div

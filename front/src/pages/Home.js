@@ -13,6 +13,7 @@ import {
 import "../assets/css/home.css";
 import { useNavigate } from "react-router-dom";
 import Motion from "../components/Motion";
+import SplitText from "../components/SplitText";
 
 const { Title, Text, Paragraph } = Typography;
 
@@ -152,12 +153,26 @@ function Home() {
             style={{ objectFit: "cover", maxWidth: "100%" }}
           />{" "}
           <div style={{ ...heroStyle }}>
-            <Title
-              level={3}
-              style={{ ...titleStyle, fontSize: isMobile ? 34 : 38 }}
-            >
-              YOUR HOME MADE SIMPLE
-            </Title>
+            <SplitText
+              text={
+                <Title
+                  level={3}
+                  style={{ ...titleStyle, fontSize: isMobile ? 34 : 38 }}
+                >
+                  YOUR HOME MADE SIMPLE
+                </Title>
+              }
+              delay={100}
+              duration={0.6}
+              ease="power3.out"
+              splitType="chars"
+              from={{ opacity: 0, y: 40 }}
+              to={{ opacity: 1, y: 0 }}
+              threshold={0.1}
+              rootMargin="-100px"
+              textAlign="center"
+            />
+
             <Title
               level={2}
               style={{
@@ -169,42 +184,68 @@ function Home() {
               Experience seamless real estate with Sekani. Discover dream homes,
               lucrative investments, and unforgettable stays.
             </Title>
-            <div style={{ marginTop: 25, display: "flex", gap: 15 }}>
-              <Button
-                type="primary"
-                style={ctaBtn1Style}
-                onMouseEnter={(e) =>
-                  (e.currentTarget.style.transform = "scale(1.05)")
-                }
-                onMouseLeave={(e) =>
-                  (e.currentTarget.style.transform = "scale(1)")
-                }
-              >
-                View Properties
-              </Button>
-              <Button
-                style={ctaBtn2Style}
-                onMouseEnter={(e) =>
-                  (e.currentTarget.style.transform = "scale(1.05)")
-                }
-                onMouseLeave={(e) =>
-                  (e.currentTarget.style.transform = "scale(1)")
-                }
-              >
-                Let's Connect
-              </Button>
-            </div>
+            <SplitText
+              text={
+                <div style={{ marginTop: 25, display: "flex", gap: 15 }}>
+                  <Button
+                    type="primary"
+                    style={ctaBtn1Style}
+                    onMouseEnter={(e) =>
+                      (e.currentTarget.style.transform = "scale(1.05)")
+                    }
+                    onMouseLeave={(e) =>
+                      (e.currentTarget.style.transform = "scale(1)")
+                    }
+                  >
+                    View Properties
+                  </Button>
+                  <Button
+                    style={ctaBtn2Style}
+                    onMouseEnter={(e) =>
+                      (e.currentTarget.style.transform = "scale(1.05)")
+                    }
+                    onMouseLeave={(e) =>
+                      (e.currentTarget.style.transform = "scale(1)")
+                    }
+                  >
+                    Let's Connect
+                  </Button>
+                </div>
+              }
+              delay={10}
+              duration={0.6}
+              ease="power3.out"
+              splitType="chars"
+              from={{ opacity: 0, y: 40 }}
+              to={{ opacity: 1, y: 0 }}
+              threshold={0.1}
+              rootMargin="-100px"
+              textAlign="center"
+            />
           </div>
         </div>
         {/* home body */}
         <div>
           <div style={{ textAlign: "center" }}>
-            <Title
-              level={3}
-              style={{ ...titleStyle, color: "#333", marginBottom: 0 }}
-            >
-              HOW CAN WE HELP?
-            </Title>
+            <SplitText
+              text={
+                <Title
+                  level={3}
+                  style={{ ...titleStyle, color: "#333", marginBottom: 0 }}
+                >
+                  HOW CAN WE HELP?
+                </Title>
+              }
+              delay={100}
+              duration={0.6}
+              ease="power3.out"
+              splitType="chars"
+              from={{ opacity: 0, y: 40 }}
+              to={{ opacity: 1, y: 0 }}
+              threshold={0.1}
+              rootMargin="-100px"
+              textAlign="center"
+            />
             <Title
               level={5}
               style={{
@@ -275,12 +316,25 @@ function Home() {
         {/* Listings */}
         <div style={{ margin: "0 20px" }}>
           <div style={{ textAlign: "center" }}>
-            <Title
-              level={3}
-              style={{ ...titleStyle, color: "#333", marginBottom: 0 }}
-            >
-              HANDPICKED JUST FOR YOU
-            </Title>
+            <SplitText
+              text={
+                <Title
+                  level={3}
+                  style={{ ...titleStyle, color: "#333", marginBottom: 0 }}
+                >
+                  HANDPICKED JUST FOR YOU
+                </Title>
+              }
+              delay={100}
+              duration={0.6}
+              ease="power3.out"
+              splitType="chars"
+              from={{ opacity: 0, y: 40 }}
+              to={{ opacity: 1, y: 0 }}
+              threshold={0.1}
+              rootMargin="-100px"
+              textAlign="center"
+            />
             <Title
               level={5}
               style={{
@@ -432,12 +486,25 @@ function Home() {
         </div>
         {/* testimonials */}
         <div style={{ textAlign: "center", marginTop: 15 }}>
-          <Title
-            level={3}
-            style={{ ...titleStyle, color: "#333", marginBottom: 0 }}
-          >
-            WHY CHOOSE US?
-          </Title>
+          <SplitText
+            text={
+              <Title
+                level={3}
+                style={{ ...titleStyle, color: "#333", marginBottom: 0 }}
+              >
+                WHY CHOOSE US?
+              </Title>
+            }
+            delay={100}
+            duration={0.6}
+            ease="power3.out"
+            splitType="chars"
+            from={{ opacity: 0, y: 40 }}
+            to={{ opacity: 1, y: 0 }}
+            threshold={0.1}
+            rootMargin="-100px"
+            textAlign="center"
+          />
           <Title
             level={5}
             style={{

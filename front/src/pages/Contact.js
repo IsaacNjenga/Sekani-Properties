@@ -8,6 +8,8 @@ import {
   PhoneOutlined,
 } from "@ant-design/icons";
 import "../assets/css/contact.css";
+import SplitText from "../components/SplitText";
+
 const { Title, Paragraph, Text } = Typography;
 
 const bgImg =
@@ -107,12 +109,25 @@ function Contact() {
             style={{ objectFit: "cover", maxWidth: "100%" }}
           />
           <div style={heroStyle}>
-            <Title
-              style={{ ...titleStyle, fontSize: isMobile ? 34 : 42 }}
-              level={1}
-            >
-              Get in Touch
-            </Title>
+            <SplitText
+              text={
+                <Title
+                  style={{ ...titleStyle, fontSize: isMobile ? 34 : 42 }}
+                  level={1}
+                >
+                  Get in Touch
+                </Title>
+              }
+              delay={100}
+              duration={0.6}
+              ease="power3.out"
+              splitType="chars"
+              from={{ opacity: 0, y: 40 }}
+              to={{ opacity: 1, y: 0 }}
+              threshold={0.1}
+              rootMargin="-100px"
+              textAlign="center"
+            />
             <Paragraph style={subTitleStyle}>
               We’re here to help you find your dream property or answer any
               questions you may have. Reach out anytime.
