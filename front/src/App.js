@@ -3,9 +3,10 @@ import { Routes, Route, useLocation } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import Contact from "./pages/Contact";
-import Properties from "./pages/Properties"; 
-import About from "./pages/About"; 
+import Properties from "./pages/Properties";
+import About from "./pages/About";
 import { AnimatePresence } from "framer-motion";
+import ScrollToTop from "./components/ScrollToTop";
 
 export const UserContext = createContext();
 
@@ -36,6 +37,7 @@ function App() {
 
   return (
     <UserContext.Provider value={{ darkMode, setDarkMode, isMobile }}>
+      <ScrollToTop />
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
           <Route path="/" element={<Navbar />}>
