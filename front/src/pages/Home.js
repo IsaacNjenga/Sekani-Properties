@@ -37,7 +37,6 @@ const heroStyle = {
   flexDirection: "column",
   color: "#fff",
   padding: "10px 20px",
-  
 };
 
 const titleStyle = {
@@ -164,14 +163,14 @@ function Home() {
     <Motion>
       <div style={{ background: "whitesmoke" }}>
         {/* banner */}
-        <div style={{ position: "relative" }}>
+        <div style={{ position: "relative", marginBottom: 10 }}>
           <Carousel autoplay autoplaySpeed={3500} dots={false}>
             {bgCarousel.map((img) => (
               <Image
                 src={img}
                 alt="bgImg"
                 width="100%"
-                height={isMobile ? 450 : 700}
+                height={isMobile ? 350 : 700}
                 preview={false}
                 style={{
                   objectFit: isMobile ? "contain" : "cover",
@@ -187,8 +186,9 @@ function Home() {
                   level={isMobile ? 5 : 3}
                   style={{
                     ...titleStyle,
-                    fontSize: isMobile ? 26 : 38,
-                    margin: 0,
+                    fontSize: isMobile ? 24 : 38,
+                    padding: 0,
+                    fontWeight: 400,
                   }}
                 >
                   YOUR HOME MADE SIMPLE
@@ -210,7 +210,7 @@ function Home() {
               style={{
                 ...subTitleStyle,
                 width: isMobile ? "105%" : "65%",
-                fontSize: isMobile ? 22 : 36,
+                fontSize: isMobile ? 20 : 36,
               }}
             >
               Experience seamless real estate with Sekani. Discover dream homes,
@@ -218,7 +218,7 @@ function Home() {
             </Title>
             <SplitText
               text={
-                <div style={{ marginTop: 25, display: "flex", gap: 15 }}>
+                <div style={{ marginTop: 15, display: "flex", gap: 10 }}>
                   <Button
                     type="primary"
                     style={ctaBtn1Style}
@@ -256,6 +256,7 @@ function Home() {
             />
           </div>
         </div>
+
         {/* home body */}
         <div>
           <div style={{ textAlign: "center" }}>
