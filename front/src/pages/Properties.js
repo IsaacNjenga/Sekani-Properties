@@ -18,6 +18,7 @@ import { RealEstateData } from "../assets/data/mockData.js";
 import PropertyModal from "../components/PropertyModal.js";
 import { CloseOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
+import bgImg from '../assets/images/propertyBg.jpeg';
 
 const { Title, Text } = Typography;
 const { Search } = Input;
@@ -56,8 +57,8 @@ const tagStyle = {
   cursor: "pointer",
 };
 
-const bgImg =
-  "https://images.pexels.com/photos/2134224/pexels-photo-2134224.jpeg";
+// const bgImg =
+//   "https://images.pexels.com/photos/2134224/pexels-photo-2134224.jpeg";
 
 const tagsData = ["For Sale", "Airbnb", "For Rent", "Commercial", "Land"];
 

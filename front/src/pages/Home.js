@@ -14,6 +14,13 @@ import "../assets/css/home.css";
 import { useNavigate } from "react-router-dom";
 import Motion from "../components/Motion";
 import SplitText from "../components/SplitText";
+import bgImg from "../assets/images/bg1.jpeg";
+import bgImg2 from "../assets/images/bg2.jpeg";
+import bgImg3 from "../assets/images/bg3.jpeg";
+import bgImg4 from "../assets/images/bg4.jpeg";
+import bgImg5 from "../assets/images/bg5.jpeg";
+import bgImg6 from "../assets/images/bg6.jpeg";
+import bgImg7 from "../assets/images/bg7.jpeg";
 
 const { Title, Text, Paragraph } = Typography;
 
@@ -77,20 +84,20 @@ const ctaBtn2Style = {
   cursor: "pointer",
 };
 
-const bgImg =
-  "https://images.pexels.com/photos/2635038/pexels-photo-2635038.jpeg";
-const bgImg2 =
-  "https://images.pexels.com/photos/1643383/pexels-photo-1643383.jpeg";
-const bgImg3 =
-  "https://images.pexels.com/photos/276724/pexels-photo-276724.jpeg";
-const bgImg4 =
-  "https://images.pexels.com/photos/2724748/pexels-photo-2724748.jpeg";
-const bgImg5 =
-  "https://images.pexels.com/photos/3797991/pexels-photo-3797991.jpeg";
-const bgImg6 =
-  "https://images.pexels.com/photos/1648771/pexels-photo-1648771.jpeg";
-const bgImg7 =
-  "https://images.pexels.com/photos/189333/pexels-photo-189333.jpeg";
+// const bgImg =
+//   "https://images.pexels.com/photos/2635038/pexels-photo-2635038.jpeg";
+// const bgImg2 =
+//   "https://images.pexels.com/photos/1643383/pexels-photo-1643383.jpeg";
+// const bgImg3 =
+//   "https://images.pexels.com/photos/276724/pexels-photo-276724.jpeg";
+// const bgImg4 =
+//   "https://images.pexels.com/photos/2724748/pexels-photo-2724748.jpeg";
+// const bgImg5 =
+//   "https://images.pexels.com/photos/3797991/pexels-photo-3797991.jpeg";
+// const bgImg6 =
+//   "https://images.pexels.com/photos/1648771/pexels-photo-1648771.jpeg";
+// const bgImg7 =
+//   "https://images.pexels.com/photos/189333/pexels-photo-189333.jpeg";
 
 const bgCarousel = [bgImg, bgImg2, bgImg3, bgImg4, bgImg5, bgImg6, bgImg7];
 
