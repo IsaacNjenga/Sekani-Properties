@@ -78,7 +78,21 @@ const ctaBtn2Style = {
 };
 
 const bgImg =
-  "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=900";
+  "https://images.pexels.com/photos/2635038/pexels-photo-2635038.jpeg";
+const bgImg2 =
+  "https://images.pexels.com/photos/1643383/pexels-photo-1643383.jpeg";
+const bgImg3 =
+  "https://images.pexels.com/photos/276724/pexels-photo-276724.jpeg";
+const bgImg4 =
+  "https://images.pexels.com/photos/2724748/pexels-photo-2724748.jpeg";
+const bgImg5 =
+  "https://images.pexels.com/photos/3797991/pexels-photo-3797991.jpeg";
+const bgImg6 =
+  "https://images.pexels.com/photos/1648771/pexels-photo-1648771.jpeg";
+const bgImg7 =
+  "https://images.pexels.com/photos/189333/pexels-photo-189333.jpeg";
+
+const bgCarousel = [bgImg, bgImg2, bgImg3, bgImg4, bgImg5, bgImg6, bgImg7];
 
 const gridImg1 =
   "https://images.unsplash.com/photo-1581858726788-75bc0f6a952d?w=900";
@@ -144,14 +158,21 @@ function Home() {
       <div style={{ background: "whitesmoke" }}>
         {/* banner */}
         <div style={{ position: "relative" }}>
-          <Image
-            src={bgImg}
-            alt="bgImg"
-            width="100%"
-            height={isMobile ? 900 : 700}
-            preview={false}
-            style={{ objectFit: "cover", maxWidth: "100%" }}
-          />{" "}
+          <Carousel autoplay autoplaySpeed={3500} dots={false}>
+            {bgCarousel.map((img) => (
+              <Image
+                src={img}
+                alt="bgImg"
+                width="100%"
+                height={isMobile ? 900 : 700}
+                preview={false}
+                style={{
+                  objectFit: isMobile ? "contain" : "cover",
+                  maxWidth: "100%",
+                }}
+              />
+            ))}
+          </Carousel>
           <div style={{ ...heroStyle }}>
             <SplitText
               text={

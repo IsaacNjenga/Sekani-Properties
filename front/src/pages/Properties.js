@@ -28,7 +28,7 @@ const heroStyle = {
   left: 0,
   width: "100%",
   height: "100%",
-  background: "rgba(0,0,0,0.4)",
+  background: "rgba(0,0,0,0.45)",
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
@@ -57,7 +57,7 @@ const tagStyle = {
 };
 
 const bgImg =
-  "https://plus.unsplash.com/premium_photo-1671269941569-7841144ee4e0?w=900";
+  "https://images.pexels.com/photos/2134224/pexels-photo-2134224.jpeg";
 
 const tagsData = ["For Sale", "Airbnb", "For Rent", "Commercial", "Land"];
 
@@ -113,6 +113,7 @@ function Properties() {
     setContent(property);
     setTimeout(() => setLoading(false), 100);
   };
+
   return (
     <Motion>
       <div style={{ background: "whitesmoke" }}>
@@ -141,7 +142,7 @@ function Properties() {
                 enterButton
                 //onSearch={handleSearch}
                 onChange={handleSearch}
-                style={{ width: isMobile ? 350 : 500, height: 50 }}
+                style={{ width: isMobile ? 350 : 600, height: 50 }}
               />
             </div>
           </div>

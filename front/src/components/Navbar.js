@@ -131,6 +131,7 @@ function Navbar() {
                       fontFamily: "Alegreya Sans",
                       fontWeight: 300,
                       color: "#ffffff",
+                      letterSpacing:1.5
                     }}
                   >
                     {label}
