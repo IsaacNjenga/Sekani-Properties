@@ -36,7 +36,8 @@ const heroStyle = {
   justifyContent: "center",
   flexDirection: "column",
   color: "#fff",
-  padding: "0 20px",
+  padding: "10px 20px",
+  
 };
 
 const titleStyle = {
@@ -45,16 +46,15 @@ const titleStyle = {
   textAlign: "center",
   fontWeight: 400,
   letterSpacing: 2,
-  fontSize: 38,
+  marginBottom: 0,
 };
 
 const subTitleStyle = {
-  marginTop: 15,
+  marginTop: 5,
   color: "#fff",
   fontFamily: "Alegreya Sans",
   fontWeight: 300,
   textAlign: "center",
-  fontSize: 36,
 };
 
 const ctaBtn1Style = {
@@ -171,7 +171,7 @@ function Home() {
                 src={img}
                 alt="bgImg"
                 width="100%"
-                height={isMobile ? 900 : 700}
+                height={isMobile ? 450 : 700}
                 preview={false}
                 style={{
                   objectFit: isMobile ? "contain" : "cover",
@@ -184,14 +184,18 @@ function Home() {
             <SplitText
               text={
                 <Title
-                  level={3}
-                  style={{ ...titleStyle, fontSize: isMobile ? 34 : 38 }}
+                  level={isMobile ? 5 : 3}
+                  style={{
+                    ...titleStyle,
+                    fontSize: isMobile ? 26 : 38,
+                    margin: 0,
+                  }}
                 >
                   YOUR HOME MADE SIMPLE
                 </Title>
               }
               delay={100}
-              duration={0.6}
+              duration={0.2}
               ease="power3.out"
               splitType="chars"
               from={{ opacity: 0, y: 40 }}
@@ -205,8 +209,8 @@ function Home() {
               level={2}
               style={{
                 ...subTitleStyle,
-                width: isMobile ? "100%" : "65%",
-                fontSize: isMobile ? 30 : 36,
+                width: isMobile ? "105%" : "65%",
+                fontSize: isMobile ? 22 : 36,
               }}
             >
               Experience seamless real estate with Sekani. Discover dream homes,
