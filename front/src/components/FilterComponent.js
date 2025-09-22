@@ -16,14 +16,14 @@ const dividerStyle = { margin: "8px 0", borderColor: "#e0e0e0" };
 const checkStyle = { fontFamily: "Raleway" };
 
 const priceMarks = {
-  10000: {
+  5000: {
     label: (
       <span
         style={{
           fontFamily: "Raleway",
         }}
       >
-        KES 10,000
+        KES 5,000
       </span>
     ),
   },
@@ -42,14 +42,14 @@ const priceMarks = {
 };
 
 const sizeMarks = {
-  1000: {
+  500: {
     label: (
       <span
         style={{
           fontFamily: "Raleway",
         }}
       >
-        1000sqm
+        500sqm
       </span>
     ),
   },
@@ -93,10 +93,10 @@ const SectionHeader = ({ title, onClear }) => (
 );
 
 function FilterComponent({ realEstateData }) {
-  const [priceValue, setPriceValue] = useState(10000);
+  const [priceValue, setPriceValue] = useState(5000);
   const [location, setLocation] = useState([]);
   const [propertyType, setPropertyType] = useState("");
-  const [sizeValue, setSizeValue] = useState(1000);
+  const [sizeValue, setSizeValue] = useState(500);
 
   const onCheck = (checked, value) => {
     setLocation((prev) =>
@@ -109,19 +109,26 @@ function FilterComponent({ realEstateData }) {
     );
   };
 
-  console.log(
-    "priceValue:",
-    priceValue,
-    "location:",
-    location,
-    "propertyType:",
-    propertyType,
-    "sizeValue:",
-    sizeValue
-  );
-
   const applyFilters = () => {
     let filtered = realEstateData;
+
+    // Filter by location
+    if (location.length > 0) {
+      filtered = filtered.filter((item) => location.includes(item.city));
+    }
+
+    // Filter by price
+    filtered = filtered.filter((item) => item.price >= priceValue);
+
+    // Filter by property type
+    if (propertyType) {
+      filtered = filtered.filter((item) => item.propertyType === propertyType);
+    }
+
+    // Filter by size
+    filtered = filtered.filter((item) => item.squareFeet >= sizeValue);
+
+    console.log("Filtered Results:", filtered);
   };
 
   return (
@@ -166,9 +173,9 @@ function FilterComponent({ realEstateData }) {
       <SectionHeader title="Price Range" />
       <div style={{ padding: "0 12px 10px" }}>
         <Slider
-          min={10000}
+          min={5000}
           max={100000}
-          step={5000}
+          step={1000}
           marks={priceMarks}
           onChange={(value) => setPriceValue(value)}
         />
@@ -185,7 +192,7 @@ function FilterComponent({ realEstateData }) {
         }}
       />
       <Space direction="vertical" style={{ width: "100%", paddingLeft: 4 }}>
-        {["For Sale", "Office Space", "Apartment", "Townhouse"].map((type) => (
+        {["For Sale", "Office Space", "Apartment", "Townhouse",'Land'].map((type) => (
           <Checkbox
             key={type}
             checked={propertyType.includes(type)}
@@ -203,7 +210,7 @@ function FilterComponent({ realEstateData }) {
       <SectionHeader title="Square Feet" />
       <div style={{ padding: "0 12px 10px" }}>
         <Slider
-          min={1000}
+          min={500}
           max={5000}
           step={100}
           marks={sizeMarks}
@@ -214,6 +221,7 @@ function FilterComponent({ realEstateData }) {
       <div>
         <Button
           block
+          onClick={applyFilters}
           style={{
             borderRadius: 0,
             background: "#f0ebd4",
