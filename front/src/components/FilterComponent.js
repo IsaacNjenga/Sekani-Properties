@@ -7,7 +7,8 @@ import {
   Typography,
   Card,
 } from "antd";
-import React, { useState } from "react";
+import React, {  useContext, useState } from "react";
+import { UserContext } from "../App";
 
 const { Title } = Typography;
 
@@ -92,7 +93,8 @@ const SectionHeader = ({ title, onClear }) => (
   </div>
 );
 
-function FilterComponent({ realEstateData,setFilterApplied, }) {
+function FilterComponent({ realEstateData, setFilterApplied }) {
+  const { setFilteredData } = useContext(UserContext);
   const [priceValue, setPriceValue] = useState(5000);
   const [location, setLocation] = useState([]);
   const [propertyType, setPropertyType] = useState("");
@@ -123,13 +125,19 @@ function FilterComponent({ realEstateData,setFilterApplied, }) {
 
     // Filter by property type
     if (propertyType) {
-      filtered = filtered.filter((item) => propertyType.includes(item.propertyType));
+      filtered = filtered.filter((item) =>
+        propertyType.includes(item.propertyType)
+      );
     }
 
     // Filter by size
     filtered = filtered.filter((item) => item.squareFeet >= sizeValue);
 
     console.log("Filtered Results:", filtered);
+
+    setFilteredData(filtered);
+
+    return filtered;
   };
 
   return (
@@ -193,16 +201,18 @@ function FilterComponent({ realEstateData,setFilterApplied, }) {
         }}
       />
       <Space direction="vertical" style={{ width: "100%", paddingLeft: 4 }}>
-        {["For Sale", "Office Space", "Apartment", "Townhouse",'Land'].map((type) => (
-          <Checkbox
-            key={type}
-            checked={propertyType.includes(type)}
-            onChange={(e) => propertyCheck(e.target.checked, type)}
-            style={checkStyle}
-          >
-            {type}
-          </Checkbox>
-        ))}
+        {["For Sale", "Office Space", "Apartment", "Townhouse", "Land"].map(
+          (type) => (
+            <Checkbox
+              key={type}
+              checked={propertyType.includes(type)}
+              onChange={(e) => propertyCheck(e.target.checked, type)}
+              style={checkStyle}
+            >
+              {type}
+            </Checkbox>
+          )
+        )}
       </Space>
 
       <Divider style={dividerStyle} />

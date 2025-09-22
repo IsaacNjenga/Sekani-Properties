@@ -28,6 +28,7 @@ function App() {
   const location = useLocation();
   const [darkMode, setDarkMode] = useState(!true);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const [filteredData, setFilteredData] = useState([]);
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 768);
@@ -36,7 +37,9 @@ function App() {
   }, []);
 
   return (
-    <UserContext.Provider value={{ darkMode, setDarkMode, isMobile }}>
+    <UserContext.Provider
+      value={{ darkMode, setDarkMode, isMobile, filteredData, setFilteredData }}
+    >
       <ScrollToTop />
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
