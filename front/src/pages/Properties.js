@@ -74,6 +74,7 @@ function Properties() {
   const [searchValue, setSearchValue] = useState(null);
   const [selectedTags, setSelectedTags] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [filterApplied, setFilterApplied] = useState(false);
 
   const handleCheck = (tag, checked) => {
     const nextSelectedTags = checked
@@ -203,9 +204,12 @@ function Properties() {
             )}
 
             {properties.length === 0 ? (
-              <div style={{
-                    background: "#eae4ac81",
-                    borderRadius: 12,}}>
+              <div
+                style={{
+                  background: "#eae4ac81",
+                  borderRadius: 12,
+                }}
+              >
                 <p
                   style={{
                     textAlign: "center",
@@ -213,7 +217,7 @@ function Properties() {
                     fontFamily: "Raleway",
                     fontWeight: 700,
                     marginBottom: 0,
-                    paddingTop:20
+                    paddingTop: 20,
                   }}
                 >
                   Sorry, we did not find the term you are looking for. Reach out
@@ -247,7 +251,11 @@ function Properties() {
             ) : (
               <Row gutter={[32, 32]}>
                 <Col xs={24} sm={24} md={6}>
-                  <FilterComponent realEstateData={RealEstateData} />
+                  <FilterComponent
+                    realEstateData={RealEstateData}
+                    setFilterApplied={setFilterApplied}
+                  //  filterApplied={filterApplied}
+                  />
                 </Col>
                 <Col xs={24} sm={12} md={18}>
                   <Row gutter={[32, 32]}>

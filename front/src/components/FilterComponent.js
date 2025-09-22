@@ -92,7 +92,7 @@ const SectionHeader = ({ title, onClear }) => (
   </div>
 );
 
-function FilterComponent({ realEstateData }) {
+function FilterComponent({ realEstateData,setFilterApplied, }) {
   const [priceValue, setPriceValue] = useState(5000);
   const [location, setLocation] = useState([]);
   const [propertyType, setPropertyType] = useState("");
@@ -110,6 +110,7 @@ function FilterComponent({ realEstateData }) {
   };
 
   const applyFilters = () => {
+    setFilterApplied(true);
     let filtered = realEstateData;
 
     // Filter by location
@@ -122,7 +123,7 @@ function FilterComponent({ realEstateData }) {
 
     // Filter by property type
     if (propertyType) {
-      filtered = filtered.filter((item) => item.propertyType === propertyType);
+      filtered = filtered.filter((item) => propertyType.includes(item.propertyType));
     }
 
     // Filter by size
