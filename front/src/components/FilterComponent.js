@@ -25,25 +25,37 @@ const dropDownItems = [
   { key: 7, label: "Year (Desc)" },
 ];
 
-const sliderMarks = {
+const priceMarks = {
   10000: "KES 10,000",
-  100000: "KES 100,000",
+  100000: { style: { color: "#f50" }, label: <strong>KES 100,000</strong> },
+};
+
+const sizeMarks = {
+  1000: "1000sqm",
+  5000: { style: { color: "#f50" }, label: <strong>5000sqm</strong> },
 };
 
 function FilterComponent() {
   const [sort, setSort] = useState("");
-  const [sliderValue, setSliderValue] = useState(0);
+  const [priceValue, setPriceValue] = useState(10000);
+  const [location, setLocation] = useState([]);
+  const [propertyType, setPropertyType] = useState("");
+  const [sizeValue, setSizeValue] = useState(1000);
 
   const menuClickHandler = (e) => {
-    console.log(e.key);
     setSort(e.key);
   };
 
   const menuProps = { items: dropDownItems, onClick: menuClickHandler };
 
-  const onCheck = (e) => {
-    console.log(e.target.checked);
+  const onCheck = ({ e, name, value }) => {
+    //console.log(`checked = ${e.target.checked}`);
+    //  if (e.target.checked) {
+    setLocation((prev) => [...prev, { name: name, value: value }]);
+    //}
   };
+
+  console.log(sizeValue);
 
   const SectionHeader = ({ title, onClear }) => (
     <div
@@ -76,8 +88,7 @@ function FilterComponent() {
         background: "#fff",
         borderRadius: 12,
         boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
-        padding: 8,
-
+        padding: 4,
       }}
     >
       {/* Sort Section */}
@@ -112,12 +123,30 @@ function FilterComponent() {
       <Divider style={dividerStyle} />
 
       {/* Locations Filter */}
-      <SectionHeader title="Locations" onClear={() => console.log("Clear locations")} />
+      <SectionHeader
+        title="Locations"
+        onClear={() => {
+          console.log("Clear locations");
+          setLocation([]);
+        }}
+      />
       <Space direction="vertical" style={{ width: "100%", paddingLeft: 4 }}>
-        <Checkbox onChange={onCheck}>Nairobi</Checkbox>
-        <Checkbox onChange={onCheck}>Mombasa</Checkbox>
-        <Checkbox onChange={onCheck}>Kisumu</Checkbox>
-        <Checkbox onChange={onCheck}>Ruiru</Checkbox>
+        <Checkbox
+          onChange={() => onCheck({ name: "Nairobi", value: "Nairobi" })}
+        >
+          Nairobi
+        </Checkbox>
+        <Checkbox
+          onChange={() => onCheck({ name: "Mombasa", value: "Mombasa" })}
+        >
+          Mombasa
+        </Checkbox>
+        <Checkbox onChange={() => onCheck({ name: "Kisumu", value: "Kisumu" })}>
+          Kisumu
+        </Checkbox>
+        <Checkbox onChange={() => onCheck({ name: "Ruiru", value: "Ruiru" })}>
+          Ruiru
+        </Checkbox>
       </Space>
 
       <Divider style={dividerStyle} />
@@ -125,7 +154,13 @@ function FilterComponent() {
       {/* Price Filter */}
       <SectionHeader title="Price Range" />
       <div style={{ padding: "0 12px 10px" }}>
-        <Slider min={10000} max={100000} step={5000} marks={sliderMarks} />
+        <Slider
+          min={10000}
+          max={100000}
+          step={5000}
+          marks={priceMarks}
+          onChange={(value) => setPriceValue(value)}
+        />
       </div>
 
       <Divider style={dividerStyle} />
@@ -133,13 +168,34 @@ function FilterComponent() {
       {/* Property Type */}
       <SectionHeader
         title="Property Type"
-        onClear={() => console.log("Clear property type")}
+        onClear={() => {
+          console.log("Clear property type");
+          setPropertyType("");
+        }}
       />
       <Space direction="vertical" style={{ width: "100%", paddingLeft: 4 }}>
-        <Checkbox onChange={onCheck}>For Sale</Checkbox>
-        <Checkbox onChange={onCheck}>Office Space</Checkbox>
-        <Checkbox onChange={onCheck}>Apartment/Airbnb</Checkbox>
-        <Checkbox onChange={onCheck}>Townhouse</Checkbox>
+        <Checkbox
+          onChange={() => onCheck({ name: "For Sale", value: "For Sale" })}
+        >
+          For Sale
+        </Checkbox>
+        <Checkbox
+          onChange={() =>
+            onCheck({ name: "Office Space", value: "Office Space" })
+          }
+        >
+          Office Space
+        </Checkbox>
+        <Checkbox
+          onChange={() => onCheck({ name: "Apartment", value: "Apartment" })}
+        >
+          Apartment/Airbnb
+        </Checkbox>
+        <Checkbox
+          onChange={() => onCheck({ name: "Townhouse", value: "Townhouse" })}
+        >
+          Townhouse
+        </Checkbox>
       </Space>
 
       <Divider style={dividerStyle} />
@@ -147,7 +203,29 @@ function FilterComponent() {
       {/* Square Feet */}
       <SectionHeader title="Square Feet" />
       <div style={{ padding: "0 12px 10px" }}>
-        <Slider min={1000} max={5000} step={100} />
+        <Slider
+          min={1000}
+          max={5000}
+          step={100}
+          marks={sizeMarks}
+          onChange={(value) => setSizeValue(value)}
+        />
+      </div>
+
+      <div>
+        <Button
+          block
+          style={{
+            borderRadius: 0,
+            background: "#f0ebd4",
+            color: "#333",
+            fontFamily: "Alegreya Sans",
+            fontWeight:'bold',
+            fontSize:18
+          }}
+        >
+          Apply Filters
+        </Button>
       </div>
     </Card>
   );
