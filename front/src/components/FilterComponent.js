@@ -15,16 +15,6 @@ const dividerStyle = { margin: "8px 0", borderColor: "#e0e0e0" };
 
 const checkStyle = { fontFamily: "Raleway" };
 
-const dropDownItems = [
-  { key: 1, label: "Name (A-Z)" },
-  { key: 2, label: "Name (Z-A)" },
-  { key: 3, label: "Lowest price" },
-  { key: 4, label: "Highest price" },
-  { key: 5, label: "Property Type" },
-  { key: 6, label: "Year (Asc)" },
-  { key: 7, label: "Year (Desc)" },
-];
-
 const priceMarks = {
   10000: {
     label: (
@@ -77,50 +67,62 @@ const sizeMarks = {
   },
 };
 
-function FilterComponent() {
-  //const [sort, setSort] = useState("");
+const SectionHeader = ({ title, onClear }) => (
+  <div
+    style={{
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "center",
+      marginBottom: 4,
+    }}
+  >
+    <Title level={5} style={{ margin: 0, fontFamily: "Alegreya Sans" }}>
+      {title}
+    </Title>
+    {onClear && (
+      <Button
+        type="link"
+        size="small"
+        onClick={onClear}
+        style={{ padding: 0, color: "#1890ff", fontFamily: "Alegreya Sans" }}
+      >
+        Clear
+      </Button>
+    )}
+  </div>
+);
+
+function FilterComponent({ realEstateData }) {
   const [priceValue, setPriceValue] = useState(10000);
   const [location, setLocation] = useState([]);
   const [propertyType, setPropertyType] = useState("");
   const [sizeValue, setSizeValue] = useState(1000);
 
-  const menuClickHandler = (e) => {
-    //setSort(e.key);
+  const onCheck = (checked, value) => {
+    setLocation((prev) =>
+      checked ? [...prev, value] : prev.filter((loc) => loc !== value)
+    );
+  };
+  const propertyCheck = (checked, value) => {
+    setPropertyType((prev) =>
+      checked ? [...prev, value] : prev.filter((type) => type !== value)
+    );
   };
 
-  const menuProps = { items: dropDownItems, onClick: menuClickHandler };
-
-  const onCheck = ({ e, name, value }) => {
-    //console.log(`checked = ${e.target.checked}`);
-    //  if (e.target.checked) {
-    setLocation((prev) => [...prev, { name: name, value: value }]);
-    //}
-  };
-
-  const SectionHeader = ({ title, onClear }) => (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        marginBottom: 4,
-      }}
-    >
-      <Title level={5} style={{ margin: 0, fontFamily: "Alegreya Sans" }}>
-        {title}
-      </Title>
-      {onClear && (
-        <Button
-          type="link"
-          size="small"
-          onClick={onClear}
-          style={{ padding: 0, color: "#1890ff", fontFamily: "Alegreya Sans" }}
-        >
-          Clear
-        </Button>
-      )}
-    </div>
+  console.log(
+    "priceValue:",
+    priceValue,
+    "location:",
+    location,
+    "propertyType:",
+    propertyType,
+    "sizeValue:",
+    sizeValue
   );
+
+  const applyFilters = () => {
+    let filtered = realEstateData;
+  };
 
   return (
     <Card
@@ -131,35 +133,9 @@ function FilterComponent() {
         padding: 4,
       }}
     >
-      {/* Sort Section */}
-      {/* <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          marginBottom: 8,
-        }}
-      >
-        <Title level={5} style={{ margin: 0, fontFamily: "Alegreya Sans" }}>
-          Sorting By:
-        </Title>
-        <Dropdown menu={menuProps}>
-          <Button
-            size="small"
-            style={{
-              background: "#f5f5f5",
-              borderRadius: 6,
-              border: "1px solid #d9d9d9",
-              display: "flex",
-              alignItems: "center",
-              gap: 4,
-              fontFamily: "Raleway",
-            }}
-          >
-            <span>{sort ? `Selected: ${sort}` : "Sort By"}</span>
-            <DownOutlined />
-          </Button>
-        </Dropdown>
-      </div> */}
+      <Title style={{ fontFamily: "Alegreya Sans", margin: 0, padding: 0 }}>
+        Search
+      </Title>
 
       <Divider style={dividerStyle} />
 
@@ -172,30 +148,16 @@ function FilterComponent() {
         }}
       />
       <Space direction="vertical" style={{ width: "100%", paddingLeft: 4 }}>
-        <Checkbox
-          onChange={() => onCheck({ name: "Nairobi", value: "Nairobi" })}
-          style={checkStyle}
-        >
-          Nairobi
-        </Checkbox>
-        <Checkbox
-          onChange={() => onCheck({ name: "Mombasa", value: "Mombasa" })}
-          style={checkStyle}
-        >
-          Mombasa
-        </Checkbox>
-        <Checkbox
-          onChange={() => onCheck({ name: "Kisumu", value: "Kisumu" })}
-          style={checkStyle}
-        >
-          Kisumu
-        </Checkbox>
-        <Checkbox
-          onChange={() => onCheck({ name: "Ruiru", value: "Ruiru" })}
-          style={checkStyle}
-        >
-          Ruiru
-        </Checkbox>
+        {["Nairobi", "Mombasa", "Kisumu", "Ruiru"].map((loc) => (
+          <Checkbox
+            key={loc}
+            checked={location.includes(loc)}
+            onChange={(e) => onCheck(e.target.checked, loc)}
+            style={checkStyle}
+          >
+            {loc}
+          </Checkbox>
+        ))}
       </Space>
 
       <Divider style={dividerStyle} />
@@ -223,32 +185,16 @@ function FilterComponent() {
         }}
       />
       <Space direction="vertical" style={{ width: "100%", paddingLeft: 4 }}>
-        <Checkbox
-          onChange={() => onCheck({ name: "For Sale", value: "For Sale" })}
-          style={checkStyle}
-        >
-          For Sale
-        </Checkbox>
-        <Checkbox
-          onChange={() =>
-            onCheck({ name: "Office Space", value: "Office Space" })
-          }
-          style={checkStyle}
-        >
-          Office Space
-        </Checkbox>
-        <Checkbox
-          onChange={() => onCheck({ name: "Apartment", value: "Apartment" })}
-          style={checkStyle}
-        >
-          Apartment/Airbnb
-        </Checkbox>
-        <Checkbox
-          onChange={() => onCheck({ name: "Townhouse", value: "Townhouse" })}
-          style={checkStyle}
-        >
-          Townhouse
-        </Checkbox>
+        {["For Sale", "Office Space", "Apartment", "Townhouse"].map((type) => (
+          <Checkbox
+            key={type}
+            checked={propertyType.includes(type)}
+            onChange={(e) => propertyCheck(e.target.checked, type)}
+            style={checkStyle}
+          >
+            {type}
+          </Checkbox>
+        ))}
       </Space>
 
       <Divider style={dividerStyle} />
@@ -285,3 +231,44 @@ function FilterComponent() {
 }
 
 export default FilterComponent;
+
+// const dropDownItems = [
+//   { key: 1, label: "Name (A-Z)" },
+//   { key: 2, label: "Name (Z-A)" },
+//   { key: 3, label: "Lowest price" },
+//   { key: 4, label: "Highest price" },
+//   { key: 5, label: "Property Type" },
+//   { key: 6, label: "Year (Asc)" },
+//   { key: 7, label: "Year (Desc)" },
+// ];
+
+//const menuProps = { items: dropDownItems, onClick: menuClickHandler };
+
+//  <div
+//         style={{
+//           display: "flex",
+//           justifyContent: "space-between",
+//           marginBottom: 8,
+//         }}
+//       >
+//         <Title level={5} style={{ margin: 0, fontFamily: "Alegreya Sans" }}>
+//           Sorting By:
+//         </Title>
+//         <Dropdown menu={menuProps}>
+//           <Button
+//             size="small"
+//             style={{
+//               background: "#f5f5f5",
+//               borderRadius: 6,
+//               border: "1px solid #d9d9d9",
+//               display: "flex",
+//               alignItems: "center",
+//               gap: 4,
+//               fontFamily: "Raleway",
+//             }}
+//           >
+//             <span>{sort ? `Selected: ${sort}` : "Sort By"}</span>
+//             <DownOutlined />
+//           </Button>
+//         </Dropdown>
+//       </div>

@@ -247,7 +247,7 @@ function Properties() {
             ) : (
               <Row gutter={[32, 32]}>
                 <Col xs={24} sm={24} md={6}>
-                  <FilterComponent />
+                  <FilterComponent realEstateData={RealEstateData} />
                 </Col>
                 <Col xs={24} sm={12} md={18}>
                   <Row gutter={[32, 32]}>
