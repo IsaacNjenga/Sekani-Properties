@@ -1,9 +1,7 @@
-import { DownOutlined } from "@ant-design/icons";
 import {
   Button,
   Checkbox,
   Divider,
-  Dropdown,
   Slider,
   Space,
   Typography,
@@ -14,6 +12,8 @@ import React, { useState } from "react";
 const { Title } = Typography;
 
 const dividerStyle = { margin: "8px 0", borderColor: "#e0e0e0" };
+
+const checkStyle = { fontFamily: "Raleway" };
 
 const dropDownItems = [
   { key: 1, label: "Name (A-Z)" },
@@ -26,24 +26,66 @@ const dropDownItems = [
 ];
 
 const priceMarks = {
-  10000: "KES 10,000",
-  100000: { style: { color: "#f50" }, label: <strong>KES 100,000</strong> },
+  10000: {
+    label: (
+      <span
+        style={{
+          fontFamily: "Raleway",
+        }}
+      >
+        KES 10,000
+      </span>
+    ),
+  },
+  100000: {
+    style: { color: "#f50" },
+    label: (
+      <strong
+        style={{
+          fontFamily: "Raleway",
+        }}
+      >
+        KES 100,000
+      </strong>
+    ),
+  },
 };
 
 const sizeMarks = {
-  1000: "1000sqm",
-  5000: { style: { color: "#f50" }, label: <strong>5000sqm</strong> },
+  1000: {
+    label: (
+      <span
+        style={{
+          fontFamily: "Raleway",
+        }}
+      >
+        1000sqm
+      </span>
+    ),
+  },
+  5000: {
+    style: { color: "#f50" },
+    label: (
+      <strong
+        style={{
+          fontFamily: "Raleway",
+        }}
+      >
+        5000sqm
+      </strong>
+    ),
+  },
 };
 
 function FilterComponent() {
-  const [sort, setSort] = useState("");
+  //const [sort, setSort] = useState("");
   const [priceValue, setPriceValue] = useState(10000);
   const [location, setLocation] = useState([]);
   const [propertyType, setPropertyType] = useState("");
   const [sizeValue, setSizeValue] = useState(1000);
 
   const menuClickHandler = (e) => {
-    setSort(e.key);
+    //setSort(e.key);
   };
 
   const menuProps = { items: dropDownItems, onClick: menuClickHandler };
@@ -55,8 +97,6 @@ function FilterComponent() {
     //}
   };
 
-  console.log(sizeValue);
-
   const SectionHeader = ({ title, onClear }) => (
     <div
       style={{
@@ -66,7 +106,7 @@ function FilterComponent() {
         marginBottom: 4,
       }}
     >
-      <Title level={5} style={{ margin: 0 }}>
+      <Title level={5} style={{ margin: 0, fontFamily: "Alegreya Sans" }}>
         {title}
       </Title>
       {onClear && (
@@ -74,7 +114,7 @@ function FilterComponent() {
           type="link"
           size="small"
           onClick={onClear}
-          style={{ padding: 0, color: "#1890ff" }}
+          style={{ padding: 0, color: "#1890ff", fontFamily: "Alegreya Sans" }}
         >
           Clear
         </Button>
@@ -92,14 +132,14 @@ function FilterComponent() {
       }}
     >
       {/* Sort Section */}
-      <div
+      {/* <div
         style={{
           display: "flex",
           justifyContent: "space-between",
           marginBottom: 8,
         }}
       >
-        <Title level={5} style={{ margin: 0 }}>
+        <Title level={5} style={{ margin: 0, fontFamily: "Alegreya Sans" }}>
           Sorting By:
         </Title>
         <Dropdown menu={menuProps}>
@@ -112,13 +152,14 @@ function FilterComponent() {
               display: "flex",
               alignItems: "center",
               gap: 4,
+              fontFamily: "Raleway",
             }}
           >
             <span>{sort ? `Selected: ${sort}` : "Sort By"}</span>
             <DownOutlined />
           </Button>
         </Dropdown>
-      </div>
+      </div> */}
 
       <Divider style={dividerStyle} />
 
@@ -133,18 +174,26 @@ function FilterComponent() {
       <Space direction="vertical" style={{ width: "100%", paddingLeft: 4 }}>
         <Checkbox
           onChange={() => onCheck({ name: "Nairobi", value: "Nairobi" })}
+          style={checkStyle}
         >
           Nairobi
         </Checkbox>
         <Checkbox
           onChange={() => onCheck({ name: "Mombasa", value: "Mombasa" })}
+          style={checkStyle}
         >
           Mombasa
         </Checkbox>
-        <Checkbox onChange={() => onCheck({ name: "Kisumu", value: "Kisumu" })}>
+        <Checkbox
+          onChange={() => onCheck({ name: "Kisumu", value: "Kisumu" })}
+          style={checkStyle}
+        >
           Kisumu
         </Checkbox>
-        <Checkbox onChange={() => onCheck({ name: "Ruiru", value: "Ruiru" })}>
+        <Checkbox
+          onChange={() => onCheck({ name: "Ruiru", value: "Ruiru" })}
+          style={checkStyle}
+        >
           Ruiru
         </Checkbox>
       </Space>
@@ -176,6 +225,7 @@ function FilterComponent() {
       <Space direction="vertical" style={{ width: "100%", paddingLeft: 4 }}>
         <Checkbox
           onChange={() => onCheck({ name: "For Sale", value: "For Sale" })}
+          style={checkStyle}
         >
           For Sale
         </Checkbox>
@@ -183,16 +233,19 @@ function FilterComponent() {
           onChange={() =>
             onCheck({ name: "Office Space", value: "Office Space" })
           }
+          style={checkStyle}
         >
           Office Space
         </Checkbox>
         <Checkbox
           onChange={() => onCheck({ name: "Apartment", value: "Apartment" })}
+          style={checkStyle}
         >
           Apartment/Airbnb
         </Checkbox>
         <Checkbox
           onChange={() => onCheck({ name: "Townhouse", value: "Townhouse" })}
+          style={checkStyle}
         >
           Townhouse
         </Checkbox>
@@ -220,8 +273,8 @@ function FilterComponent() {
             background: "#f0ebd4",
             color: "#333",
             fontFamily: "Alegreya Sans",
-            fontWeight:'bold',
-            fontSize:18
+            fontWeight: "bold",
+            fontSize: 18,
           }}
         >
           Apply Filters

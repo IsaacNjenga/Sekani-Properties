@@ -20,6 +20,8 @@ import { CloseOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import bgImg from "../assets/images/propertyBg.jpeg";
 import FilterComponent from "../components/FilterComponent.js";
+import emptyStreet from "../assets/images/empty_street.png";
+//import emptyAmico from "../assets/images/empty_amico.png";
 
 const { Title, Text } = Typography;
 const { Search } = Input;
@@ -201,28 +203,47 @@ function Properties() {
             )}
 
             {properties.length === 0 ? (
-              <p
-                style={{
-                  textAlign: "center",
-                  marginTop: 20,
-                  fontFamily: "Raleway",
-                  fontWeight: 500,
-                }}
-              >
-                Sorry, we did not find the term you are looking for. Reach out
-                to us{" "}
-                <span
+              <div style={{
+                    background: "#eae4ac81",
+                    borderRadius: 12,}}>
+                <p
                   style={{
-                    textDecoration: "underline",
-                    color: "blue",
-                    cursor: "pointer",
+                    textAlign: "center",
+                    marginTop: 20,
+                    fontFamily: "Raleway",
+                    fontWeight: 700,
+                    marginBottom: 0,
+                    paddingTop:20
                   }}
-                  onClick={() => navigate("/contact")}
                 >
-                  here
-                </span>{" "}
-                for any inquiries
-              </p>
+                  Sorry, we did not find the term you are looking for. Reach out
+                  to us{" "}
+                  <span
+                    style={{
+                      textDecoration: "underline",
+                      color: "blue",
+                      cursor: "pointer",
+                    }}
+                    onClick={() => navigate("/contact")}
+                  >
+                    here
+                  </span>{" "}
+                  for any inquiries
+                </p>
+                <Image
+                  src={emptyStreet}
+                  alt="amico"
+                  width="100%"
+                  height={isMobile ? 450 : 450}
+                  preview={false}
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "contain",
+                    marginTop: 0,
+                  }}
+                />
+              </div>
             ) : (
               <Row gutter={[32, 32]}>
                 <Col xs={24} sm={24} md={6}>
@@ -242,7 +263,6 @@ function Properties() {
                             boxShadow: "0 4px 12px rgba(0,0,0,0.17)",
                             background: "#eae4ac81",
                             border: `1px solid #ffffff7e00`,
-                            
                           }}
                           cover={
                             <div
