@@ -6,9 +6,11 @@ import {
   Space,
   Typography,
   Card,
+  Spin,
 } from "antd";
-import React, {  useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 import { UserContext } from "../App";
+import Swal from "sweetalert2";
 
 const { Title } = Typography;
 
@@ -94,11 +96,12 @@ const SectionHeader = ({ title, onClear }) => (
 );
 
 function FilterComponent({ realEstateData, setFilterApplied }) {
-  const { setFilteredData } = useContext(UserContext);
+  const { setFilteredData, setFilterCriteria } = useContext(UserContext);
   const [priceValue, setPriceValue] = useState(5000);
   const [location, setLocation] = useState([]);
   const [propertyType, setPropertyType] = useState("");
   const [sizeValue, setSizeValue] = useState(500);
+  const [filterLoading, setFilterLoading] = useState(false);
 
   const onCheck = (checked, value) => {
     setLocation((prev) =>
@@ -113,139 +116,161 @@ function FilterComponent({ realEstateData, setFilterApplied }) {
 
   const applyFilters = () => {
     setFilterApplied(true);
-    let filtered = realEstateData;
+    setFilterLoading(true);
+    setFilterCriteria({
+      location: location,
+      price: priceValue,
+      propertyType: propertyType,
+      size: sizeValue,
+    });
 
-    // Filter by location
-    if (location.length > 0) {
-      filtered = filtered.filter((item) => location.includes(item.city));
+    try {
+      let filtered = realEstateData;
+
+      // Filter by location
+      if (location.length > 0) {
+        filtered = filtered.filter((item) => location.includes(item.city));
+      }
+
+      // Filter by price
+      filtered = filtered.filter((item) => item.price >= priceValue);
+
+      // Filter by property type
+      if (propertyType) {
+        filtered = filtered.filter((item) =>
+          propertyType.includes(item.propertyType)
+        );
+      }
+
+      // Filter by size
+      filtered = filtered.filter((item) => item.squareFeet >= sizeValue);
+
+      //console.log("Filtered Results:", filtered);
+
+      setFilteredData(filtered);
+
+      return filtered;
+    } catch (error) {
+      console.log(error);
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Something went wrong!",
+      });
+    } finally {
+      setFilterLoading(false);
     }
-
-    // Filter by price
-    filtered = filtered.filter((item) => item.price >= priceValue);
-
-    // Filter by property type
-    if (propertyType) {
-      filtered = filtered.filter((item) =>
-        propertyType.includes(item.propertyType)
-      );
-    }
-
-    // Filter by size
-    filtered = filtered.filter((item) => item.squareFeet >= sizeValue);
-
-    console.log("Filtered Results:", filtered);
-
-    setFilteredData(filtered);
-
-    return filtered;
   };
 
   return (
-    <Card
-      style={{
-        background: "#fff",
-        borderRadius: 12,
-        boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
-        padding: 4,
-      }}
-    >
-      <Title style={{ fontFamily: "Alegreya Sans", margin: 0, padding: 0 }}>
-        Search
-      </Title>
-
-      <Divider style={dividerStyle} />
-
-      {/* Locations Filter */}
-      <SectionHeader
-        title="Locations"
-        onClear={() => {
-          console.log("Clear locations");
-          setLocation([]);
+    <>
+      {filterLoading && <Spin fullscreen tip="Just a sec..." />}
+      <Card
+        style={{
+          background: "#fff",
+          borderRadius: 12,
+          boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
+          padding: 4,
         }}
-      />
-      <Space direction="vertical" style={{ width: "100%", paddingLeft: 4 }}>
-        {["Nairobi", "Mombasa", "Kisumu", "Ruiru"].map((loc) => (
-          <Checkbox
-            key={loc}
-            checked={location.includes(loc)}
-            onChange={(e) => onCheck(e.target.checked, loc)}
-            style={checkStyle}
-          >
-            {loc}
-          </Checkbox>
-        ))}
-      </Space>
+      >
+        <Title style={{ fontFamily: "Alegreya Sans", margin: 0, padding: 0 }}>
+          Search
+        </Title>
 
-      <Divider style={dividerStyle} />
+        <Divider style={dividerStyle} />
 
-      {/* Price Filter */}
-      <SectionHeader title="Price Range" />
-      <div style={{ padding: "0 12px 10px" }}>
-        <Slider
-          min={5000}
-          max={100000}
-          step={1000}
-          marks={priceMarks}
-          onChange={(value) => setPriceValue(value)}
+        {/* Locations Filter */}
+        <SectionHeader
+          title="Locations"
+          onClear={() => {
+            console.log("Clear locations");
+            setLocation([]);
+          }}
         />
-      </div>
-
-      <Divider style={dividerStyle} />
-
-      {/* Property Type */}
-      <SectionHeader
-        title="Property Type"
-        onClear={() => {
-          console.log("Clear property type");
-          setPropertyType("");
-        }}
-      />
-      <Space direction="vertical" style={{ width: "100%", paddingLeft: 4 }}>
-        {["For Sale", "Office Space", "Apartment", "Townhouse", "Land"].map(
-          (type) => (
+        <Space direction="vertical" style={{ width: "100%", paddingLeft: 4 }}>
+          {["Nairobi", "Mombasa", "Kisumu", "Ruiru"].map((loc) => (
             <Checkbox
-              key={type}
-              checked={propertyType.includes(type)}
-              onChange={(e) => propertyCheck(e.target.checked, type)}
+              key={loc}
+              checked={location.includes(loc)}
+              onChange={(e) => onCheck(e.target.checked, loc)}
               style={checkStyle}
             >
-              {type}
+              {loc}
             </Checkbox>
-          )
-        )}
-      </Space>
+          ))}
+        </Space>
 
-      <Divider style={dividerStyle} />
+        <Divider style={dividerStyle} />
 
-      {/* Square Feet */}
-      <SectionHeader title="Square Feet" />
-      <div style={{ padding: "0 12px 10px" }}>
-        <Slider
-          min={500}
-          max={5000}
-          step={100}
-          marks={sizeMarks}
-          onChange={(value) => setSizeValue(value)}
-        />
-      </div>
+        {/* Price Filter */}
+        <SectionHeader title="Price Range" />
+        <div style={{ padding: "0 12px 10px" }}>
+          <Slider
+            min={5000}
+            max={100000}
+            step={1000}
+            marks={priceMarks}
+            onChange={(value) => setPriceValue(value)}
+          />
+        </div>
 
-      <div>
-        <Button
-          block
-          onClick={applyFilters}
-          style={{
-            borderRadius: 0,
-            background: "#f0ebd4",
-            color: "#333",
-            fontFamily: "Alegreya Sans",
-            fontWeight: "bold",
-            fontSize: 18,
+        <Divider style={dividerStyle} />
+
+        {/* Property Type */}
+        <SectionHeader
+          title="Property Type"
+          onClear={() => {
+            console.log("Clear property type");
+            setPropertyType("");
           }}
-        >
-          Apply Filters
-        </Button>
-      </div>
-    </Card>
+        />
+        <Space direction="vertical" style={{ width: "100%", paddingLeft: 4 }}>
+          {["For Sale", "Office Space", "Apartment", "Townhouse", "Land"].map(
+            (type) => (
+              <Checkbox
+                key={type}
+                checked={propertyType.includes(type)}
+                onChange={(e) => propertyCheck(e.target.checked, type)}
+                style={checkStyle}
+              >
+                {type}
+              </Checkbox>
+            )
+          )}
+        </Space>
+
+        <Divider style={dividerStyle} />
+
+        {/* Square Feet */}
+        <SectionHeader title="Square Feet" />
+        <div style={{ padding: "0 12px 10px" }}>
+          <Slider
+            min={500}
+            max={5000}
+            step={100}
+            marks={sizeMarks}
+            onChange={(value) => setSizeValue(value)}
+          />
+        </div>
+
+        <div>
+          <Button
+            block
+            onClick={applyFilters}
+            style={{
+              borderRadius: 0,
+              background: "#f0ebd4",
+              color: "#333",
+              fontFamily: "Alegreya Sans",
+              fontWeight: "bold",
+              fontSize: 18,
+            }}
+          >
+            Apply Filters
+          </Button>
+        </div>
+      </Card>
+    </>
   );
 }
 

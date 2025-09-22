@@ -29,6 +29,7 @@ function App() {
   const [darkMode, setDarkMode] = useState(!true);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [filteredData, setFilteredData] = useState([]);
+  const [filterCriteria, setFilterCriteria] = useState({});
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 768);
@@ -38,7 +39,15 @@ function App() {
 
   return (
     <UserContext.Provider
-      value={{ darkMode, setDarkMode, isMobile, filteredData, setFilteredData }}
+      value={{
+        darkMode,
+        setDarkMode,
+        isMobile,
+        filteredData,
+        setFilteredData,
+        filterCriteria,
+        setFilterCriteria,
+      }}
     >
       <ScrollToTop />
       <AnimatePresence mode="wait">

@@ -12,6 +12,7 @@ import {
   Badge,
   Tag,
   Divider,
+  Alert,
 } from "antd";
 import { lightTheme, UserContext } from "../App";
 import { RealEstateData } from "../assets/data/mockData.js";
@@ -21,7 +22,7 @@ import { useNavigate } from "react-router-dom";
 import bgImg from "../assets/images/propertyBg.jpeg";
 import FilterComponent from "../components/FilterComponent.js";
 import emptyStreet from "../assets/images/empty_street.png";
-//import emptyAmico from "../assets/images/empty_amico.png";
+import emptyAmico from "../assets/images/empty_amico.png";
 
 const { Title, Text } = Typography;
 const { Search } = Input;
@@ -67,7 +68,7 @@ const tagsData = ["For Sale", "Airbnb", "For Rent", "Commercial", "Land"];
 
 function Properties() {
   const navigate = useNavigate();
-  const { isMobile, filteredData } = useContext(UserContext);
+  const { isMobile, filteredData, setFilteredData } = useContext(UserContext);
   const [openModal, setOpenModal] = useState(false);
   const [content, setContent] = useState(null);
   const [properties, setProperties] = useState(RealEstateData);
@@ -194,7 +195,7 @@ function Properties() {
             })}
           </div>
 
-          <div style={{ margin: "8px 20px" }}>
+          <div style={{ margin: "10px 32px" }}>
             {searchValue && (
               <div style={{ marginBottom: 20, marginTop: 0 }}>
                 <Title style={{ fontFamily: "Alegreya Sans" }}>
@@ -254,71 +255,119 @@ function Properties() {
                   <FilterComponent
                     realEstateData={RealEstateData}
                     setFilterApplied={setFilterApplied}
-                    //  filterApplied={filterApplied}
                   />
                 </Col>
                 <Col xs={24} sm={12} md={18}>
+                  {filterApplied && filteredData.length > 0 && (
+                    <div style={{ marginBottom: 10 }}>
+                      <Button
+                        danger
+                        type="primary"
+                        onClick={() => {
+                          setFilteredData([]);
+                          setFilterApplied(false);
+                        }}
+                      >
+                        Remove filters
+                      </Button>
+                    </div>
+                  )}
                   <Row gutter={[32, 32]}>
-                    {(filterApplied
-                      ? filteredData
-                      : properties)?.map((c) => (
-                          <Col key={c.key} xs={24} sm={12} md={8}>
-                            <Card
-                              hoverable
-                              style={{
-                                minHeight: 200,
-                                borderRadius: 12,
-                                display: "flex",
-                                flexDirection: "column",
-                                boxShadow: "0 4px 12px rgba(0,0,0,0.17)",
-                                background: "#eae4ac81",
-                                border: `1px solid #ffffff7e00`,
-                              }}
-                              cover={
-                                <div
+                    {filterApplied && filteredData.length === 0 ? (
+                      <div
+                        style={{
+                          background: "#eae4ac81",
+                          borderRadius: 12,
+                          margin: "0 auto",
+                          padding: 5,
+                          width: "100%",
+                          height: "100%",
+                        }}
+                      >
+                        <p
+                          style={{
+                            textAlign: "center",
+                            marginTop: 20,
+                            fontFamily: "Raleway",
+                            fontWeight: 700,
+                            marginBottom: 0,
+                            paddingTop: 20,
+                          }}
+                        >
+                          Sorry, we did not find the term you are looking for.
+                          Reach out to us{" "}
+                          <span
+                            style={{
+                              textDecoration: "underline",
+                              color: "blue",
+                              cursor: "pointer",
+                            }}
+                            onClick={() => navigate("/contact")}
+                          >
+                            here
+                          </span>{" "}
+                          for any inquiries
+                        </p>
+                        <Image
+                          src={emptyAmico}
+                          alt="amico"
+                          width="100%"
+                          height={isMobile ? 450 : 450}
+                          preview={false}
+                          style={{
+                            width: "100%",
+                            height: "100%",
+                            objectFit: "contain",
+                            marginTop: 0,
+                          }}
+                        />
+                      </div>
+                    ) : (
+                      (filterApplied ? filteredData : properties)?.map((c) => (
+                        <Col key={c.key} xs={24} sm={12} md={8}>
+                          <Card
+                            hoverable
+                            style={{
+                              minHeight: 200,
+                              borderRadius: 12,
+                              display: "flex",
+                              flexDirection: "column",
+                              boxShadow: "0 4px 12px rgba(0,0,0,0.17)",
+                              background: "#eae4ac81",
+                              border: `1px solid #ffffff7e00`,
+                            }}
+                            cover={
+                              <div
+                                style={{
+                                  position: "relative",
+                                  width: "100%",
+                                  height: 350,
+                                  overflow: "hidden",
+                                  borderTopLeftRadius: 12,
+                                  borderTopRightRadius: 12,
+                                  padding: 1,
+                                }}
+                              >
+                                <Badge.Ribbon
+                                  text={`${c.listingType}`}
                                   style={{
-                                    position: "relative",
-                                    width: "100%",
-                                    height: 350,
-                                    overflow: "hidden",
-                                    borderTopLeftRadius: 12,
-                                    borderTopRightRadius: 12,
-                                    padding: 1,
+                                    display: "block",
+                                    right: "10px",
+                                    background: "#8d8009ff",
+                                    padding: "2px 10px",
+                                    fontFamily: "Raleway",
                                   }}
                                 >
-                                  <Badge.Ribbon
-                                    text={`${c.listingType}`}
-                                    style={{
-                                      display: "block",
-                                      right: "10px",
-                                      background: "#8d8009ff",
-                                      padding: "2px 10px",
-                                      fontFamily: "Raleway",
-                                    }}
+                                  <Carousel
+                                    autoplay
+                                    autoplaySpeed={3800}
+                                    //fade
+                                    dots={false}
                                   >
-                                    <Carousel
-                                      autoplay
-                                      autoplaySpeed={3800}
-                                      //fade
-                                      dots={false}
-                                    >
-                                      {c.img.length > 1 ? (
-                                        c.img.map((img) => (
-                                          <Image
-                                            src={img}
-                                            alt={c.key}
-                                            preview={false}
-                                            style={{
-                                              width: "100%",
-                                              height: "100%",
-                                              objectFit: "cover",
-                                              borderRadius: 12,
-                                            }}
-                                          />
-                                        ))
-                                      ) : (
+                                    {c.img.length > 1 ? (
+                                      c.img.map((img) => (
                                         <Image
-                                          src={c.img}
+                                          src={img}
                                           alt={c.key}
                                           preview={false}
                                           style={{
@@ -328,140 +377,152 @@ function Properties() {
                                             borderRadius: 12,
                                           }}
                                         />
-                                      )}
-                                    </Carousel>
-                                  </Badge.Ribbon>
-                                </div>
+                                      ))
+                                    ) : (
+                                      <Image
+                                        src={c.img}
+                                        alt={c.key}
+                                        preview={false}
+                                        style={{
+                                          width: "100%",
+                                          height: "100%",
+                                          objectFit: "cover",
+                                          borderRadius: 12,
+                                        }}
+                                      />
+                                    )}
+                                  </Carousel>
+                                </Badge.Ribbon>
+                              </div>
+                            }
+                          >
+                            <Card.Meta
+                              title={
+                                <Title
+                                  level={isMobile ? 5 : 4}
+                                  style={{
+                                    marginTop: 1,
+                                    marginBottom: 0,
+                                    whiteSpace: "nowrap",
+                                    overflow: "hidden",
+                                    textOverflow: "ellipsis",
+                                    fontFamily: "Alegreya Sans",
+                                    color: lightTheme.color,
+                                  }}
+                                >
+                                  {c.address}
+                                </Title>
                               }
-                            >
-                              <Card.Meta
-                                title={
-                                  <Title
-                                    level={isMobile ? 5 : 4}
-                                    style={{
-                                      marginTop: 1,
-                                      marginBottom: 0,
-                                      whiteSpace: "nowrap",
-                                      overflow: "hidden",
-                                      textOverflow: "ellipsis",
-                                      fontFamily: "Alegreya Sans",
-                                      color: lightTheme.color,
-                                    }}
-                                  >
-                                    {c.address}
-                                  </Title>
-                                }
-                                description={
+                              description={
+                                <div
+                                  style={{
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    marginTop: 0,
+                                  }}
+                                >
                                   <div
                                     style={{
                                       display: "flex",
-                                      flexDirection: "column",
-                                      marginTop: 0,
+                                      justifyContent: "left",
+                                      alignItems: "center",
+                                      gap: 10,
                                     }}
                                   >
-                                    <div
-                                      style={{
-                                        display: "flex",
-                                        justifyContent: "left",
-                                        alignItems: "center",
-                                        gap: 10,
-                                      }}
-                                    >
-                                      <Text
-                                        style={{
-                                          fontFamily: "Roboto",
-                                          fontWeight: 500,
-                                          fontSize: 14,
-                                        }}
-                                      >
-                                        {c.propertyType}
-                                      </Text>
-                                      <Divider
-                                        type="vertical"
-                                        style={{
-                                          fontWeight: "bold",
-                                          margin: 0,
-                                          borderColor: "#aaa",
-                                        }}
-                                      />
-                                      {/* <p style={{ fontWeight: "bold", margin: 0 }}>|</p> */}
-                                      <Tag
-                                        style={{
-                                          background:
-                                            c?.status === "For Sale"
-                                              ? "green"
-                                              : c?.status === "Pending" ||
-                                                c?.status === "Under Offer"
-                                              ? "orange"
-                                              : "green",
-                                          borderRadius: 10,
-                                          border: "0px solid rgba(0,0,0,0)",
-                                          padding: "2px 10px",
-                                        }}
-                                      >
-                                        <Text
-                                          style={{
-                                            color: "#fff",
-                                            fontFamily: "Roboto",
-                                            fontSize: 12,
-                                          }}
-                                        >
-                                          {c.status}
-                                        </Text>
-                                      </Tag>
-                                    </div>
                                     <Text
-                                      type="secondary"
                                       style={{
                                         fontFamily: "Roboto",
                                         fontWeight: 500,
                                         fontSize: 14,
                                       }}
                                     >
-                                      {c.bedrooms}{" "}
-                                      {c.bedrooms > 1 ? "Bedrooms" : "Bedroom"},{" "}
-                                      {c.bathrooms}{" "}
-                                      {c.bathrooms > 1
-                                        ? "Bathrooms"
-                                        : "Bathroom"}
+                                      {c.propertyType}
                                     </Text>
+                                    <Divider
+                                      type="vertical"
+                                      style={{
+                                        fontWeight: "bold",
+                                        margin: 0,
+                                        borderColor: "#aaa",
+                                      }}
+                                    />
+                                    {/* <p style={{ fontWeight: "bold", margin: 0 }}>|</p> */}
+                                    <Tag
+                                      style={{
+                                        background:
+                                          c?.status === "For Sale"
+                                            ? "green"
+                                            : c?.status === "Pending" ||
+                                              c?.status === "Under Offer"
+                                            ? "orange"
+                                            : "green",
+                                        borderRadius: 10,
+                                        border: "0px solid rgba(0,0,0,0)",
+                                        padding: "2px 10px",
+                                      }}
+                                    >
+                                      <Text
+                                        style={{
+                                          color: "#fff",
+                                          fontFamily: "Roboto",
+                                          fontSize: 12,
+                                        }}
+                                      >
+                                        {c.status}
+                                      </Text>
+                                    </Tag>
                                   </div>
-                                }
-                              />
-                              <div
-                                style={{
-                                  display: "flex",
-                                  justifyContent: "space-between",
-                                  alignItems: "center",
-                                  marginBottom: 0,
-                                  gap: 6,
-                                }}
+                                  <Text
+                                    type="secondary"
+                                    style={{
+                                      fontFamily: "Roboto",
+                                      fontWeight: 500,
+                                      fontSize: 14,
+                                    }}
+                                  >
+                                    {c.bedrooms}{" "}
+                                    {c.bedrooms > 1 ? "Bedrooms" : "Bedroom"},{" "}
+                                    {c.bathrooms}{" "}
+                                    {c.bathrooms > 1 ? "Bathrooms" : "Bathroom"}
+                                  </Text>
+                                </div>
+                              }
+                            />
+                            <div
+                              style={{
+                                display: "flex",
+                                justifyContent: "space-between",
+                                alignItems: "center",
+                                marginBottom: 0,
+                                gap: 6,
+                              }}
+                            >
+                              <Title
+                                level={isMobile ? 5 : 4}
+                                style={{ fontFamily: "Raleway" }}
                               >
-                                <Title
-                                  level={isMobile ? 5 : 4}
-                                  style={{ fontFamily: "Raleway" }}
-                                >
-                                  KES. {c.price.toLocaleString()}
-                                </Title>
-                                <Button
-                                  type="primary"
-                                  style={{
-                                    borderRadius: 18,
-                                    padding: "4px 16px",
-                                    fontFamily: "Raleway",
-                                    fontWeight: "bold",
-                                    background: "rgba(0,0,0,0)",
-                                    border: "1px solid #333",
-                                    color: "#333",
-                                  }}
-                                  onClick={() => viewProperty(c)}
-                                >
-                                  View
-                                </Button>
-                              </div>
-                            </Card>
-                          </Col>
-                        ))}
+                                KES. {c.price.toLocaleString()}
+                              </Title>
+                              <Button
+                                type="primary"
+                                style={{
+                                  borderRadius: 18,
+                                  padding: "4px 16px",
+                                  fontFamily: "Raleway",
+                                  fontWeight: "bold",
+                                  background: "rgba(0,0,0,0)",
+                                  border: "1px solid #333",
+                                  color: "#333",
+                                }}
+                                onClick={() => viewProperty(c)}
+                              >
+                                View
+                              </Button>
+                            </div>
+                          </Card>
+                        </Col>
+                      ))
+                    )}
                   </Row>
                 </Col>
               </Row>
