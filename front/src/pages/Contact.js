@@ -1,14 +1,24 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import Motion from "../components/Motion";
-import { Card, Image, Timeline, Typography } from "antd";
+import {
+  Button,
+  Card,
+  Form,
+  Image,
+  Input,
+  Timeline,
+  Typography,
+} from "antd";
 import { UserContext } from "../App";
 import {
   EnvironmentOutlined,
   MailOutlined,
   PhoneOutlined,
+  WhatsAppOutlined,
 } from "@ant-design/icons";
 import "../assets/css/contact.css";
 import SplitText from "../components/SplitText";
+import Swal from "sweetalert2";
 
 const { Title, Paragraph, Text } = Typography;
 
@@ -66,6 +76,16 @@ const textItemStyle = {
   fontSize: 18,
   margin: 10,
 };
+
+const inputStyle = {
+  background: "#fff",
+  border: "1px solid #8d8009",
+  borderRadius: 6,
+  fontSize: 16,
+  color: "#333",
+  fontFamily: "Raleway",
+};
+
 const items = [
   {
     dot: <MailOutlined style={iconStyle} />,
@@ -82,7 +102,16 @@ const items = [
   },
   {
     dot: <PhoneOutlined style={iconStyle} />,
-    children: <Text style={textItemStyle}>+254 738 028 200</Text>,
+    children: (
+      <a
+        href="tel:+254738028200"
+        target="_blank"
+        rel="noopener noreferrer"
+        style={textItemStyle}
+      >
+        +254 738 028 200
+      </a>
+    ),
   },
   {
     dot: <EnvironmentOutlined style={iconStyle} />,
@@ -90,7 +119,109 @@ const items = [
       <Text style={textItemStyle}>21 Nairobi Street, Westlands, Nairobi</Text>
     ),
   },
+  {
+    dot: <WhatsAppOutlined style={iconStyle} />,
+    children: (
+      <a
+        href="https://wa.me/254738028200"
+        target="_blank"
+        rel="noopener noreferrer"
+        style={textItemStyle}
+      >
+        +254 738 028 200
+      </a>
+    ),
+  },
 ];
+
+const ContactForm = () => {
+  const [form] = Form.useForm();
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async () => {
+    setLoading(true);
+    try {
+      const values = await form.validateFields();
+      console.log(values);
+
+      if (!values.full_name || !values.email || !values.message) {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "All fields are required",
+        });
+        setLoading(false);
+        return;
+      }
+      Swal.fire({
+        icon: "success",
+        title: "Success",
+        text: "Your message has been sent successfully",
+      });
+    } catch (error) {
+      console.log(error);
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Something went wrong!",
+      });
+    } finally {
+      setLoading(false);
+      form.resetFields();
+    }
+  };
+
+  return (
+    <Card
+      style={{
+        width: "100%",
+        maxWidth: 700,
+        boxShadow: "0 4px 16px rgba(0,0,0,0.1)",
+        borderRadius: 16,
+        padding: "30px 20px",
+        textAlign: "center",
+      }}
+    >
+      <div style={{ marginBottom: 20 }}>
+        <Title
+          level={3}
+          style={{ fontFamily: "Alegreya Sans", marginBottom: 0 }}
+        >
+          Your Needs Matter
+        </Title>
+        <Text type="secondary" style={{ fontFamily: "Raleway", fontSize: 18 }}>
+          Write to us and we'll get you started
+        </Text>
+      </div>
+      <Form form={form} layout="vertical" onFinish={handleSubmit}>
+        <Form.Item label="" name="full_name">
+          <Input placeholder="Your full name" style={inputStyle} />
+        </Form.Item>
+        <Form.Item label="" name="email">
+          <Input placeholder="Email address" type="email" style={inputStyle} />
+        </Form.Item>
+        <Form.Item label="" name="message">
+          <Input.TextArea
+            rows={5}
+            placeholder="Message"
+            style={{ ...inputStyle, height: "auto" }}
+          />
+        </Form.Item>
+        <Form.Item>
+          <Button
+            htmlType="submit"
+            type="primary"
+            block
+            loading={loading}
+            style={{ background: "#8d8009" }}
+          >
+            {loading ? "Submitting..." : "Submit"}
+          </Button>
+        </Form.Item>
+      </Form>
+    </Card>
+  );
+};
 
 function Contact() {
   const { isMobile } = useContext(UserContext);
@@ -138,35 +269,58 @@ function Contact() {
         {/* Contact Info */}
         <div
           style={{
-            padding: "50px 20px",
             display: "flex",
-            justifyContent: "center",
+            flexDirection: isMobile ? "column" : "row",
+            gap: 5,
+            justifyContent: "space-around",
+            background:
+              "linear-gradient(to top, #8c7f02 0%, #f0ebd4 33%, #f0ebd4 66%, #8c7e02b3 100%)",
+            padding: 18,
           }}
         >
-          <Card
-            hoverable={!false}
+          <div
             style={{
-              maxWidth: 700,
-              width: "100%",
-              boxShadow: "0 4px 16px rgba(0,0,0,0.1)",
-              borderRadius: 16,
-              padding: "30px 20px",
-              textAlign: "center",
+              width: isMobile ? "100%" : "50%",
+              padding: "50px 10px",
+              display: "flex",
+              justifyContent: "center",
             }}
           >
-            <Title
-              level={3}
-              style={{ fontFamily: "Alegreya Sans", marginBottom: 30 }}
+            <Card
+              hoverable={!false}
+              style={{
+                maxWidth: 700,
+                width: "100%",
+                boxShadow: "0 4px 16px rgba(0,0,0,0.1)",
+                borderRadius: 16,
+                padding: "30px 20px",
+                textAlign: "center",
+              }}
             >
-              Reach out to us any time
-            </Title>
-            <Timeline
-              items={items}
-              mode={isMobile ? "left" : "alternate"}
-              style={{ marginTop: 20 }}
-              className="custom-timeline"
-            />
-          </Card>
+              <Title
+                level={3}
+                style={{ fontFamily: "Alegreya Sans", marginBottom: 30 }}
+              >
+                Reach out to us any time
+              </Title>
+              <Timeline
+                items={items}
+                mode={isMobile ? "left" : "alternate"}
+                style={{ marginTop: 20 }}
+                className="custom-timeline"
+              />
+            </Card>
+          </div>
+          <div
+            style={{
+              width: isMobile ? "100%" : "50%",
+              padding: "50px 10px",
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            <ContactForm />
+          </div>
         </div>
       </div>
     </Motion>
