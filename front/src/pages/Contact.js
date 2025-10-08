@@ -1,14 +1,6 @@
 import { useContext, useState } from "react";
 import Motion from "../components/Motion";
-import {
-  Button,
-  Card,
-  Form,
-  Image,
-  Input,
-  Timeline,
-  Typography,
-} from "antd";
+import { Button, Card, Form, Image, Input, Timeline, Typography } from "antd";
 import { UserContext } from "../App";
 import {
   EnvironmentOutlined,
@@ -19,6 +11,7 @@ import {
 import "../assets/css/contact.css";
 import SplitText from "../components/SplitText";
 import Swal from "sweetalert2";
+import axios from "axios";
 
 const { Title, Paragraph, Text } = Typography;
 
@@ -144,7 +137,7 @@ const ContactForm = () => {
       const values = await form.validateFields();
       console.log(values);
 
-      if (!values.full_name || !values.email || !values.message) {
+      if (!values.full_name || !values.email_address || !values.message) {
         Swal.fire({
           icon: "error",
           title: "Oops...",
@@ -152,12 +145,16 @@ const ContactForm = () => {
         });
         setLoading(false);
         return;
+      } else {
+        const res = await axios.post("create-mail", values);
+        if (res.data.success) {
+          Swal.fire({
+            icon: "success",
+            title: "Success",
+            text: "Your message has been sent successfully",
+          });
+        }
       }
-      Swal.fire({
-        icon: "success",
-        title: "Success",
-        text: "Your message has been sent successfully",
-      });
     } catch (error) {
       console.log(error);
       Swal.fire({
@@ -193,14 +190,24 @@ const ContactForm = () => {
           Write to us and we'll get you started
         </Text>
       </div>
-      <Form form={form} layout="vertical" onFinish={handleSubmit}>
-        <Form.Item label="" name="full_name">
+      <Form
+        form={form}
+        layout="vertical"
+        onFinish={handleSubmit}
+        requiredMark={false}
+      >
+        <Form.Item label="" name="full_name" required>
           <Input placeholder="Your full name" style={inputStyle} />
         </Form.Item>
-        <Form.Item label="" name="email">
+        <Form.Item
+          label=""
+          name="email_address"
+          required
+          extra="We'll use this email to contact you"
+        >
           <Input placeholder="Email address" type="email" style={inputStyle} />
         </Form.Item>
-        <Form.Item label="" name="message">
+        <Form.Item label="" name="message" required>
           <Input.TextArea
             rows={5}
             placeholder="Message"

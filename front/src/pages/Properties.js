@@ -12,7 +12,6 @@ import {
   Badge,
   Tag,
   Divider,
-  Alert,
 } from "antd";
 import { lightTheme, UserContext } from "../App";
 import { RealEstateData } from "../assets/data/mockData.js";
@@ -341,7 +340,7 @@ function Properties() {
                                 style={{
                                   position: "relative",
                                   width: "100%",
-                                  height: 350,
+                                  height: 300,
                                   overflow: "hidden",
                                   borderTopLeftRadius: 12,
                                   borderTopRightRadius: 12,

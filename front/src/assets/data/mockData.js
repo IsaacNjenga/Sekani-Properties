@@ -188,3 +188,28 @@ export const RealEstateData = [
     agent: { name: "Susan Kariuki", phone: "+254734555666" },
   },
 ];
+
+
+// {
+//     "address": "Ruiru Kamakis, Eastern Bypass",
+//     "city": "Ruiru",
+//     "county": "Kiambu County",
+//     "zip": "00900",
+//     "price": 3500000,
+//     "bedrooms": 0,
+//     "bathrooms": 0,
+//     "squareFeet": null,
+//     "yearBuilt": null,
+//     "propertyType": "Land",
+//     "listingType": "Land",
+//     "furnished": false,
+//     "paymentOptions": ["Cash", "Installments"],
+//     "description":
+//       "1/8th acre prime plot located in the fast-developing Kamakis area, ideal for residential or commercial development.",
+//     "amenities": ["Ready Title Deed", "Electricity on Site", "Water on Site"],
+//     "nearby": ["Eastern Bypass", "Quickmart Kamakis", "Kenya Power Offices"],
+//     "status": "Available",
+//     "img": ["https://images.unsplash.com/photo-1618606338706-fc3bad33dbe6?w=900"],
+//     "agent": { "name": "Susan Kariuki", "phone": "+254734555666" },
+//     "createdBy":"68dba3d8f24a6e8df343f415"
+//   }

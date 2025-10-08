@@ -7,6 +7,7 @@ import Properties from "./pages/Properties";
 import About from "./pages/About";
 import { AnimatePresence } from "framer-motion";
 import ScrollToTop from "./components/ScrollToTop";
+import axios from "axios";
 
 export const UserContext = createContext();
 
@@ -23,6 +24,9 @@ export const darkTheme = {
   secondary: "#85898d",
   borderColor: "#fff",
 };
+
+axios.defaults.baseURL = "https://sekani-admin-server.vercel.app/Sekani";
+axios.defaults.withCredentials = true;
 
 function App() {
   const location = useLocation();
