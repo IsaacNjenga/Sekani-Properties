@@ -135,7 +135,7 @@ const ContactForm = () => {
     setLoading(true);
     try {
       const values = await form.validateFields();
-      console.log(values);
+      //console.log(values);
 
       if (!values.full_name || !values.email_address || !values.message) {
         Swal.fire({
