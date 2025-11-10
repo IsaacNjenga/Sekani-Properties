@@ -111,14 +111,22 @@ function About() {
           >
             <Title style={title2}>Sekani Real Estate</Title>
             <Paragraph style={paragraphStyle}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-              reprehenderit in voluptate velit esse cillum dolore eu fugiat
-              nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-              sunt in culpa qui officia deserunt mollit anim id est laborum.
+              At <b>Sekani Real Estate</b>, we believe that finding your dream
+              home should be more than just a transaction — it should be a
+              journey built on trust, expertise, and genuine care. Our team is
+              dedicated to helping you navigate the world of real estate with
+              confidence, whether you’re buying your first home, expanding your
+              investment portfolio, or searching for a perfect commercial space.
             </Paragraph>
+            <Paragraph style={paragraphStyle}>
+              We take pride in combining local market knowledge with a modern
+              approach to property management and sales. Every property we list
+              is carefully curated to match your lifestyle, preferences, and
+              future goals. From urban apartments and family homes to luxury
+              villas and land investments, Sekani Real Estate is your trusted
+              partner in making smart real estate decisions.
+            </Paragraph>
+
             <Image
               preview={false}
               src={img1}
@@ -155,15 +163,18 @@ function About() {
 
             <Title style={title2}>Your Home Made Simple</Title>
             <Paragraph style={paragraphStyle}>
-              Un ed ut perspiciatis unde omnis iste natus error sit voluptatem
-              accusantium doloremque laudantium, totam rem aperiam, eaque ipsa
-              quae ab illo inventore veritatis et quasi architecto beatae vitae
-              dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit
-              aspernatur aut odit aut fugit, sed quia consequuntur magni dolores
-              eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam
-              est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci
-              velit, sed quia non numquam eius modi tempora incidunt ut labore
-              et dolore magnam aliquam quaerat voluptatem
+              Our goal is simple — to make home ownership and investment
+              seamless. Through innovation, transparency, and personalized
+              service, we turn the complex process of buying, selling, or
+              renting property into a smooth, enjoyable experience. Whether
+              you’re a homeowner, a developer, or an investor, we’re here to
+              help you every step of the way.
+            </Paragraph>
+            <Paragraph style={paragraphStyle}>
+              With a growing portfolio of satisfied clients, Sekani Real Estate
+              continues to redefine what it means to work with a property agency
+              — where your vision becomes our mission, and every house becomes a
+              home.
             </Paragraph>
           </div>
         </div>
