@@ -83,21 +83,6 @@ const ctaBtn2Style = {
   cursor: "pointer",
 };
 
-// const bgImg =
-//   "https://images.pexels.com/photos/2635038/pexels-photo-2635038.jpeg";
-// const bgImg2 =
-//   "https://images.pexels.com/photos/1643383/pexels-photo-1643383.jpeg";
-// const bgImg3 =
-//   "https://images.pexels.com/photos/276724/pexels-photo-276724.jpeg";
-// const bgImg4 =
-//   "https://images.pexels.com/photos/2724748/pexels-photo-2724748.jpeg";
-// const bgImg5 =
-//   "https://images.pexels.com/photos/3797991/pexels-photo-3797991.jpeg";
-// const bgImg6 =
-//   "https://images.pexels.com/photos/1648771/pexels-photo-1648771.jpeg";
-// const bgImg7 =
-//   "https://images.pexels.com/photos/189333/pexels-photo-189333.jpeg";
-
 const bgCarousel = [bgImg, bgImg2, bgImg3, bgImg4, bgImg5, bgImg6, bgImg7];
 
 const gridImg1 =
@@ -216,44 +201,32 @@ function Home() {
               Experience seamless real estate with Sekani. Discover dream homes,
               lucrative investments, and unforgettable stays.
             </Title>
-            <SplitText
-              text={
-                <div style={{ marginTop: 15, display: "flex", gap: 10 }}>
-                  <Button
-                    type="primary"
-                    style={ctaBtn1Style}
-                    onMouseEnter={(e) =>
-                      (e.currentTarget.style.transform = "scale(1.05)")
-                    }
-                    onMouseLeave={(e) =>
-                      (e.currentTarget.style.transform = "scale(1)")
-                    }
-                  >
-                    View Properties
-                  </Button>
-                  <Button
-                    style={ctaBtn2Style}
-                    onMouseEnter={(e) =>
-                      (e.currentTarget.style.transform = "scale(1.05)")
-                    }
-                    onMouseLeave={(e) =>
-                      (e.currentTarget.style.transform = "scale(1)")
-                    }
-                  >
-                    Let's Connect
-                  </Button>
-                </div>
-              }
-              delay={10}
-              duration={0.6}
-              ease="power3.out"
-              splitType="chars"
-              from={{ opacity: 0, y: 40 }}
-              to={{ opacity: 1, y: 0 }}
-              threshold={0.1}
-              rootMargin="-100px"
-              textAlign="center"
-            />
+            <div style={{ marginTop: 15, display: "flex", gap: 10 }}>
+              <Button
+                type="primary"
+                style={ctaBtn1Style}
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.transform = "scale(1.05)")
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.transform = "scale(1)")
+                }
+              >
+                View Properties
+              </Button>
+              <Button
+                style={ctaBtn2Style}
+                onClick={() => navigate("/contact")}
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.transform = "scale(1.05)")
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.transform = "scale(1)")
+                }
+              >
+                Let's Connect
+              </Button>
+            </div>
           </div>
         </div>
 

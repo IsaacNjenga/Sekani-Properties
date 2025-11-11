@@ -77,6 +77,7 @@ const inputStyle = {
   fontSize: 16,
   color: "#333",
   fontFamily: "Raleway",
+  height: 40,
 };
 
 const items = [
@@ -135,8 +136,6 @@ const ContactForm = () => {
     setLoading(true);
     try {
       const values = await form.validateFields();
-      //console.log(values);
-
       if (!values.full_name || !values.email_address || !values.message) {
         Swal.fire({
           icon: "error",
@@ -281,7 +280,7 @@ function Contact() {
             gap: 5,
             justifyContent: "space-around",
             background:
-              "linear-gradient(to top, #8c7f02 0%, #f0ebd4 33%, #f0ebd4 66%, #8c7e02b3 100%)",
+              "linear-gradient(to top, #8c7e029b 0%, #f0ebd4 33%, #f0ebd4 66%, #8c7e0256 100%)",
             padding: 18,
           }}
         >
