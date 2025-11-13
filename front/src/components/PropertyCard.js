@@ -50,6 +50,7 @@ function PropertyCard({ c, viewProperty }) {
                   <img
                     src={img}
                     alt={c.key}
+                    loading='lazy'
                     style={{
                       width: "100%",
                       height: 300,

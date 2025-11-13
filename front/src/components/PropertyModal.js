@@ -8,10 +8,10 @@ import {
   Tag,
   Space,
   Rate,
-  Drawer,
   Card,
   Avatar,
   Button,
+  Drawer,
 } from "antd";
 import { useContext } from "react";
 import {
@@ -26,14 +26,16 @@ import {
 } from "@ant-design/icons";
 import { UserContext } from "../App";
 import { useNavigate } from "react-router-dom";
-import { useReview } from "../contexts/reviewContext";
+import { useDrawer } from "../contexts/drawerContext";
 import AddReview from "../pages/AddReviews";
+import Schedule from "../pages/Schedule";
 
 const { Title, Text, Paragraph } = Typography;
 
 function PropertyModal({ openModal, setOpenModal, loading, content }) {
   const { isMobile } = useContext(UserContext);
-  const { toggleReview, openReview } = useReview();
+  const { toggleReview, openReview, openSchedule, toggleSchedule } =
+    useDrawer();
   const navigate = useNavigate();
 
   // Calculate average rating
@@ -63,21 +65,21 @@ function PropertyModal({ openModal, setOpenModal, loading, content }) {
           }}
         />
       }
-      // bodyStyle={{
-      //   padding: 0,
-      //   background: "linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)",
-      //   borderRadius: 16,
-      //   overflow: "hidden",
-      // }}
+      bodyStyle={{
+        padding: 0,
+        background: "linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)",
+        borderRadius: 16,
+        overflow: "hidden",
+      }}
       style={{ top: isMobile ? 0 : 20 }}
       styles={{
         body: {
           maxHeight: isMobile ? "100vh" : "90vh",
           overflowY: "auto",
-          padding: 0,
-          background: "linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)",
-          borderRadius: 16,
-          overflow: "hidden",
+          // padding: 0,
+          // background: "linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)",
+          // borderRadius: 16,
+          // overflow: "hidden",
         },
       }}
     >
@@ -682,6 +684,8 @@ function PropertyModal({ openModal, setOpenModal, loading, content }) {
                 <Button
                   size="large"
                   block
+                  icon={<CalendarOutlined />}
+                  onClick={toggleSchedule}
                   style={{
                     background: "rgba(255,255,255,0.1)",
                     border: "1px solid rgba(255,255,255,0.3)",
@@ -701,37 +705,26 @@ function PropertyModal({ openModal, setOpenModal, loading, content }) {
         </Row>
       </div>
 
-      <Drawer
+      <Drawer 
         open={openReview}
         onClose={toggleReview}
-        //width={isMobile ? 500 : 700}
-        placement="right"
-        title="Write a review"
-        closeIcon={
-          <div
-            style={{
-              cursor: "pointer",
-              display: "flex",
-              justifyContent: "flex-end",
-            }}
-          >
-            <CloseOutlined
-              style={{
-                fontSize: 24,
-                color: "#fff",
-                background: "rgba(0,0,0,0.5)",
-                padding: 8,
-                borderRadius: "50%",
-              }}
-            />
-          </div>
-        }
-        style={{ backgroundColor: "#eae4ace8" }}
-      >
+        placement="right">
         <AddReview
           content={content}
           openReview={openReview}
           toggleReview={toggleReview}
+          isMobile={isMobile}
+        />
+      </Drawer>
+
+      <Drawer 
+        open={openSchedule}
+        onClose={toggleSchedule}
+        placement="right">
+        <Schedule
+          content={content}
+          openSchedule={openSchedule}
+          toggleSchedule={toggleSchedule}
           isMobile={isMobile}
         />
       </Drawer>

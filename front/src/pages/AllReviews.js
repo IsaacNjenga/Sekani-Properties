@@ -29,7 +29,7 @@ import {
   ArrowLeftOutlined,
   CloseOutlined,
 } from "@ant-design/icons";
-import { useReview } from "../contexts/reviewContext";
+import { useDrawer } from "../contexts/drawerContext";
 import AddReview from "./AddReviews";
 
 const { Title, Text, Paragraph } = Typography;
@@ -116,7 +116,7 @@ const reviews = [
 function AllReviews() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const { toggleReview, openReview } = useReview();
+  const { toggleReview, openReview } = useDrawer();
   const { isMobile } = useContext(UserContext);
   const id = searchParams.get("id");
   const [selectedRating, setSelectedRating] = useState("all");

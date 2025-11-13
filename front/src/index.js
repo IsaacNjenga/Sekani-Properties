@@ -4,18 +4,18 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
-import { ReviewProvider } from "./contexts/reviewContext";
+import { DrawerProvider } from "./contexts/drawerContext";
 import { NotificationProvider } from "./contexts/notificationContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-      <ReviewProvider>
+      <DrawerProvider>
         <NotificationProvider>
           <App />
         </NotificationProvider>
-      </ReviewProvider>
+      </DrawerProvider>
     </BrowserRouter>
   </React.StrictMode>
 );
