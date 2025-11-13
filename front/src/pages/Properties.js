@@ -26,6 +26,7 @@ import emptyStreet from "../assets/images/empty_street.png";
 import useFetchAllProperties from "../hooks/fetchAllProperties.js";
 import PropertyCard from "../components/PropertyCard.js";
 import debounce from "lodash.debounce";
+//import { RealEstateData } from "../assets/data/mockData.js";
 
 const { Title } = Typography;
 const { Search } = Input;
@@ -68,6 +69,7 @@ const tagsData = ["For Sale", "Airbnb", "For Rent", "Commercial", "Land"];
 
 function Properties() {
   const navigate = useNavigate();
+  //const properties = RealEstateData;
   const { properties, propertiesLoading, handleLoadMore } =
     useFetchAllProperties();
 

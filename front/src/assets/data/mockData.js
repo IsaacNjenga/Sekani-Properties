@@ -1,5 +1,6 @@
 export const RealEstateData = [
   {
+    _id: 1,
     listingId: "KEN-001",
     address: "15 Peponi Road, Westlands",
     city: "Nairobi",
@@ -29,8 +30,17 @@ export const RealEstateData = [
       "https://images.unsplash.com/photo-1560185127-59e4420e2c93?w=900",
     ],
     agent: { name: "Mary Wanjiku", phone: "+254712345678" },
+    rating: 4.5,
+    reviews: [
+      // { name: "Susan K", rating: 4.5, review: "Great place to live" },
+      // { name: "John N", rating: 4.5, review: "Great place to stay" },
+      // { name: "Jane N", rating: 3.5, review: "Great place to stay" },
+      // { name: "Alex P", rating: 5, review: "Great place to stay" },
+      // { name: "Clair M", rating: 4, review: "Great place to stay" },
+    ],
   },
   {
+    _id: 2,
     listingId: "KEN-002",
     address: "Apt 5, Kilimani Road, Kilimani",
     city: "Nairobi",
@@ -56,8 +66,17 @@ export const RealEstateData = [
       "https://plus.unsplash.com/premium_photo-1689609950071-af404daa58a0?w=900",
     ],
     agent: { name: "John Otieno", phone: "+254701234567" },
+    rating: 4.5,
+    reviews: [
+      { name: "Susan K", rating: 4.5, review: "Great place to live" },
+      { name: "John N", rating: 4.5, review: "Great place to stay" },
+      { name: "Jane N", rating: 3.5, review: "Great place to stay" },
+      { name: "Alex P", rating: 5, review: "Great place to stay" },
+      { name: "Clair M", rating: 4, review: "Great place to stay" },
+    ],
   },
   {
+    _id: 3,
     listingId: "KEN-003",
     address: "8 Mvuli Lane, Nyali",
     city: "Mombasa",
@@ -86,8 +105,18 @@ export const RealEstateData = [
       "https://plus.unsplash.com/premium_photo-1689609950069-2961f80b1e70?w=900",
     ],
     agent: { name: "Fatma Said", phone: "+254733222111" },
+    rating: 4.5,
+
+    reviews: [
+      { name: "Susan K", rating: 4.5, review: "Great place to live" },
+      { name: "John N", rating: 4.5, review: "Great place to stay" },
+      { name: "Jane N", rating: 3.5, review: "Great place to stay" },
+      { name: "Alex P", rating: 5, review: "Great place to stay" },
+      { name: "Clair M", rating: 4, review: "Great place to stay" },
+    ],
   },
   {
+    _id: 4,
     listingId: "KEN-004",
     address: "22 Nakuru Highway, Milimani",
     city: "Kisumu",
@@ -117,8 +146,18 @@ export const RealEstateData = [
       "https://images.unsplash.com/photo-1518733057094-95b53143d2a7?w=900",
     ],
     agent: { name: "Peter Oloo", phone: "+254720987654" },
+    rating: 4.5,
+
+    reviews: [
+      { name: "Susan K", rating: 4.5, review: "Great place to live" },
+      { name: "John N", rating: 4.5, review: "Great place to stay" },
+      { name: "Jane N", rating: 3.5, review: "Great place to stay" },
+      { name: "Alex P", rating: 5, review: "Great place to stay" },
+      { name: "Clair M", rating: 4, review: "Great place to stay" },
+    ],
   },
   {
+    _id: 5,
     listingId: "KEN-005",
     address: "Argwings Kodhek Road, Hurlingham",
     city: "Nairobi",
@@ -140,8 +179,18 @@ export const RealEstateData = [
     status: "Available",
     img: ["https://images.unsplash.com/photo-1643665592005-843f3f6b4ece?w=900"],
     agent: { name: "James Mwangi", phone: "+254719876543" },
+    rating: 4.5,
+
+    reviews: [
+      { name: "Susan K", rating: 4.5, review: "Great place to live" },
+      { name: "John N", rating: 4.5, review: "Great place to stay" },
+      { name: "Jane N", rating: 3.5, review: "Great place to stay" },
+      { name: "Alex P", rating: 5, review: "Great place to stay" },
+      { name: "Clair M", rating: 4, review: "Great place to stay" },
+    ],
   },
   {
+    _id: 6,
     listingId: "KEN-006",
     address: "Moi Avenue, Mombasa CBD",
     city: "Mombasa",
@@ -163,8 +212,18 @@ export const RealEstateData = [
     status: "Available",
     img: ["https://images.unsplash.com/photo-1695222322544-8d389d2dc43d?w=900"],
     agent: { name: "Ali Yusuf", phone: "+254722111333" },
+    rating: 4.5,
+
+    reviews: [
+      { name: "Susan K", rating: 4.5, review: "Great place to live" },
+      { name: "John N", rating: 4.5, review: "Great place to stay" },
+      { name: "Jane N", rating: 3.5, review: "Great place to stay" },
+      { name: "Alex P", rating: 5, review: "Great place to stay" },
+      { name: "Clair M", rating: 4, review: "Great place to stay" },
+    ],
   },
   {
+    _id: 7,
     listingId: "KEN-007",
     address: "Ruiru Kamakis, Eastern Bypass",
     city: "Ruiru",
@@ -186,9 +245,17 @@ export const RealEstateData = [
     status: "Available",
     img: ["https://images.unsplash.com/photo-1618606338706-fc3bad33dbe6?w=900"],
     agent: { name: "Susan Kariuki", phone: "+254734555666" },
+    rating: 4.5,
+
+    reviews: [
+      { name: "Susan K", rating: 4.5, review: "Great place to live" },
+      { name: "John N", rating: 4.5, review: "Great place to stay" },
+      { name: "Jane N", rating: 3.5, review: "Great place to stay" },
+      { name: "Alex P", rating: 5, review: "Great place to stay" },
+      { name: "Clair M", rating: 4, review: "Great place to stay" },
+    ],
   },
 ];
-
 
 // {
 //     "address": "Ruiru Kamakis, Eastern Bypass",

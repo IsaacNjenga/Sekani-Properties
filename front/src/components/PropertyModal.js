@@ -6,278 +6,740 @@ import {
   Row,
   Typography,
   Tag,
-  Divider,
   Space,
+  Rate,
+  Card,
+  Avatar,
+  Button,
 } from "antd";
-import React, { useContext } from "react";
+import { useContext } from "react";
 import {
   HomeOutlined,
   EnvironmentOutlined,
-  DollarOutlined,
   CalendarOutlined,
   CheckCircleOutlined,
+  PhoneOutlined,
+  UserOutlined,
+  StarFilled,
+  CloseOutlined,
 } from "@ant-design/icons";
 import { UserContext } from "../App";
+import { useNavigate } from "react-router-dom";
 
 const { Title, Text, Paragraph } = Typography;
 
 function PropertyModal({ openModal, setOpenModal, loading, content }) {
   const { isMobile } = useContext(UserContext);
+  const navigate = useNavigate();
+
+  // Calculate average rating
+  const averageRating =
+    content?.reviews?.length > 0
+      ? (
+          content.reviews.reduce((sum, r) => sum + r.rating, 0) /
+          content.reviews.length
+        ).toFixed(1)
+      : 0;
+
   return (
     <Modal
       footer={null}
       open={openModal}
       onCancel={() => setOpenModal(false)}
       confirmLoading={loading}
-      width={"90%"}
-      bodyStyle={{ padding: isMobile ? 8 : 24, backgroundColor: "whitesmoke" }}
-      style={{ top: 8 }}
-    >
-      <Row gutter={[24, 24]}>
-        {/* Left Column - Images */}
-        <Col
-          xs={24}
-          md={12}
+      width="95%"
+      closeIcon={
+        <CloseOutlined
           style={{
-            alignItems: "center",
+            fontSize: 24,
+            color: "#fff",
+            background: "rgba(0,0,0,0.5)",
+            padding: 8,
+            borderRadius: "50%",
           }}
+        />
+      }
+      bodyStyle={{
+        padding: 0,
+        background: "linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)",
+        borderRadius: 16,
+        overflow: "hidden",
+      }}
+      style={{ top: isMobile ? 0 : 20 }}
+      styles={{
+        body: {
+          maxHeight: isMobile ? "100vh" : "90vh",
+          overflowY: "auto",
+        },
+      }}
+    >
+      {/* Hero Image Section */}
+      <div
+        style={{
+          position: "relative",
+          width: isMobile ? "100%" : "50%",
+          maxWidth: isMobile ? 700 : "100vh",
+          height: isMobile ? 500 : "100vh",
+          background: "transparent",
+          margin: "auto",
+          padding: 10,
+        }}
+      >
+        <Carousel
+          autoplay
+          autoplaySpeed={4200}
+          arrows={!isMobile}
+          dotPosition="bottom"
         >
-          <Carousel
-            autoplay={{ dotDuration: true }}
-            autoplaySpeed={3000}
-            arrows
-          >
-            {Array.isArray(content?.img) && content?.img.length > 0 ? (
-              content.img.map((img, index) => (
+          {Array.isArray(content?.img) && content?.img.length > 0 ? (
+            content.img.map((img, index) => (
+              <div
+                key={index}
+                style={{
+                  position: "relative",
+                }}
+              >
                 <Image
-                  key={index}
                   src={img}
                   alt={content?.listingId}
-                  height={500}
-                  width={500}
+                  loading="lazy"
+                  height={isMobile ? 500 : "100vh"}
+                  width={isMobile ? 700 : "100vh"}
+                  preview={{
+                    mask: "View Full Size",
+                  }}
                   style={{
-                    width: "100%",
-                    objectFit: "cover",
-                    borderRadius: 18,
+                    width: isMobile ? "100%" : "100vh",
+                    maxHeight: isMobile ? "100%" : "100vh",
+                    objectFit: "contain",
                   }}
                 />
-              ))
-            ) : (
+              </div>
+            ))
+          ) : (
+            <div style={{ position: "relative" }}>
               <Image
                 src={content?.img}
                 alt={content?.listingId}
-                height={500}
-                width={500}
+                loading="lazy"
+                height={isMobile ? 300 : 800}
+                width={isMobile ? 300 : 800}
+                preview={{
+                  mask: "View Full Size",
+                }}
                 style={{
-                  width: "100%",
-                  objectFit: "cover",
-                  borderRadius: 18,
+                  width: "auto",
+                  maxHeight: "100%",
+                  objectFit: "contain",
                 }}
               />
-            )}
-          </Carousel>
-        </Col>
+            </div>
+          )}
+        </Carousel>
+      </div>
 
-        {/* Right Column - Details */}
-        <Col xs={24} md={12}>
-          <Title
-            level={isMobile ? 3 : 2}
-            style={{ marginBottom: 0, fontFamily: "Alegreya Sans" }}
-          >
-            {content?.propertyType} – {content?.bedrooms} BR /{" "}
-            {content?.bathrooms} BA
-          </Title>
-          <Text
-            type="secondary"
-            style={{ fontFamily: "Raleway", fontSize: 18, marginBottom: 0 }}
-          >
-            <EnvironmentOutlined /> {content?.address}, {content?.city},{" "}
-            {content?.state}
-          </Text>
-
-          <Divider
-            orientation="left"
-            style={{ borderColor: "#333", marginBottom: 0 }}
-          >
-            <Text
-              style={{
-                fontFamily: "Raleway",
-                fontWeight: 800,
-                fontSize: 18,
-                margin: 0,
-              }}
-            >
-              About
-            </Text>
-          </Divider>
-          <Paragraph style={{ fontFamily: "Raleway" }}>
-            {content?.description}
-          </Paragraph>
-
-          <Space direction="vertical" size="small" style={{ width: "100%" }}>
+      {/* Content Section */}
+      <div style={{ padding: isMobile ? 20 : 40 }}>
+        <Row gutter={[32, 32]}>
+          {/* Left Column - Main Info */}
+          <Col xs={24} lg={16}>
+            {/* Property Title & Location */}
             <div
               style={{
-                display: "flex",
-                justifyContent: "space-between",
-                gap: 5,
-                flexDirection: isMobile ? "column" : "row",
+                background: "#fff",
+                padding: isMobile ? 20 : 32,
+                borderRadius: 20,
+                marginBottom: 24,
+                boxShadow: "0 4px 20px rgba(0,0,0,0.08)",
               }}
             >
               <div
                 style={{
                   display: "flex",
-                  flexDirection: "column",
-                  gap: 5,
+                  alignItems: "center",
+                  gap: 12,
+                  marginBottom: 12,
                 }}
               >
-                <Text strong style={{ fontFamily: "Raleway" }}>
-                  <DollarOutlined style={{ fontSize: 22 }} /> Price: KES{" "}
-                  {content?.price?.toLocaleString()}
-                </Text>
-                <Text strong style={{ fontFamily: "Raleway" }}>
-                  <HomeOutlined style={{ fontSize: 22 }} /> Size:{" "}
-                  {content?.squareFeet} sq. ft
-                </Text>
+                <HomeOutlined
+                  style={{
+                    fontSize: 32,
+                    color: "#bdb890",
+                  }}
+                />
+                <Title
+                  level={isMobile ? 3 : 2}
+                  style={{
+                    margin: 0,
+                    fontFamily: "Alegreya Sans",
+                    background: "linear-gradient(135deg, #1e293b, #334155)",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    backgroundClip: "text",
+                  }}
+                >
+                  {content?.propertyType}
+                  {content?.bedrooms > 0 &&
+                    ` • ${content?.bedrooms} BR / ${content?.bathrooms} BA`}
+                </Title>
               </div>
 
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <EnvironmentOutlined
+                  style={{ fontSize: 20, color: "#bdb890" }}
+                />
+                <Text
+                  style={{
+                    fontFamily: "Raleway",
+                    fontSize: 16,
+                    color: "#64748b",
+                  }}
+                >
+                  {content?.address}, {content?.city}, {content?.county}
+                </Text>
+              </div>
+              <div style={{ marginTop: 10, marginBottom: 0 }}>
+                <Tag
+                  icon={<CheckCircleOutlined />}
+                  style={{
+                    fontSize: 16,
+                    fontWeight: 700,
+                    padding: "8px 20px",
+                    borderRadius: 24,
+                    border: "none",
+                    background:
+                      content?.status === "Available"
+                        ? "linear-gradient(135deg, #10b981, #059669)"
+                        : content?.status === "Pending"
+                        ? "linear-gradient(135deg, #f59e0b, #d97706)"
+                        : "linear-gradient(135deg, #ef4444, #dc2626)",
+                    color: "#fff",
+                    boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
+                  }}
+                >
+                  {content?.status}
+                </Tag>
+              </div>
+              {/* Quick Stats */}
               <div
                 style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: 5,
+                  display: "grid",
+                  gridTemplateColumns: isMobile
+                    ? "1fr"
+                    : "repeat(auto-fit, minmax(180px, 1fr))",
+                  gap: 16,
+                  marginTop: 24,
                 }}
               >
-                <Text strong style={{ fontFamily: "Raleway" }}>
-                  <CalendarOutlined style={{ fontSize: 22 }} /> Built:{" "}
-                  {content?.yearBuilt}
-                </Text>
-                <Text strong style={{ fontFamily: "Raleway" }}>
-                  <CheckCircleOutlined style={{ fontSize: 22 }} /> Status:{" "}
-                  <Tag
-                    style={{
-                      fontFamily: "Raleway",
-                      color: "#fff",
-                      borderRadius: 10,
-                      border: "0px solid rgba(0,0,0,0)",
-                      padding: "2px 8px",
-                      background:
-                        content?.status === "For Sale"
-                          ? "green"
-                          : content?.status === "Pending"
-                          ? "orange"
-                          : "green",
-                    }}
-                  >
-                    {content?.status}
-                  </Tag>
-                </Text>
+                {content?.squareFeet && (
+                  <StatCard
+                    icon={<HomeOutlined />}
+                    label="Size"
+                    value={`${content.squareFeet} sq. ft`}
+                  />
+                )}
+                {content?.yearBuilt && (
+                  <StatCard
+                    icon={<CalendarOutlined />}
+                    label="Price"
+                    value={`KES. ${content.price?.toLocaleString()}`}
+                  />
+                )}
+                {content?.rating > 0 && (
+                  <StatCard
+                    icon={<StarFilled />}
+                    label="Rating"
+                    value={`${averageRating} / 5`}
+                  />
+                )}
               </div>
             </div>
-          </Space>
 
-          <Divider
-            orientation="left"
-            style={{ borderColor: "#333", marginBottom: 4 }}
-          >
-            <Text
+            {/* Description */}
+            <div
               style={{
-                fontFamily: "Raleway",
-                fontWeight: 800,
-                fontSize: 18,
-                margin: 0,
+                background: "#fff",
+                padding: isMobile ? 20 : 32,
+                borderRadius: 20,
+                marginBottom: 24,
+                boxShadow: "0 4px 20px rgba(0,0,0,0.08)",
               }}
             >
-              Amenities
-            </Text>
-          </Divider>
-          <Space wrap>
-            {content?.amenities?.map((item, index) => (
-              <Tag
-                key={index}
+              <Title
+                level={4}
                 style={{
-                  backgroundColor: "#8d8009ff",
-                  color: "#fff",
-                  borderRadius: 10,
-                  border: "0px solid rgba(0,0,0,0)",
-                  padding: "2px 10px",
-                }}
-              >
-                {item}
-              </Tag>
-            ))}
-          </Space>
-          <Divider
-            orientation="left"
-            style={{ borderColor: "#333", marginBottom: 4 }}
-          >
-            {" "}
-            <Text
-              style={{
-                fontFamily: "Raleway",
-                fontWeight: 800,
-                fontSize: 18,
-                margin: 0,
-              }}
-            >
-              Nearby Landmarks
-            </Text>
-          </Divider>
-          <Space wrap size={[8, 8]}>
-            {content?.nearby?.map((item, index) => (
-              <Tag
-                key={index}
-                icon={<EnvironmentOutlined />}
-                color="geekblue"
-                style={{
-                  borderRadius: 16,
-                  fontSize: 14,
-                  padding: "4px 12px",
                   fontFamily: "Raleway",
+                  color: "#1e293b",
+                  marginBottom: 16,
                 }}
               >
-                {item}
-              </Tag>
-            ))}
-          </Space>
+                About This Property
+              </Title>
+              <Paragraph
+                style={{
+                  fontFamily: "Raleway",
+                  fontSize: 16,
+                  lineHeight: 1.8,
+                  color: "#475569",
+                }}
+              >
+                {content?.description}
+              </Paragraph>
+            </div>
 
-          <Divider
-            orientation="left"
-            style={{ borderColor: "#333", marginBottom: 2 }}
-          >
-            {" "}
-            <Text
+            {/* Amenities */}
+            {content?.amenities?.length > 0 && (
+              <div
+                style={{
+                  background: "#fff",
+                  padding: isMobile ? 20 : 32,
+                  borderRadius: 20,
+                  marginBottom: 24,
+                  boxShadow: "0 4px 20px rgba(0,0,0,0.08)",
+                }}
+              >
+                <Title
+                  level={4}
+                  style={{
+                    fontFamily: "Raleway",
+                    color: "#1e293b",
+                    marginBottom: 16,
+                  }}
+                >
+                  Amenities & Features
+                </Title>
+                <Space wrap size={[12, 12]}>
+                  {content.amenities.map((item, index) => (
+                    <Tag
+                      key={index}
+                      style={{
+                        background: "linear-gradient(135deg, #bdb890, #a8a378)",
+                        color: "#fff",
+                        border: "none",
+                        borderRadius: 20,
+                        padding: "6px 16px",
+                        fontSize: 14,
+                        fontFamily: "Raleway",
+                        fontWeight: 500,
+                      }}
+                    >
+                      {item}
+                    </Tag>
+                  ))}
+                </Space>
+              </div>
+            )}
+
+            {/* Nearby Landmarks */}
+            {content?.nearby?.length > 0 && (
+              <div
+                style={{
+                  background: "#fff",
+                  padding: isMobile ? 20 : 32,
+                  borderRadius: 20,
+                  marginBottom: 24,
+                  boxShadow: "0 4px 20px rgba(0,0,0,0.08)",
+                }}
+              >
+                <Title
+                  level={4}
+                  style={{
+                    fontFamily: "Raleway",
+                    color: "#1e293b",
+                    marginBottom: 16,
+                  }}
+                >
+                  Nearby Landmarks
+                </Title>
+                <Space wrap size={[12, 12]}>
+                  {content.nearby.map((item, index) => (
+                    <Tag
+                      key={index}
+                      icon={<EnvironmentOutlined />}
+                      style={{
+                        background: "#f1f5f9",
+                        color: "#334155",
+                        border: "1px solid #e2e8f0",
+                        borderRadius: 20,
+                        padding: "6px 16px",
+                        fontSize: 14,
+                        fontFamily: "Raleway",
+                      }}
+                    >
+                      {item}
+                    </Tag>
+                  ))}
+                </Space>
+              </div>
+            )}
+
+            {/* Reviews Section */}
+            <div
               style={{
-                fontFamily: "Raleway",
-                fontWeight: 800,
-                fontSize: 18,
-                margin: 0,
+                background: "#fff",
+                padding: isMobile ? 20 : 32,
+                borderRadius: 20,
+                boxShadow: "0 4px 20px rgba(0,0,0,0.08)",
               }}
             >
-              Agent Info
-            </Text>
-          </Divider>
-          <Space direction="vertical" size={2}>
-            <Text
-              strong
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  marginBottom: 24,
+                  flexWrap: "wrap",
+                  gap: 12,
+                }}
+              >
+                <Title
+                  level={4}
+                  style={{
+                    fontFamily: "Raleway",
+                    color: "#1e293b",
+                    margin: 0,
+                  }}
+                >
+                  Reviews{" "}
+                  {content?.reviews?.length > 0 &&
+                    `(${content.reviews.length})`}
+                </Title>
+                {content?.reviews?.length > 0 && (
+                  <div
+                    style={{ display: "flex", alignItems: "center", gap: 8 }}
+                  >
+                    <Rate
+                      disabled
+                      allowHalf
+                      value={parseFloat(averageRating)}
+                    />
+                    <Text strong style={{ fontSize: 18, color: "#bdb890" }}>
+                      {averageRating}
+                    </Text>
+                  </div>
+                )}
+              </div>
+
+              {content?.reviews?.length === 0 || !content?.reviews ? (
+                <div
+                  style={{
+                    textAlign: "center",
+                    padding: "40px 20px",
+                    background: "#f8fafc",
+                    borderRadius: 12,
+                  }}
+                >
+                  <Text style={{ fontFamily: "Raleway", fontSize: 16 }}>
+                    No reviews yet.{" "}
+                    <span
+                      onClick={() => navigate(`/add-review?id=${content?._id}`)}
+                      style={{
+                        color: "#bdb890",
+                        cursor: "pointer",
+                        fontWeight: 600,
+                        textDecoration: "underline",
+                      }}
+                    >
+                      Be the first to review
+                    </span>
+                  </Text>
+                </div>
+              ) : (
+                <>
+                  <Space
+                    direction="vertical"
+                    size={16}
+                    style={{ width: "100%" }}
+                  >
+                    {content.reviews.slice(0, 3).map((review, idx) => (
+                      <Card
+                        key={idx}
+                        style={{
+                          borderRadius: 12,
+                          border: "1px solid #e2e8f0",
+                          boxShadow: "0 2px 8px rgba(0,0,0,0.04)",
+                        }}
+                        bodyStyle={{ padding: 20 }}
+                      >
+                        <div
+                          style={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "flex-start",
+                            marginBottom: 12,
+                            flexWrap: "wrap",
+                            gap: 12,
+                          }}
+                        >
+                          <div
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: 12,
+                            }}
+                          >
+                            <Avatar
+                              size={40}
+                              style={{
+                                background:
+                                  "linear-gradient(135deg, #bdb890, #a8a378)",
+                                fontSize: 18,
+                                fontWeight: 600,
+                              }}
+                            >
+                              {review.name[0]}
+                            </Avatar>
+                            <Text
+                              strong
+                              style={{
+                                fontFamily: "Raleway",
+                                fontSize: 16,
+                              }}
+                            >
+                              {review.name}
+                            </Text>
+                          </div>
+                          <Rate
+                            disabled
+                            allowHalf
+                            value={review.rating}
+                            style={{ fontSize: 16 }}
+                          />
+                        </div>
+                        <Paragraph
+                          style={{
+                            fontFamily: "Raleway",
+                            color: "#64748b",
+                            marginBottom: 0,
+                            fontSize: 15,
+                          }}
+                        >
+                          {review.review}
+                        </Paragraph>
+                      </Card>
+                    ))}
+                  </Space>
+
+                  <div
+                    style={{
+                      display: "flex",
+                      gap: 12,
+                      marginTop: 24,
+                      flexWrap: "wrap",
+                      justifyContent: isMobile ? "center" : "flex-start",
+                    }}
+                  >
+                    {content.reviews.length > 3 && (
+                      <Button
+                        size="large"
+                        onClick={() => navigate(`/reviews?id=${content?._id}`)}
+                        style={{
+                          borderRadius: 10,
+                          fontFamily: "Raleway",
+                          fontWeight: 600,
+                        }}
+                      >
+                        See All {content.reviews.length} Reviews
+                      </Button>
+                    )}
+                    <Button
+                      type="primary"
+                      size="large"
+                      onClick={() => navigate(`/add-review?id=${content?._id}`)}
+                      style={{
+                        background: "linear-gradient(135deg, #bdb890, #a8a378)",
+                        border: "none",
+                        borderRadius: 10,
+                        fontFamily: "Raleway",
+                        fontWeight: 600,
+                        boxShadow: "0 4px 12px rgba(189, 184, 144, 0.3)",
+                      }}
+                    >
+                      Write a Review
+                    </Button>
+                  </div>
+                </>
+              )}
+            </div>
+          </Col>
+
+          {/* Right Column - Agent & CTA */}
+          <Col xs={24} lg={8}>
+            {/* Agent Card */}
+            <div
               style={{
-                fontFamily: "Raleway",
+                background: "linear-gradient(135deg, #1e293b 0%, #334155 100%)",
+                padding: isMobile ? 24 : 32,
+                borderRadius: 20,
+                boxShadow: "0 8px 32px rgba(0,0,0,0.2)",
+                position: isMobile ? "relative" : "sticky",
+                top: 20,
               }}
             >
-              {content?.agent?.name}
-            </Text>
-            <Text
-              type="secondary"
-              style={{
-                fontFamily: "Raleway",
-              }}
-            >
-              {content?.agent?.phone}
-            </Text>
-          </Space>
-        </Col>
-      </Row>
+              <Title
+                level={4}
+                style={{
+                  fontFamily: "Raleway",
+                  color: "#fff",
+                  marginBottom: 24,
+                  textAlign: "center",
+                }}
+              >
+                Contact Agent
+              </Title>
+
+              <div
+                style={{
+                  background: "rgba(255,255,255,0.1)",
+                  backdropFilter: "blur(10px)",
+                  padding: 24,
+                  borderRadius: 16,
+                  marginBottom: 24,
+                }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    gap: 16,
+                  }}
+                >
+                  <Avatar
+                    size={80}
+                    icon={<UserOutlined />}
+                    style={{
+                      background: "linear-gradient(135deg, #bdb890, #a8a378)",
+                      fontSize: 32,
+                    }}
+                  />
+                  <div style={{ textAlign: "center" }}>
+                    <Text
+                      strong
+                      style={{
+                        color: "#fff",
+                        fontSize: 20,
+                        fontFamily: "Raleway",
+                        display: "block",
+                        marginBottom: 8,
+                      }}
+                    >
+                      {content?.agent?.name}
+                    </Text>
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        gap: 8,
+                      }}
+                    >
+                      <PhoneOutlined style={{ color: "#bdb890" }} />
+                      <Text
+                        style={{
+                          color: "#cbd5e1",
+                          fontFamily: "Raleway",
+                          fontSize: 16,
+                        }}
+                      >
+                        {content?.agent?.phone}
+                      </Text>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <Space direction="vertical" size={12} style={{ width: "100%" }}>
+                <Button
+                  type="primary"
+                  size="large"
+                  block
+                  icon={<PhoneOutlined />}
+                  onClick={() =>
+                    (window.location.href = `tel:${content?.agent?.phone}`)
+                  }
+                  style={{
+                    background: "linear-gradient(135deg, #bdb890, #a8a378)",
+                    border: "none",
+                    borderRadius: 12,
+                    height: 48,
+                    fontFamily: "Raleway",
+                    fontWeight: 600,
+                    fontSize: 16,
+                    boxShadow: "0 4px 16px rgba(189, 184, 144, 0.4)",
+                  }}
+                >
+                  Call Agent
+                </Button>
+                <Button
+                  size="large"
+                  block
+                  style={{
+                    background: "rgba(255,255,255,0.1)",
+                    border: "1px solid rgba(255,255,255,0.3)",
+                    color: "#fff",
+                    borderRadius: 12,
+                    height: 48,
+                    fontFamily: "Raleway",
+                    fontWeight: 600,
+                    fontSize: 16,
+                  }}
+                >
+                  Schedule Viewing
+                </Button>
+              </Space>
+            </div>
+          </Col>
+        </Row>
+      </div>
     </Modal>
   );
 }
+
+// Helper Component for Stats Cards
+const StatCard = ({ icon, label, value }) => (
+  <div
+    style={{
+      background: "linear-gradient(135deg, #f8fafc, #f1f5f9)",
+      padding: 16,
+      borderRadius: 12,
+      border: "1px solid #e2e8f0",
+      display: "flex",
+      alignItems: "center",
+      gap: 12,
+    }}
+  >
+    <div
+      style={{
+        fontSize: 24,
+        color: "#bdb890",
+      }}
+    >
+      {icon}
+    </div>
+    <div>
+      <Text
+        style={{
+          display: "block",
+          fontSize: 12,
+          color: "#64748b",
+          fontFamily: "Raleway",
+        }}
+      >
+        {label}
+      </Text>
+      <Text
+        strong
+        style={{
+          fontSize: 16,
+          color: "#1e293b",
+          fontFamily: "Raleway",
+        }}
+      >
+        {value}
+      </Text>
+    </div>
+  </div>
+);
 
 export default PropertyModal;
