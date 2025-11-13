@@ -32,7 +32,7 @@ function AddReviews({ content, openReview, toggleReview, isMobile }) {
     setLoading(true);
     try {
       const values = await form.validateFields();
-      const allValues = { ...values, rating: value };
+      const allValues = { ...values, rating: value, propertyId: content?._id };
       console.log(allValues);
 
       openNotification(
