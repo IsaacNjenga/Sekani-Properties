@@ -15,6 +15,7 @@ import {
   Select,
   Button,
   Space,
+  Drawer,
   Divider,
 } from "antd";
 import { formatDistanceToNowStrict } from "date-fns";
@@ -26,7 +27,10 @@ import {
   PhoneOutlined,
   UserOutlined,
   ArrowLeftOutlined,
+  CloseOutlined,
 } from "@ant-design/icons";
+import { useReview } from "../contexts/reviewContext";
+import AddReview from "./AddReviews";
 
 const { Title, Text, Paragraph } = Typography;
 
@@ -112,11 +116,15 @@ const reviews = [
 function AllReviews() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  const { toggleReview, openReview } = useReview();
   const { isMobile } = useContext(UserContext);
   const id = searchParams.get("id");
   const [selectedRating, setSelectedRating] = useState("all");
   const [sortBy, setSortBy] = useState("latest");
+  //eslint-disable-next-line
   const [loading, setLoading] = useState(false);
+
+  console.log(id);
 
   const averageRating =
     reviews?.length > 0
@@ -444,7 +452,7 @@ function AllReviews() {
                 </div>
                 <Button
                   type="primary"
-                  onClick={() => navigate(`/add-review?id=${id}`)}
+                  onClick={toggleReview}
                   style={{
                     background: "linear-gradient(135deg, #bdb890, #a8a378)",
                     border: "none",
@@ -879,6 +887,30 @@ function AllReviews() {
           </Row>
         </div>
       </div>
+      <Drawer
+        open={openReview}
+        onClose={toggleReview}
+        //width={isMobile ? 500 : 700}
+        placement="right"
+        closeIcon={
+          <CloseOutlined
+            style={{
+              fontSize: 24,
+              color: "#fff",
+              background: "rgba(0,0,0,0.5)",
+              padding: 8,
+              borderRadius: "50%",
+            }}
+          />
+        }
+      >
+        <AddReview
+          content={item}
+          openReview={openReview}
+          toggleReview={toggleReview}
+          isMobile={isMobile}
+        />
+      </Drawer>
     </Motion>
   );
 }

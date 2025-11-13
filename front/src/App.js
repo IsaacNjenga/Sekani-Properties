@@ -8,7 +8,6 @@ import About from "./pages/About";
 import { AnimatePresence } from "framer-motion";
 import ScrollToTop from "./components/ScrollToTop";
 import axios from "axios";
-import Reviews from "./pages/Reviews";
 import AllReviews from "./pages/AllReviews";
 
 export const UserContext = createContext();
@@ -63,7 +62,6 @@ function App() {
             <Route path="/contact" element={<Contact />} />
             <Route path="/properties" element={<Properties />} />
             <Route path="/about" element={<About />} />
-            <Route path="/add-review" element={<Reviews />} />
             <Route path="/reviews" element={<AllReviews />} />
           </Route>
         </Routes>

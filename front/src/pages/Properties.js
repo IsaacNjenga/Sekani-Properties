@@ -26,7 +26,6 @@ import emptyStreet from "../assets/images/empty_street.png";
 import useFetchAllProperties from "../hooks/fetchAllProperties.js";
 import PropertyCard from "../components/PropertyCard.js";
 import debounce from "lodash.debounce";
-//import { RealEstateData } from "../assets/data/mockData.js";
 
 const { Title } = Typography;
 const { Search } = Input;

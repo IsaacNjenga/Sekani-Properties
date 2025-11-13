@@ -205,6 +205,7 @@ function Home() {
               <Button
                 type="primary"
                 style={ctaBtn1Style}
+                onClick={() => navigate("/properties")}
                 onMouseEnter={(e) =>
                   (e.currentTarget.style.transform = "scale(1.05)")
                 }

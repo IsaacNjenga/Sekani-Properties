@@ -8,6 +8,7 @@ import {
   Tag,
   Space,
   Rate,
+  Drawer,
   Card,
   Avatar,
   Button,
@@ -25,11 +26,14 @@ import {
 } from "@ant-design/icons";
 import { UserContext } from "../App";
 import { useNavigate } from "react-router-dom";
+import { useReview } from "../contexts/reviewContext";
+import AddReview from "../pages/AddReviews";
 
 const { Title, Text, Paragraph } = Typography;
 
 function PropertyModal({ openModal, setOpenModal, loading, content }) {
   const { isMobile } = useContext(UserContext);
+  const { toggleReview, openReview } = useReview();
   const navigate = useNavigate();
 
   // Calculate average rating
@@ -59,17 +63,21 @@ function PropertyModal({ openModal, setOpenModal, loading, content }) {
           }}
         />
       }
-      bodyStyle={{
-        padding: 0,
-        background: "linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)",
-        borderRadius: 16,
-        overflow: "hidden",
-      }}
+      // bodyStyle={{
+      //   padding: 0,
+      //   background: "linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)",
+      //   borderRadius: 16,
+      //   overflow: "hidden",
+      // }}
       style={{ top: isMobile ? 0 : 20 }}
       styles={{
         body: {
           maxHeight: isMobile ? "100vh" : "90vh",
           overflowY: "auto",
+          padding: 0,
+          background: "linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)",
+          borderRadius: 16,
+          overflow: "hidden",
         },
       }}
     >
@@ -432,7 +440,7 @@ function PropertyModal({ openModal, setOpenModal, loading, content }) {
                   <Text style={{ fontFamily: "Raleway", fontSize: 16 }}>
                     No reviews yet.{" "}
                     <span
-                      onClick={() => navigate(`/add-review?id=${content?._id}`)}
+                      onClick={toggleReview}
                       style={{
                         color: "#bdb890",
                         cursor: "pointer",
@@ -545,7 +553,7 @@ function PropertyModal({ openModal, setOpenModal, loading, content }) {
                     <Button
                       type="primary"
                       size="large"
-                      onClick={() => navigate(`/add-review?id=${content?._id}`)}
+                      onClick={toggleReview}
                       style={{
                         background: "linear-gradient(135deg, #bdb890, #a8a378)",
                         border: "none",
@@ -692,6 +700,41 @@ function PropertyModal({ openModal, setOpenModal, loading, content }) {
           </Col>
         </Row>
       </div>
+
+      <Drawer
+        open={openReview}
+        onClose={toggleReview}
+        //width={isMobile ? 500 : 700}
+        placement="right"
+        title="Write a review"
+        closeIcon={
+          <div
+            style={{
+              cursor: "pointer",
+              display: "flex",
+              justifyContent: "flex-end",
+            }}
+          >
+            <CloseOutlined
+              style={{
+                fontSize: 24,
+                color: "#fff",
+                background: "rgba(0,0,0,0.5)",
+                padding: 8,
+                borderRadius: "50%",
+              }}
+            />
+          </div>
+        }
+        style={{ backgroundColor: "#eae4ace8" }}
+      >
+        <AddReview
+          content={content}
+          openReview={openReview}
+          toggleReview={toggleReview}
+          isMobile={isMobile}
+        />
+      </Drawer>
     </Modal>
   );
 }
