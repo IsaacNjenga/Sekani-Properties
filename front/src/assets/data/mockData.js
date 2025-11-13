@@ -32,11 +32,11 @@ export const RealEstateData = [
     agent: { name: "Mary Wanjiku", phone: "+254712345678" },
     rating: 4.5,
     reviews: [
-      // { name: "Susan K", rating: 4.5, review: "Great place to live" },
-      // { name: "John N", rating: 4.5, review: "Great place to stay" },
-      // { name: "Jane N", rating: 3.5, review: "Great place to stay" },
-      // { name: "Alex P", rating: 5, review: "Great place to stay" },
-      // { name: "Clair M", rating: 4, review: "Great place to stay" },
+      { name: "Susan K", rating: 4.5, review: "Great place to live" },
+      { name: "John N", rating: 4.5, review: "Great place to stay" },
+      { name: "Jane N", rating: 3.5, review: "Great place to stay" },
+      { name: "Alex P", rating: 5, review: "Great place to stay" },
+      { name: "Clair M", rating: 4, review: "Great place to stay" },
     ],
   },
   {
