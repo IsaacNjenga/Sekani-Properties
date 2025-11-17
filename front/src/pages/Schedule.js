@@ -24,6 +24,7 @@ import {
 } from "@ant-design/icons";
 import { useNotification } from "../contexts/NotificationContext";
 import dayjs from "dayjs";
+import axios from "axios";
 
 const { Title, Text } = Typography;
 const { TextArea } = Input;
@@ -61,18 +62,21 @@ function Schedule({ content, openSchedule, toggleSchedule, isMobile }) {
 
       console.log("Scheduled Viewing:", allValues);
 
-      openNotification(
-        "success",
-        "Your viewing has been scheduled successfully!",
-        "Schedule Confirmed"
-      );
+      const res = await axios.post("create-schedule", allValues);
+      if (res.data.success) {
+        openNotification(
+          "success",
+          "Your viewing has been scheduled. See you!",
+          "Schedule Confirmed"
+        );
 
-      setTimeout(() => {
-        toggleSchedule();
-        form.resetFields();
-        setSelectedDate(null);
-        setSelectedTime(null);
-      }, 1500);
+        setTimeout(() => {
+          toggleSchedule();
+          form.resetFields();
+          setSelectedDate(null);
+          setSelectedTime(null);
+        }, 2500);
+      }
     } catch (error) {
       console.error(error);
       openNotification(
@@ -419,7 +423,7 @@ function Schedule({ content, openSchedule, toggleSchedule, isMobile }) {
                       color: "#1e293b",
                     }}
                   >
-                    Preferred Time (24-hour format)
+                    Preferred Time
                   </Text>
                 </Space>
               }
@@ -548,8 +552,7 @@ function Schedule({ content, openSchedule, toggleSchedule, isMobile }) {
                   {selectedDate.format("dddd, MMMM D, YYYY")}
                 </Text>
                 <Text style={{ fontFamily: "Raleway", color: "#047857" }}>
-                  <strong>Time:</strong> {selectedTime.format("HH:mm")} (24-hour
-                  format)
+                  <strong>Time:</strong> {selectedTime.format("HH:mm")}
                 </Text>
                 {/* <Text
                   style={{

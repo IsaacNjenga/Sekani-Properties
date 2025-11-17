@@ -17,6 +17,7 @@ import {
   MessageOutlined,
 } from "@ant-design/icons";
 import { useNotification } from "../contexts/NotificationContext";
+import axios from "axios";
 
 const { Title, Text } = Typography;
 
@@ -33,20 +34,24 @@ function AddReviews({ content, openReview, toggleReview, isMobile }) {
     try {
       const values = await form.validateFields();
       const allValues = { ...values, rating: value, propertyId: content?._id };
+      
       console.log(allValues);
 
-      openNotification(
-        "success",
-        "Your feedback is highly appreciated",
-        "Thank you!"
-      );
+      const res = await axios.post("create-review", allValues);
+      if (res.data.success) {
+        openNotification(
+          "success",
+          "Your feedback is highly appreciated",
+          "Thank you!"
+        );
 
-      // Close drawer after successful submission
-      setTimeout(() => {
-        toggleReview();
-        form.resetFields();
-        setValue(0);
-      }, 1500);
+        // Close drawer after successful submission
+        setTimeout(() => {
+          toggleReview();
+          form.resetFields();
+          setValue(0);
+        }, 2500);
+      }
     } catch (error) {
       console.error(error);
       openNotification(
