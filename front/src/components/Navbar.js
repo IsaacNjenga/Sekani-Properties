@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Button, Drawer, Layout, Menu } from "antd";
 import { Link, Outlet } from "react-router-dom";
 import FooterContent from "./Footer";
-import logo from "../assets/images/logo3.png";
 import {
   CloseOutlined,
   MenuOutlined,
@@ -85,7 +84,7 @@ function Navbar() {
               }}
             >
               <img
-                src={logo}
+                src='https://res.cloudinary.com/dinsdfwod/image/upload/v1763372140/logo3_jdp77t.png'
                 alt="Logo"
                 style={{
                   width: scrolled ? 85 : isMobile ? 100 : 200,

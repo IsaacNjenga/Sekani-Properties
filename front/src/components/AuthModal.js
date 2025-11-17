@@ -7,10 +7,9 @@ function AuthModal({ openAuthModal, setOpenAuthModal, isMobile }) {
   return (
     <Modal
       footer={null}
-      title="User Authentication"
       open={openAuthModal}
       onCancel={() => setOpenAuthModal(false)}
-      width="95%"
+      width="50%"
       closeIcon={
         <CloseOutlined
           style={{
@@ -24,15 +23,20 @@ function AuthModal({ openAuthModal, setOpenAuthModal, isMobile }) {
       }
       bodyStyle={{
         padding: 0,
-        background: "linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)",
-        borderRadius: 16,
+        background: "transparent",
+        borderRadius: 12,
         overflow: "hidden",
       }}
-      style={{ top: isMobile ? 0 : 20 }}
+      style={{
+        top: isMobile ? 0 : 0,
+        background: "transparent",
+        padding: 0,
+      }}
       styles={{
         body: {
-          maxHeight: isMobile ? "100vh" : "90vh",
+          maxHeight: isMobile ? "100vh" : "100vh",
           overflowY: "auto",
+        background: "transparent",
         },
       }}
     >

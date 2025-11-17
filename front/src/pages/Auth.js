@@ -1,13 +1,12 @@
 import { useState } from "react";
-import signInImg from "../assets/images/logo.png";
-import signUpImg from "../assets/images/logo3.png";
-import { Button, Card, Divider, Form, Input, Typography } from "antd";
+import { Button, Card, Form, Input, Typography, Space, Divider } from "antd";
 import {
   EyeInvisibleOutlined,
   EyeTwoTone,
-  FacebookFilled,
   GoogleOutlined,
   MailOutlined,
+  ArrowLeftOutlined,
+  LockOutlined,
 } from "@ant-design/icons";
 import { signInWithGoogle } from "../providers/AuthProvider.js";
 import axios from "axios";
@@ -15,105 +14,32 @@ import { useUser } from "../contexts/UserContext/index.js";
 
 const { Title, Text } = Typography;
 
-const containerStyle = {
-  position: "relative",
-  minHeight: "100vh",
-  padding: 0,
-  maxWidth: "100vw",
-};
-const imgStyle = {
-  position: "absolute",
-  top: 0,
-  left: 0,
-  width: "100vw",
-  height: "100vh",
-  objectFit: "contain",
-  background: "linear-gradient(to right, #d6a4df, #def7e4)",
-};
-
-const innerDivStyle = {
-  position: "absolute",
-  margin: "auto",
-  display: "flex",
-  width: "100%",
-  borderRadius: 12,
-  border: "4px solid #fff",
-  maxWidth: "85vw",
-  alignContent: "center",
-  alignItems: "center",
-  alignSelf: "center",
-  top: 0,
-  left: 0,
-  right: 0,
-  bottom: 0,
-  boxShadow: "0 4px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 14px 0 rgba(0, 0, 0, 0.1)",
-};
-
-const cardStyle = {
-  maxHeight: "95vh",
-  height: 600,
-  padding: 8,
-  borderRadius: 0,
-  background: "linear-gradient(to left, rgba(0,0,0,0.26), rgba(0,0,0,0.01))",
-  borderColor: "rgba(0,0,0,0)",
-  borderTopLeftRadius: 12,
-  borderBottomLeftRadius: 12,
-  backdropFilter: "blur(1px)",
-};
-
-const titleStyle = {
-  textAlign: "center",
-  marginBottom: 5,
-  marginTop: 0,
-  color: "#ffffff",
-};
-
-const labelStyle = {
-  marginBottom: 0,
-  fontSize: 14,
-  fontWeight: 500,
-  marginTop: 0,
-  color: "#ffffff",
-};
-
-const inputStyle = {
-  marginBottom: 0,
-  borderRadius: 12,
-  marginTop: 0,
-};
-
-const submitBtnStyle = { padding: 18, borderRadius: 18 };
-
-const socialBtnStyle = {
-  padding: "16px 34px",
-  borderRadius: 18,
-  transition: "all 0.4s ease",
-};
-
-const iconStyle = { fontSize: 24 };
-
-const signInTextStyle = { cursor: "pointer" };
-
 function Auth() {
   const [form] = Form.useForm();
   const [isSignIn, setIsSignIn] = useState(true);
-  const [values, setValues] = useState({ email: "", password: "" });
+  const [showEmailForm, setShowEmailForm] = useState(false);
   const [loading, setLoading] = useState(false);
   const { isMobile } = useUser();
 
-  const handleChange = (name, value) => {
-    setValues((prevValues) => ({ ...prevValues, [name]: value }));
-  };
-
   const toggleSignIn = () => {
     setIsSignIn((prev) => !prev);
+    form.resetFields();
   };
 
-  const handleSubmit = async () => {
+  const handleEmailClick = () => {
+    setShowEmailForm(true);
+  };
+
+  const handleBack = () => {
+    setShowEmailForm(false);
+    form.resetFields();
+  };
+
+  const handleSubmit = async (values) => {
     setLoading(true);
     try {
-      const allValues = await form.getFieldsValue();
-      console.log(allValues);
+      console.log("Form values:", values);
+      // Handle email/password submission here
     } catch (error) {
       console.error(error);
     } finally {
@@ -122,16 +48,18 @@ function Auth() {
   };
 
   const handleGoogleSignIn = async () => {
+    setLoading(true);
     try {
       const { user, idToken } = await signInWithGoogle();
       console.log(user);
+
       const res = await axios.post(
-        "https://localhost:3001/Sekani/firebase-google-login",
+        "http://localhost:3001/Sekani/firebase-google-login",
         { idToken }
       );
 
       if (res.data.success) {
-        localStorage.setItem("token", res.data.token); //store  jwt token
+        localStorage.setItem("token", res.data.token);
         console.log("Logged in as:", res.data.user);
       } else console.error(res.data.message);
     } catch (error) {
@@ -142,204 +70,459 @@ function Auth() {
   };
 
   return (
-    <div style={containerStyle}>
-      <img src={isSignIn ? signInImg : signUpImg} alt="img" style={imgStyle} />
+    <div
+      style={{
+        minHeight: "100vh",
+        background:
+          "linear-gradient(135deg, #bdb890 0%, #8a8560 50%, #6b6848 100%)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: isMobile ? "20px" : "20px",
+        position: "relative",
+        overflow: "hidden",
+      }}
+    >
+      {/* Decorative Elements */}
       <div
-        style={{ ...innerDivStyle, flexDirection: isMobile ? "column" : "row" }}
+        style={{
+          position: "absolute",
+          top: "-100px",
+          right: "-100px",
+          width: "400px",
+          height: "400px",
+          borderRadius: "50%",
+          background: "rgba(255,255,255,0.1)",
+          filter: "blur(60px)",
+        }}
+      />
+      <div
+        style={{
+          position: "absolute",
+          bottom: "-150px",
+          left: "-150px",
+          width: "500px",
+          height: "500px",
+          borderRadius: "50%",
+          background: "rgba(0,0,0,0.1)",
+          filter: "blur(80px)",
+        }}
+      />
+
+      {/* Main Card */}
+      <Card
+        style={{
+          maxWidth: isMobile ? "100%" : 480,
+          width: "100%",
+          background: "rgba(0, 0, 0, 0.98)",
+          backdropFilter: "blur(20px)",
+          borderRadius: 24,
+          border: "1px solid rgba(255,255,255,0.3)",
+          boxShadow: "0 20px 60px rgba(0,0,0,0.3)",
+          position: "relative",
+          zIndex: 1,
+        }}
+        bodyStyle={{
+          padding: isMobile ? "32px 24px" : "48px 40px",
+        }}
       >
-        <div style={{ width: isMobile ? "100%" : "30%" }}>
-          <Card style={{ ...cardStyle, width: isMobile ? "100%" : 450 }}>
-            <Divider style={{ borderColor: "#fff" }}>
-              <Title
-                level={1}
-                style={{ ...titleStyle, fontSize: isMobile ? 30 : 50 }}
+        {/* Logo */}
+        <div style={{ textAlign: "center", marginBottom: 32 }}>
+          <img
+            src="https://res.cloudinary.com/dinsdfwod/image/upload/v1763372140/logo3_jdp77t.png"
+            alt="Logo"
+            style={{
+              height: isMobile ? 80 : 100,
+              marginBottom: 24,
+              borderRadius: "50%",
+              border: "2px solid #918f76",
+            }}
+          />
+          <Title
+            level={2}
+            style={{
+              margin: 0,
+              fontFamily: "Alegreya Sans",
+              background: "linear-gradient(135deg, #bdb890, #8a8560)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundClip: "text",
+            }}
+          >
+            {isSignIn ? "Welcome Back" : "Create Account"}
+          </Title>
+          <Text
+            style={{
+              fontSize: 15,
+              color: "#64748b",
+              fontFamily: "Raleway",
+            }}
+          >
+            {isSignIn
+              ? "Sign in to access your account"
+              : "Join us to find your dream property"}
+          </Text>
+        </div>
+
+        {/* Authentication Options or Form */}
+        {!showEmailForm ? (
+          <Space direction="vertical" size={16} style={{ width: "100%" }}>
+            {/* Google Sign In */}
+            <Button
+              onClick={handleGoogleSignIn}
+              loading={loading}
+              size="large"
+              block
+              icon={<GoogleOutlined style={{ fontSize: 20 }} />}
+              style={{
+                height: 56,
+                borderRadius: 16,
+                fontFamily: "Raleway",
+                fontWeight: 600,
+                fontSize: 16,
+                border: "2px solid #e2e8f0",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 12,
+                transition: "all 0.3s ease",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = "#bdb890";
+                e.currentTarget.style.transform = "translateY(-2px)";
+                e.currentTarget.style.boxShadow =
+                  "0 8px 20px rgba(189, 184, 144, 0.2)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = "#e2e8f0";
+                e.currentTarget.style.transform = "translateY(0)";
+                e.currentTarget.style.boxShadow = "none";
+              }}
+            >
+              Continue with Google
+            </Button>
+
+            <Divider style={{ margin: "8px 0" }}>
+              <Text
+                style={{
+                  color: "#94a3b8",
+                  fontSize: 14,
+                  fontFamily: "Raleway",
+                }}
               >
-                {isSignIn ? "Sign In" : "Sign Up"}
-              </Title>
+                Or
+              </Text>
             </Divider>
-            <div>
-              <Form layout="vertical" form={form} onFinish={handleSubmit}>
-                <Form.Item
-                  label={<span style={labelStyle}>Email Address</span>}
-                  name={"email"}
+
+            {/* Email Sign In */}
+            <Button
+              onClick={handleEmailClick}
+              size="large"
+              block
+              icon={<MailOutlined style={{ fontSize: 20 }} />}
+              style={{
+                height: 56,
+                borderRadius: 16,
+                fontFamily: "Raleway",
+                fontWeight: 600,
+                fontSize: 16,
+                background: "linear-gradient(135deg, #bdb890, #a8a378)",
+                border: "none",
+                color: "#fff",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 12,
+                boxShadow: "0 4px 16px rgba(189, 184, 144, 0.3)",
+                transition: "all 0.3s ease",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = "translateY(-2px)";
+                e.currentTarget.style.boxShadow =
+                  "0 8px 24px rgba(189, 184, 144, 0.4)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = "translateY(0)";
+                e.currentTarget.style.boxShadow =
+                  "0 4px 16px rgba(189, 184, 144, 0.3)";
+              }}
+            >
+              Continue with Email
+            </Button>
+
+            {/* Toggle Sign In/Up */}
+            <div style={{ textAlign: "center", marginTop: 24 }}>
+              <Text style={{ color: "#64748b", fontFamily: "Raleway" }}>
+                {isSignIn
+                  ? "Don't have an account? "
+                  : "Already have an account? "}
+                <span
+                  onClick={toggleSignIn}
+                  style={{
+                    color: "#bdb890",
+                    fontWeight: 600,
+                    cursor: "pointer",
+                    textDecoration: "underline",
+                  }}
                 >
-                  <Input
-                    value={values.email}
-                    onChange={(e) => handleChange("email", e.target.value)}
-                    style={inputStyle}
-                  />
-                </Form.Item>
+                  {isSignIn ? "Sign Up" : "Sign In"}
+                </span>
+              </Text>
+            </div>
+          </Space>
+        ) : (
+          // Email Form
+          <div>
+            {/* Back Button */}
+            <Button
+              type="text"
+              icon={<ArrowLeftOutlined />}
+              onClick={handleBack}
+              style={{
+                marginBottom: 24,
+                color: "#64748b",
+                fontFamily: "Raleway",
+                fontWeight: 600,
+              }}
+            >
+              Back to options
+            </Button>
+
+            <Form
+              form={form}
+              onFinish={handleSubmit}
+              layout="vertical"
+              requiredMark={false}
+            >
+              {/* Email */}
+              <Form.Item
+                label={
+                  <Text
+                    strong
+                    style={{
+                      fontSize: 15,
+                      fontFamily: "Raleway",
+                      color: "#1e293b",
+                    }}
+                  >
+                    Email Address
+                  </Text>
+                }
+                name="email"
+                rules={[
+                  { required: true, message: "Please enter your email" },
+                  { type: "email", message: "Please enter a valid email" },
+                ]}
+              >
+                <Input
+                  prefix={<MailOutlined style={{ color: "#bdb890" }} />}
+                  placeholder="your@email.com"
+                  size="large"
+                  style={{
+                    borderRadius: 12,
+                    fontFamily: "Raleway",
+                    border: "2px solid #e2e8f0",
+                    height: 48,
+                  }}
+                />
+              </Form.Item>
+
+              {/* Password */}
+              <Form.Item
+                label={
+                  <Text
+                    strong
+                    style={{
+                      fontSize: 15,
+                      fontFamily: "Raleway",
+                      color: "#1e293b",
+                    }}
+                  >
+                    Password
+                  </Text>
+                }
+                name="password"
+                rules={[
+                  { required: true, message: "Please enter your password" },
+                  { min: 6, message: "Password must be at least 6 characters" },
+                ]}
+              >
+                <Input.Password
+                  prefix={<LockOutlined style={{ color: "#bdb890" }} />}
+                  placeholder="Enter your password"
+                  iconRender={(visible) =>
+                    visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+                  }
+                  size="large"
+                  style={{
+                    borderRadius: 12,
+                    fontFamily: "Raleway",
+                    border: "2px solid #e2e8f0",
+                    height: 48,
+                  }}
+                />
+              </Form.Item>
+
+              {/* Confirm Password (Sign Up only) */}
+              {!isSignIn && (
                 <Form.Item
-                  label={<span style={labelStyle}>Password</span>}
-                  name={"password"}
+                  label={
+                    <Text
+                      strong
+                      style={{
+                        fontSize: 15,
+                        fontFamily: "Raleway",
+                        color: "#1e293b",
+                      }}
+                    >
+                      Confirm Password
+                    </Text>
+                  }
+                  name="confirmPassword"
+                  dependencies={["password"]}
+                  hasFeedback
+                  rules={[
+                    { required: true, message: "Please confirm your password" },
+                    ({ getFieldValue }) => ({
+                      validator(_, value) {
+                        if (!value || getFieldValue("password") === value) {
+                          return Promise.resolve();
+                        }
+                        return Promise.reject(
+                          new Error("Passwords do not match")
+                        );
+                      },
+                    }),
+                  ]}
                 >
                   <Input.Password
+                    prefix={<LockOutlined style={{ color: "#bdb890" }} />}
+                    placeholder="Confirm your password"
                     iconRender={(visible) =>
                       visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
                     }
-                    value={values.password}
-                    onChange={(e) => handleChange("email", e.target.value)}
-                    style={inputStyle}
-                    allowClear
+                    size="large"
+                    style={{
+                      borderRadius: 12,
+                      fontFamily: "Raleway",
+                      border: "2px solid #e2e8f0",
+                      height: 48,
+                    }}
                   />
                 </Form.Item>
-                {!isSignIn && (
-                  <Form.Item
-                    dependencies={["password"]}
-                    hasFeedback
-                    label={
-                      <span style={labelStyle}>Confirm Your Password</span>
-                    }
-                    name={"confirmPassword"}
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please confirm your password",
-                      },
-                      ({ getFieldValue }) => ({
-                        validator(_, value) {
-                          if (!value || getFieldValue("password") === value) {
-                            return Promise.resolve();
-                          }
-                          return Promise.reject(
-                            new Error("Passwords do not match")
-                          );
-                        },
-                      }),
-                    ]}
-                  >
-                    <Input.Password
-                      iconRender={(visible) =>
-                        visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
-                      }
-                      style={inputStyle}
-                    />
-                  </Form.Item>
-                )}
+              )}
 
-                {isSignIn && (
-                  <div style={{ marginTop: 0, marginBottom: 10 }}>
-                    <Text style={{ color: "#fff", cursor: "pointer" }}>
-                      Forgot your password?
-                    </Text>
-                  </div>
-                )}
-
-                <Form.Item>
-                  <Button
-                    block
-                    loading={loading}
-                    type="primary"
-                    style={submitBtnStyle}
-                    htmlType="submit"
-                    disabled={!values.email}
-                    onMouseEnter={(e) =>
-                      (e.currentTarget.style.transform = "scale(1.05)")
-                    }
-                    onMouseLeave={(e) =>
-                      (e.currentTarget.style.transform = "scale(1)")
-                    }
-                  >
-                    {loading
-                      ? isSignIn
-                        ? "Signing in..."
-                        : "Signing up..."
-                      : isSignIn
-                      ? "Sign in"
-                      : "Sign up"}
-                  </Button>
-                </Form.Item>
-
-                <div
-                  style={{
-                    textAlign: "center",
-                    marginTop: 5,
-                    fontWeight: 500,
-                  }}
-                >
-                  {isSignIn ? (
-                    <Text
-                      style={{
-                        color: "#ffffff",
-                      }}
-                    >
-                      Don't have an account?{" "}
-                      <span onClick={toggleSignIn} style={signInTextStyle}>
-                        Sign Up
-                      </span>
-                    </Text>
-                  ) : (
-                    <Text
-                      style={{
-                        color: "#ffffff",
-                      }}
-                    >
-                      Already have an account?{" "}
-                      <span onClick={toggleSignIn} style={signInTextStyle}>
-                        Sign In
-                      </span>
-                    </Text>
-                  )}
-                </div>
-                <Divider style={{ borderColor: "#fff" }}>
+              {/* Forgot Password (Sign In only) */}
+              {isSignIn && (
+                <div style={{ textAlign: "right", marginBottom: 24 }}>
                   <Text
                     style={{
-                      color: "#ffffff",
+                      color: "#bdb890",
+                      cursor: "pointer",
+                      fontFamily: "Raleway",
+                      fontWeight: 600,
+                      fontSize: 14,
                     }}
                   >
-                    Or continue with
+                    Forgot password?
                   </Text>
-                </Divider>
+                </div>
+              )}
 
-                <div
+              {/* Submit Button */}
+              <Form.Item style={{ marginBottom: 16 }}>
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  loading={loading}
+                  size="large"
+                  block
                   style={{
-                    textAlign: "center",
-                    gap: 10,
-                    display: "flex",
-                    justifyContent: "center",
+                    height: 56,
+                    borderRadius: 16,
+                    fontFamily: "Raleway",
+                    fontWeight: 600,
+                    fontSize: 16,
+                    background: "linear-gradient(135deg, #bdb890, #a8a378)",
+                    border: "none",
+                    boxShadow: "0 4px 16px rgba(189, 184, 144, 0.3)",
+                    transition: "all 0.3s ease",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = "translateY(-2px)";
+                    e.currentTarget.style.boxShadow =
+                      "0 8px 24px rgba(189, 184, 144, 0.4)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = "translateY(0)";
+                    e.currentTarget.style.boxShadow =
+                      "0 4px 16px rgba(189, 184, 144, 0.3)";
                   }}
                 >
-                  <Button
-                    onClick={handleGoogleSignIn}
-                    icon={<GoogleOutlined style={iconStyle} />}
+                  {loading
+                    ? isSignIn
+                      ? "Signing in..."
+                      : "Creating account..."
+                    : isSignIn
+                    ? "Sign In"
+                    : "Create Account"}
+                </Button>
+              </Form.Item>
+
+              {/* Toggle Sign In/Up */}
+              <div style={{ textAlign: "center" }}>
+                <Text style={{ color: "#64748b", fontFamily: "Raleway" }}>
+                  {isSignIn
+                    ? "Don't have an account? "
+                    : "Already have an account? "}
+                  <span
+                    onClick={toggleSignIn}
                     style={{
-                      ...socialBtnStyle,
-                      color: "#4285f4",
+                      color: "#bdb890",
+                      fontWeight: 600,
+                      cursor: "pointer",
+                      textDecoration: "underline",
                     }}
-                    onMouseEnter={(e) =>
-                      (e.currentTarget.style.transform = "scale(1.2)")
-                    }
-                    onMouseLeave={(e) =>
-                      (e.currentTarget.style.transform = "scale(1)")
-                    }
-                  />
-                  <Button
-                    icon={<MailOutlined style={iconStyle} />}
-                    style={{ ...socialBtnStyle, color: "red" }}
-                    onMouseEnter={(e) =>
-                      (e.currentTarget.style.transform = "scale(1.2)")
-                    }
-                    onMouseLeave={(e) =>
-                      (e.currentTarget.style.transform = "scale(1)")
-                    }
-                  />
-                  <Button
-                    icon={<FacebookFilled style={iconStyle} />}
-                    style={{ ...socialBtnStyle, color: "#3b5998" }}
-                    onMouseEnter={(e) =>
-                      (e.currentTarget.style.transform = "scale(1.2)")
-                    }
-                    onMouseLeave={(e) =>
-                      (e.currentTarget.style.transform = "scale(1)")
-                    }
-                  />
-                </div>
-              </Form>
-            </div>
-          </Card>
+                  >
+                    {isSignIn ? "Sign Up" : "Sign In"}
+                  </span>
+                </Text>
+              </div>
+            </Form>
+          </div>
+        )}
+
+        {/* Terms & Privacy */}
+        <div
+          style={{
+            textAlign: "center",
+            marginTop: 32,
+            paddingTop: 24,
+            borderTop: "1px solid #e2e8f0",
+          }}
+        >
+          <Text
+            style={{
+              fontSize: 13,
+              color: "#94a3b8",
+              fontFamily: "Raleway",
+            }}
+          >
+            By continuing, you agree to our{" "}
+            <span
+              style={{ color: "#bdb890", cursor: "pointer", fontWeight: 600 }}
+            >
+              Terms of Service
+            </span>{" "}
+            and{" "}
+            <span
+              style={{ color: "#bdb890", cursor: "pointer", fontWeight: 600 }}
+            >
+              Privacy Policy
+            </span>
+          </Text>
         </div>
-        <div style={{ width: isMobile ? 0 : "70%", display: "none" }}></div>
-      </div>
+      </Card>
     </div>
   );
 }
