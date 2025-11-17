@@ -1,4 +1,3 @@
-import React from "react";
 import Auth from "../pages/Auth.js";
 import { Modal } from "antd";
 import { CloseOutlined } from "@ant-design/icons";
@@ -6,39 +5,35 @@ import { CloseOutlined } from "@ant-design/icons";
 function AuthModal({ openAuthModal, setOpenAuthModal, isMobile }) {
   return (
     <Modal
-      footer={null}
       open={openAuthModal}
+      footer={null}
+      centered
       onCancel={() => setOpenAuthModal(false)}
-      width="50%"
+      closable={true}
+      width={isMobile ? "95%" : "600px"}
+      maskStyle={{
+        backgroundColor: "rgba(0,0,0,0.6)",
+        backdropFilter: "blur(6px)",
+      }}
+      bodyStyle={{
+        padding: 0,
+      }}
+      style={{
+        padding: 0,
+      }}
       closeIcon={
         <CloseOutlined
           style={{
-            fontSize: 24,
             color: "#fff",
-            background: "rgba(0,0,0,0.5)",
-            padding: 8,
+            background: "rgba(0, 0, 0, 0.39)",
+            padding: 6,
             borderRadius: "50%",
+            fontSize: 25,
+            marginBottom: 80,
+            marginLeft: 50,
           }}
         />
       }
-      bodyStyle={{
-        padding: 0,
-        background: "transparent",
-        borderRadius: 12,
-        overflow: "hidden",
-      }}
-      style={{
-        top: isMobile ? 0 : 0,
-        background: "transparent",
-        padding: 0,
-      }}
-      styles={{
-        body: {
-          maxHeight: isMobile ? "100vh" : "100vh",
-          overflowY: "auto",
-        background: "transparent",
-        },
-      }}
     >
       <Auth />
     </Modal>

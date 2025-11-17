@@ -72,15 +72,14 @@ function Auth() {
   return (
     <div
       style={{
-        minHeight: "100vh",
-        background:
-          "linear-gradient(135deg, #bdb890 0%, #8a8560 50%, #6b6848 100%)",
+        background: "transparent",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        padding: isMobile ? "20px" : "20px",
+        padding: isMobile ? "10px" : "0px",
         position: "relative",
         overflow: "hidden",
+        minHeight: isMobile ? "100vh" : "auto",
       }}
     >
       {/* Decorative Elements */}
@@ -112,9 +111,9 @@ function Auth() {
       {/* Main Card */}
       <Card
         style={{
-          maxWidth: isMobile ? "100%" : 480,
+          maxWidth: isMobile ? "100%" : 600,
           width: "100%",
-          background: "rgba(0, 0, 0, 0.98)",
+          background: "rgba(0, 0, 0)",
           backdropFilter: "blur(20px)",
           borderRadius: 24,
           border: "1px solid rgba(255,255,255,0.3)",
@@ -123,17 +122,17 @@ function Auth() {
           zIndex: 1,
         }}
         bodyStyle={{
-          padding: isMobile ? "32px 24px" : "48px 40px",
+          padding: isMobile ? "32px 24px" : "20px 40px",
         }}
       >
         {/* Logo */}
-        <div style={{ textAlign: "center", marginBottom: 32 }}>
+        <div style={{ textAlign: "center", marginBottom: 12 }}>
           <img
             src="https://res.cloudinary.com/dinsdfwod/image/upload/v1763372140/logo3_jdp77t.png"
             alt="Logo"
             style={{
-              height: isMobile ? 80 : 100,
-              marginBottom: 24,
+              height: isMobile ? 80 : 120,
+              marginBottom: 8,
               borderRadius: "50%",
               border: "2px solid #918f76",
             }}
@@ -153,9 +152,10 @@ function Auth() {
           </Title>
           <Text
             style={{
-              fontSize: 15,
+              fontSize: 14,
               color: "#64748b",
               fontFamily: "Raleway",
+              margin: 0,
             }}
           >
             {isSignIn
@@ -202,7 +202,7 @@ function Auth() {
               Continue with Google
             </Button>
 
-            <Divider style={{ margin: "8px 0" }}>
+            <Divider style={{ margin: "4px 0", borderColor: "#bdb890" }}>
               <Text
                 style={{
                   color: "#94a3b8",
@@ -251,7 +251,7 @@ function Auth() {
             </Button>
 
             {/* Toggle Sign In/Up */}
-            <div style={{ textAlign: "center", marginTop: 24 }}>
+            <div style={{ textAlign: "center", marginTop: 18 }}>
               <Text style={{ color: "#64748b", fontFamily: "Raleway" }}>
                 {isSignIn
                   ? "Don't have an account? "
@@ -302,7 +302,7 @@ function Auth() {
                     style={{
                       fontSize: 15,
                       fontFamily: "Raleway",
-                      color: "#1e293b",
+                      color: "#f2f4f8ff",
                     }}
                   >
                     Email Address
@@ -335,7 +335,7 @@ function Auth() {
                     style={{
                       fontSize: 15,
                       fontFamily: "Raleway",
-                      color: "#1e293b",
+                      color: "#f2f4f8ff",
                     }}
                   >
                     Password
@@ -372,7 +372,7 @@ function Auth() {
                       style={{
                         fontSize: 15,
                         fontFamily: "Raleway",
-                        color: "#1e293b",
+                      color: "#f2f4f8ff",
                       }}
                     >
                       Confirm Password
@@ -496,9 +496,9 @@ function Auth() {
         <div
           style={{
             textAlign: "center",
-            marginTop: 32,
-            paddingTop: 24,
-            borderTop: "1px solid #e2e8f0",
+            marginTop: 22,
+            paddingTop: 12,
+            borderTop: "1px solid #bdb890",
           }}
         >
           <Text
