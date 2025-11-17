@@ -7,6 +7,7 @@ import {
   MailOutlined,
   ArrowLeftOutlined,
   LockOutlined,
+  UserOutlined,
 } from "@ant-design/icons";
 import { signInWithGoogle } from "../providers/AuthProvider.js";
 import axios from "axios";
@@ -23,7 +24,7 @@ function Auth() {
   const [loading, setLoading] = useState(false);
   const { isMobile } = useUser();
   const openNotification = useNotification();
-  const { login } = useAuth();
+  const { login, setOpenAuthModal } = useAuth();
 
   const toggleSignIn = () => {
     setIsSignIn((prev) => !prev);
@@ -39,15 +40,57 @@ function Auth() {
     form.resetFields();
   };
 
-  const handleSubmit = async (values) => {
+  const handleSubmit = async () => {
     setLoading(true);
     try {
-      console.log("Form values:", values);
-      // Handle email/password sign-in logic here
+      const values = await form.validateFields();
+
+      const payload = isSignIn
+        ? { email: values.email, password: values.password }
+        : { email: values.email, name: values.name, password: values.password };
+
+      const res = await axios.post(
+        `${
+          isSignIn
+            ? "https://sekani-properties-server.vercel.app/Sekani/sign-in"
+            : "https://sekani-properties-server.vercel.app/Sekani/sign-up"
+        }`,
+        payload
+      );
+
+      const { success, token, user } = res.data;
+
+      if (success) {
+        openNotification(
+          "success",
+          !isSignIn
+            ? "Your account has been created successfully. Proceed to login."
+            : "You are now logged in. Welcome to Sekani!",
+          "Success"
+        );
+        form.resetFields();
+        if (!isSignIn) {
+          setIsSignIn(true);
+          return;
+        }
+
+        const userDetails = {
+          displayName: user.name,
+          photoURL: user.avatar,
+          email: user.email,
+        };
+
+        login(userDetails, token);
+
+        setTimeout(() => {
+          setOpenAuthModal(false);
+        }, 2500);
+      }
     } catch (error) {
       console.error(error);
     } finally {
       setLoading(false);
+      form.resetFields();
     }
   };
 
@@ -312,6 +355,36 @@ function Auth() {
               layout="vertical"
               requiredMark={false}
             >
+              {/* name */}
+              <Form.Item
+                label={
+                  <Text
+                    strong
+                    style={{
+                      fontSize: 15,
+                      fontFamily: "Raleway",
+                      color: "#f2f4f8ff",
+                    }}
+                  >
+                    Name
+                  </Text>
+                }
+                name="name"
+                rules={[{ required: true, message: "Please enter your name" }]}
+              >
+                <Input
+                  prefix={<UserOutlined style={{ color: "#bdb890" }} />}
+                  placeholder="John Doe"
+                  size="large"
+                  style={{
+                    borderRadius: 12,
+                    fontFamily: "Raleway",
+                    border: "2px solid #e2e8f0",
+                    height: 48,
+                  }}
+                />
+              </Form.Item>
+
               {/* Email */}
               <Form.Item
                 label={
@@ -362,7 +435,7 @@ function Auth() {
                 name="password"
                 rules={[
                   { required: true, message: "Please enter your password" },
-                  { min: 6, message: "Password must be at least 6 characters" },
+                  { min: 8, message: "Password must be at least 8 characters" },
                 ]}
               >
                 <Input.Password
