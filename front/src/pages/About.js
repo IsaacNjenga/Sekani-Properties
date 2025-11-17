@@ -4,12 +4,6 @@ import SplitText from "../components/SplitText";
 import { useUser } from "../contexts/UserContext";
 
 const { Title, Paragraph } = Typography;
-const bgImg =
-  "https://images.pexels.com/photos/323780/pexels-photo-323780.jpeg";
-
-const img1 =
-  "https://images.pexels.com/photos/3288102/pexels-photo-3288102.png";
-const img2 = "https://images.pexels.com/photos/259950/pexels-photo-259950.jpeg";
 
 const heroStyle = {
   position: "absolute",
@@ -56,15 +50,18 @@ const title2 = {
 };
 
 function About() {
-  const { isMobile } = useUser()
+  const { isMobile } = useUser();
   return (
     <Motion>
       <div style={{ background: "whitesmoke" }}>
         <div style={{ position: "relative" }}>
           <Image
-            src={bgImg}
+            src={
+              "https://images.pexels.com/photos/323780/pexels-photo-323780.jpeg"
+            }
             alt="bgImg"
             width="100%"
+            loading="lazy"
             height={isMobile ? 900 : 700}
             preview={false}
             style={{ objectFit: "cover", maxWidth: "100%" }}
@@ -128,9 +125,12 @@ function About() {
 
             <Image
               preview={false}
-              src={img1}
+              src={
+                "https://images.pexels.com/photos/3288102/pexels-photo-3288102.png"
+              }
               alt="img_1"
               height={350}
+              loading="lazy"
               style={imgStyle}
               onMouseEnter={(e) =>
                 (e.currentTarget.style.transform = "scale(1.03)")
@@ -148,8 +148,11 @@ function About() {
           >
             <Image
               preview={false}
-              src={img2}
+              src={
+                "https://images.pexels.com/photos/259950/pexels-photo-259950.jpeg"
+              }
               alt="img_2"
+              loading="lazy"
               height={350}
               style={imgStyle}
               onMouseEnter={(e) =>

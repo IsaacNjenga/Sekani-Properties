@@ -164,6 +164,7 @@ function AllReviews() {
             width="100%"
             height="100%"
             preview={false}
+            loading="lazy"
             style={{
               objectFit: "cover",
               filter: "brightness(0.6)",

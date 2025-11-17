@@ -1,4 +1,4 @@
-import {  useState } from "react";
+import { useState } from "react";
 import Motion from "../components/Motion";
 import { Button, Card, Form, Image, Input, Timeline, Typography } from "antd";
 import {
@@ -14,9 +14,6 @@ import axios from "axios";
 import { useUser } from "../contexts/UserContext";
 
 const { Title, Paragraph, Text } = Typography;
-
-const bgImg =
-  "https://plus.unsplash.com/premium_photo-1661679385591-d51b10ebf581?w=900";
 
 const heroStyle = {
   position: "absolute",
@@ -259,8 +256,11 @@ function Contact() {
         {/* Hero Section */}
         <div style={{ position: "relative" }}>
           <Image
-            src={bgImg}
+            src={
+              "https://plus.unsplash.com/premium_photo-1661679385591-d51b10ebf581?w=900"
+            }
             alt="bgImg"
+            loading="lazy"
             width="100%"
             height={isMobile ? 600 : 500}
             preview={false}

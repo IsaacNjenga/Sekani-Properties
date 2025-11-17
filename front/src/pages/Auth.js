@@ -11,6 +11,8 @@ import {
 import { signInWithGoogle } from "../providers/AuthProvider.js";
 import axios from "axios";
 import { useUser } from "../contexts/UserContext/index.js";
+import { useNotification } from "../contexts/NotificationContext/index.js";
+import { useAuth } from "../contexts/AuthContext/index.js";
 
 const { Title, Text } = Typography;
 
@@ -20,6 +22,8 @@ function Auth() {
   const [showEmailForm, setShowEmailForm] = useState(false);
   const [loading, setLoading] = useState(false);
   const { isMobile } = useUser();
+  const openNotification = useNotification();
+  const { login } = useAuth();
 
   const toggleSignIn = () => {
     setIsSignIn((prev) => !prev);
@@ -51,7 +55,6 @@ function Auth() {
     setLoading(true);
     try {
       const { user, idToken } = await signInWithGoogle();
-      console.log(user);
 
       const res = await axios.post(
         "http://localhost:3001/Sekani/firebase-google-login",
@@ -59,11 +62,26 @@ function Auth() {
       );
 
       if (res.data.success) {
-        localStorage.setItem("token", res.data.token);
-        console.log("Logged in as:", res.data.user);
-      } else console.error(res.data.message);
+        const token = res.data.token;
+        login(user, token);
+        openNotification(
+          "success",
+          "You are now logged in. Welcome to Sekani!",
+          "Success"
+        );
+      } else
+        openNotification(
+          "error",
+          res.data.message,
+          "Something went wrong. Please try again or contact us for assistance"
+        );
     } catch (error) {
       console.error(error);
+      openNotification(
+        "error",
+        error.message,
+        "Something went wrong. Please try again or contact us for assistance"
+      );
     } finally {
       setLoading(false);
     }
@@ -372,7 +390,7 @@ function Auth() {
                       style={{
                         fontSize: 15,
                         fontFamily: "Raleway",
-                      color: "#f2f4f8ff",
+                        color: "#f2f4f8ff",
                       }}
                     >
                       Confirm Password

@@ -1,10 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { Button, Drawer, Layout, Menu } from "antd";
+import {
+  Avatar,
+  Button,
+  Drawer,
+  Layout,
+  Menu,
+  Tooltip,
+  Popconfirm,
+} from "antd";
 import { Link, Outlet } from "react-router-dom";
 import FooterContent from "./Footer";
 import { CloseOutlined, MenuOutlined } from "@ant-design/icons";
 import AuthModal from "./AuthModal";
 import { useUser } from "../contexts/UserContext";
+import { useAuth } from "../contexts/AuthContext";
 
 const { Header, Content, Footer } = Layout;
 
@@ -19,7 +28,10 @@ function Navbar() {
   const { darkMode, isMobile } = useUser();
   const [scrolled, setScrolled] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [openAuthModal, setOpenAuthModal] = useState(false);
+  const [confirmLoading, setConfirmLoading] = useState(false);
+  const [open, setOpen] = useState(false);
+  const { userLoggedIn, currentUser, openAuthModal, setOpenAuthModal, logout } =
+    useAuth();
 
   const toggleDrawer = () => setDrawerOpen(!drawerOpen);
 
@@ -123,7 +135,9 @@ function Navbar() {
                   display: "flex",
                   flexDirection: "row",
                   gap: 10,
-                  alignItems: "center",
+                  alignContent: "center",
+                  justifyContent: "center",
+                  height: "auto",
                 }}
               >
                 <div>
@@ -156,20 +170,76 @@ function Navbar() {
                   />
                 </div>
                 <div>
-                  <Button
-                    type="primary"
-                    onClick={handleAuth}
-                    style={{
-                      fontFamily: "Alegreya Sans",
-                      fontSize: 22,
-                      fontWeight: 300,
-                      color: "#ffffff",
-                      letterSpacing: 1.5,
-                      background: "#bdb890",
-                    }}
-                  >
-                    Sign In
-                  </Button>
+                  {userLoggedIn ? (
+                    <>
+                      <Tooltip title={currentUser.displayName}>
+                        <Popconfirm
+                          title="Logout"
+                          description="Are you sure you want to logout?"
+                          open={open}
+                          onConfirm={() => {
+                            setConfirmLoading(true);
+
+                            setTimeout(() => {
+                              logout();
+                              setOpen(false);
+                              setConfirmLoading(false);
+                            }, 1000);
+                          }}
+                          okButtonProps={{ loading: confirmLoading }}
+                          onCancel={() => setOpen(false)}
+                        >
+                          {currentUser?.photoURL ? (
+                            <Avatar
+                              size="50"
+                              onClick={() => {
+                                setOpen(true);
+                              }}
+                            >
+                              {currentUser?.displayName[0]}
+                            </Avatar>
+                          ) : (
+                            <Avatar
+                              size="50"
+                              onClick={() => {
+                                setOpen(true);
+                              }}
+                            >
+                              {currentUser?.displayName[0]}
+                            </Avatar>
+                          )}
+                        </Popconfirm>
+                      </Tooltip>
+                    </>
+                  ) : (
+                    <Button
+                      type="primary"
+                      onClick={handleAuth}
+                      style={{
+                        fontFamily: "Alegreya Sans",
+                        fontSize: 22,
+                        fontWeight: 300,
+                        color: "#ffffff",
+                        letterSpacing: 1.5,
+                        background: "linear-gradient(135deg, #bdb890, #a8a378)",
+                        border: "none",
+                        boxShadow: "0 4px 16px rgba(189, 184, 144, 0.3)",
+                        transition: "all 0.3s ease",
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.transform = "translateY(-2px)";
+                        e.currentTarget.style.boxShadow =
+                          "0 8px 24px rgba(189, 184, 144, 0.4)";
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.transform = "translateY(0)";
+                        e.currentTarget.style.boxShadow =
+                          "0 4px 16px rgba(189, 184, 144, 0.3)";
+                      }}
+                    >
+                      Sign In
+                    </Button>
+                  )}
                 </div>
               </div>
             )}

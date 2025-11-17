@@ -1,4 +1,4 @@
-import { onAuthStateChanged } from "firebase/auth";
+import { onAuthStateChanged, signOut } from "firebase/auth";
 import { createContext, useContext, useEffect, useState } from "react";
 import { auth } from "../../providers/FirebaseProvider";
 
@@ -11,7 +11,9 @@ export function useAuth() {
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(null);
   const [userLoggedIn, setUserLoggedIn] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [token, setToken] = useState(null);
+  const [openAuthModal, setOpenAuthModal] = useState(false);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, initializeUser);
@@ -29,7 +31,32 @@ export function AuthProvider({ children }) {
     setLoading(false);
   }
 
-  const value = { currentUser, userLoggedIn, loading };
+  function login(userData, userToken) {
+    setCurrentUser(userData);
+    setToken(userToken);
+    setUserLoggedIn(true);
+    localStorage.setItem("user", JSON.stringify(userData));
+    localStorage.setItem("token", userToken);
+  }
+
+  async function logout() {
+    await signOut(auth);
+    setCurrentUser(null);
+    setUserLoggedIn(false);
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
+  }
+
+  const value = {
+    currentUser,
+    userLoggedIn,
+    loading,
+    login,
+    logout,
+    token,
+    openAuthModal,
+    setOpenAuthModal,
+  };
 
   return (
     <AuthContext.Provider value={value}>

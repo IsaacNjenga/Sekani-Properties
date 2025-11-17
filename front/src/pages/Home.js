@@ -1,4 +1,4 @@
-import { lightTheme, } from "../App";
+import { lightTheme } from "../App";
 import {
   Avatar,
   Button,
@@ -85,56 +85,51 @@ const ctaBtn2Style = {
 
 const bgCarousel = [bgImg, bgImg2, bgImg3, bgImg4, bgImg5, bgImg6, bgImg7];
 
-const gridImg1 =
-  "https://images.unsplash.com/photo-1581858726788-75bc0f6a952d?w=900";
-const gridImg2 =
-  "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=900";
-const gridImg3 =
-  "https://images.unsplash.com/photo-1618220179428-22790b461013?w=900";
-
-const homeImg1 =
-  "https://plus.unsplash.com/premium_photo-1689609950112-d66095626efb?w=900";
-const homeImg2 =
-  "https://images.unsplash.com/photo-1518733057094-95b53143d2a7?w=900";
-const homeImg3 =
-  "https://plus.unsplash.com/premium_photo-1675537856917-d662fd1ddc3a?w=900";
-const homeImg4 =
-  "https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6?w=900";
-const homeImg5 =
-  "https://plus.unsplash.com/premium_photo-1676823570630-be7b7e1ce1bb?w=900";
-const homeImg6 =
-  "https://images.unsplash.com/photo-1602343168117-bb8ffe3e2e9f?w=900";
-
-const bannerImg =
-  "https://images.unsplash.com/photo-1503174971373-b1f69850bded?w=900";
-
-const avatar =
-  "https://plus.unsplash.com/premium_photo-1726768854379-105f9aeef18d?w=900";
-
 const gridData = [
-  { key: 1, img: gridImg1, text: "Featured Listings" },
-  { key: 2, img: gridImg2, text: "AirBnbs" },
-  { key: 3, img: gridImg3, text: "More" },
+  {
+    key: 1,
+    img: "https://images.unsplash.com/photo-1581858726788-75bc0f6a952d?w=900",
+    text: "Featured Listings",
+  },
+  {
+    key: 2,
+    img: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=900",
+    text: "AirBnbs",
+  },
+  {
+    key: 3,
+    img: "https://images.unsplash.com/photo-1618220179428-22790b461013?w=900",
+    text: "More",
+  },
 ];
 
 const cardData = [
   {
     key: 1,
-    img: [homeImg1, homeImg4],
+    img: [
+      "https://plus.unsplash.com/premium_photo-1689609950112-d66095626efb?w=900",
+      "https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6?w=900",
+    ],
     address: "780 Kiambu Rd, Kiambu",
     bedrooms: 3,
     price: 300000,
   },
   {
     key: 2,
-    img: [homeImg2, homeImg5],
+    img: [
+      "https://images.unsplash.com/photo-1518733057094-95b53143d2a7?w=",
+      "https://plus.unsplash.com/premium_photo-1676823570630-be7b7e1ce1bb?w=900",
+    ],
     address: "210 Muthaiga, Kiambu",
     bedrooms: 2,
     price: 100000,
   },
   {
     key: 3,
-    img: [homeImg3, homeImg6],
+    img: [
+      "https://plus.unsplash.com/premium_photo-1675537856917-d662fd1ddc3a?w=900",
+      "https://images.unsplash.com/photo-1602343168117-bb8ffe3e2e9f?w=900",
+    ],
     address: "491 Lavington, Nairobi",
     bedrooms: 2,
     price: 200000,
@@ -157,6 +152,7 @@ function Home() {
                 width="100%"
                 height={isMobile ? 350 : 700}
                 preview={false}
+                loading="lazy"
                 style={{
                   objectFit: isMobile ? "contain" : "cover",
                   maxWidth: "100%",
@@ -528,7 +524,9 @@ function Home() {
 
         <div style={{ position: "relative" }}>
           <Image
-            src={bannerImg}
+            src={
+              "https://images.unsplash.com/photo-1503174971373-b1f69850bded?w=900"
+            }
             alt="bgImg"
             width="100%"
             height={400}
@@ -559,7 +557,12 @@ function Home() {
                 gap: 10,
               }}
             >
-              <Avatar size={70} src={avatar} />
+              <Avatar
+                size={70}
+                src={
+                  "https://plus.unsplash.com/premium_photo-1726768854379-105f9aeef18d?w=900"
+                }
+              />
               <div>
                 <Text
                   style={{

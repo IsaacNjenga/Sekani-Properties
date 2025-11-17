@@ -28,13 +28,16 @@ import { useDrawer } from "../contexts/DrawerContext";
 import AddReview from "../pages/AddReviews";
 import Schedule from "../pages/Schedule";
 import { useUser } from "../contexts/UserContext";
+import { useAuth } from "../contexts/AuthContext";
+import AuthModal from "./AuthModal";
 
 const { Title, Text, Paragraph } = Typography;
 
 function PropertyModal({ openModal, setOpenModal, loading, content }) {
-  const { isMobile } = useUser()
+  const { isMobile } = useUser();
   const { toggleReview, openReview, openSchedule, toggleSchedule } =
     useDrawer();
+  const { userLoggedIn, openAuthModal, setOpenAuthModal } = useAuth();
   const navigate = useNavigate();
 
   // Calculate average rating
@@ -554,7 +557,13 @@ function PropertyModal({ openModal, setOpenModal, loading, content }) {
                     <Button
                       type="primary"
                       size="large"
-                      onClick={toggleReview}
+                      onClick={() => {
+                        if (userLoggedIn) {
+                          toggleReview();
+                        } else {
+                          setOpenAuthModal(true);
+                        }
+                      }}
                       style={{
                         background: "linear-gradient(135deg, #bdb890, #a8a378)",
                         border: "none",
@@ -684,7 +693,13 @@ function PropertyModal({ openModal, setOpenModal, loading, content }) {
                   size="large"
                   block
                   icon={<CalendarOutlined />}
-                  onClick={toggleSchedule}
+                  onClick={() => {
+                    if (userLoggedIn) {
+                      toggleSchedule();
+                    } else {
+                      setOpenAuthModal(true);
+                    }
+                  }}
                   style={{
                     background: "rgba(255,255,255,0.1)",
                     border: "1px solid rgba(255,255,255,0.3)",
@@ -704,10 +719,7 @@ function PropertyModal({ openModal, setOpenModal, loading, content }) {
         </Row>
       </div>
 
-      <Drawer 
-        open={openReview}
-        onClose={toggleReview}
-        placement="right">
+      <Drawer open={openReview} onClose={toggleReview} placement="right">
         <AddReview
           content={content}
           openReview={openReview}
@@ -716,10 +728,7 @@ function PropertyModal({ openModal, setOpenModal, loading, content }) {
         />
       </Drawer>
 
-      <Drawer 
-        open={openSchedule}
-        onClose={toggleSchedule}
-        placement="right">
+      <Drawer open={openSchedule} onClose={toggleSchedule} placement="right">
         <Schedule
           content={content}
           openSchedule={openSchedule}
@@ -727,6 +736,12 @@ function PropertyModal({ openModal, setOpenModal, loading, content }) {
           isMobile={isMobile}
         />
       </Drawer>
+
+      <AuthModal
+        openAuthModal={openAuthModal}
+        setOpenAuthModal={setOpenAuthModal}
+        isMobile={isMobile}
+      />
     </Modal>
   );
 }
