@@ -19,7 +19,7 @@ const { Title, Text } = Typography;
 
 function Auth() {
   const [form] = Form.useForm();
-  const [isSignIn, setIsSignIn] = useState(true);
+  const [isSignIn, setIsSignIn] = useState(false);
   const [showEmailForm, setShowEmailForm] = useState(false);
   const [loading, setLoading] = useState(false);
   const { isMobile } = useUser();
@@ -85,9 +85,21 @@ function Auth() {
         setTimeout(() => {
           setOpenAuthModal(false);
         }, 2500);
+      } else {
+        openNotification(
+          "error",
+          res.data.message,
+          "Something went wrong. Please try again or contact us for assistance"
+        );
       }
     } catch (error) {
       console.error(error);
+      const errorMessage = error?.data?.message || error?.message;
+      openNotification(
+        "error",
+        errorMessage,
+        "Something went wrong. Please try again or contact us for assistance"
+      );
     } finally {
       setLoading(false);
       form.resetFields();

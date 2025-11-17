@@ -190,7 +190,13 @@ function Navbar() {
                           onCancel={() => setOpen(false)}
                         >
                           {currentUser?.photoURL ? (
-                            <Avatar src={currentUser?.photoURL} size="50" />
+                            <Avatar
+                              src={currentUser?.photoURL}
+                              size="50"
+                              onClick={() => {
+                                setOpen(true);
+                              }}
+                            />
                           ) : (
                             <Avatar
                               size="50"

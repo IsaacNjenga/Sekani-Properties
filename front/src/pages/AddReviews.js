@@ -15,6 +15,7 @@ import {
   UserOutlined,
   EditOutlined,
   MessageOutlined,
+  MailOutlined,
 } from "@ant-design/icons";
 import { useNotification } from "../contexts/NotificationContext";
 import axios from "axios";
@@ -34,8 +35,8 @@ function AddReviews({ content, openReview, toggleReview, isMobile }) {
     try {
       const values = await form.validateFields();
       const allValues = { ...values, rating: value, propertyId: content?._id };
-      
-      console.log(allValues);
+
+      //console.log(allValues);
 
       const res = await axios.post("create-review", allValues);
       if (res.data.success) {
@@ -282,6 +283,41 @@ function AddReviews({ content, openReview, toggleReview, isMobile }) {
             }
             name="name"
             rules={[{ required: true, message: "Please enter your name" }]}
+          >
+            <Input
+              size="large"
+              style={{
+                borderRadius: 10,
+                fontFamily: "Raleway",
+                border: "2px solid #e2e8f0",
+              }}
+              onFocus={(e) => (e.target.style.borderColor = "#bdb890")}
+              onBlur={(e) => (e.target.style.borderColor = "#e2e8f0")}
+            />
+          </Form.Item>
+
+          {/* Email */}
+          <Form.Item
+            label={
+              <Space>
+                <MailOutlined style={{ color: "#bdb890" }} />
+                <Text
+                  strong
+                  style={{
+                    fontSize: 15,
+                    fontFamily: "Raleway",
+                    color: "#1e293b",
+                  }}
+                >
+                  Your Email Address
+                </Text>
+              </Space>
+            }
+            name="email"
+            rules={[
+              { required: true, message: "Please enter your email address" },
+              { type: "email", message: "Please enter a valid email" },
+            ]}
           >
             <Input
               size="large"
