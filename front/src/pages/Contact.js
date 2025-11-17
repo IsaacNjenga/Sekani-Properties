@@ -1,7 +1,6 @@
-import { useContext, useState } from "react";
+import {  useState } from "react";
 import Motion from "../components/Motion";
 import { Button, Card, Form, Image, Input, Timeline, Typography } from "antd";
-import { UserContext } from "../App";
 import {
   EnvironmentOutlined,
   MailOutlined,
@@ -12,6 +11,7 @@ import "../assets/css/contact.css";
 import SplitText from "../components/SplitText";
 import Swal from "sweetalert2";
 import axios from "axios";
+import { useUser } from "../contexts/UserContext";
 
 const { Title, Paragraph, Text } = Typography;
 
@@ -251,7 +251,7 @@ const ContactForm = () => {
 };
 
 function Contact() {
-  const { isMobile } = useContext(UserContext);
+  const { isMobile } = useUser();
 
   return (
     <Motion>

@@ -1,5 +1,4 @@
-import React, { useContext } from "react";
-import { lightTheme, UserContext } from "../App";
+import { lightTheme, } from "../App";
 import {
   Avatar,
   Button,
@@ -21,6 +20,7 @@ import bgImg4 from "../assets/images/bg4.jpeg";
 import bgImg5 from "../assets/images/bg5.jpeg";
 import bgImg6 from "../assets/images/bg6.jpeg";
 import bgImg7 from "../assets/images/bg7.jpeg";
+import { useUser } from "../contexts/UserContext";
 
 const { Title, Text, Paragraph } = Typography;
 
@@ -142,7 +142,7 @@ const cardData = [
 ];
 function Home() {
   const navigate = useNavigate();
-  const { isMobile } = useContext(UserContext);
+  const { isMobile } = useUser();
 
   return (
     <Motion>

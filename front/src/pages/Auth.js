@@ -9,9 +9,9 @@ import {
   GoogleOutlined,
   MailOutlined,
 } from "@ant-design/icons";
-import { useUser } from "../contexts/UserContext";
 import { signInWithGoogle } from "../providers/AuthProvider.js";
 import axios from "axios";
+import { useUser } from "../contexts/UserContext/index.js";
 
 const { Title, Text } = Typography;
 
@@ -27,7 +27,7 @@ const imgStyle = {
   left: 0,
   width: "100vw",
   height: "100vh",
-  objectFit: "contain", 
+  objectFit: "contain",
   background: "linear-gradient(to right, #d6a4df, #def7e4)",
 };
 
@@ -125,7 +125,10 @@ function Auth() {
     try {
       const { user, idToken } = await signInWithGoogle();
       console.log(user);
-      const res = await axios.post("firebase-google-login", { idToken });
+      const res = await axios.post(
+        "https://localhost:3001/Sekani/firebase-google-login",
+        { idToken }
+      );
 
       if (res.data.success) {
         localStorage.setItem("token", res.data.token); //store  jwt token

@@ -1,8 +1,7 @@
 import { Image, Typography } from "antd";
-import React, { useContext } from "react";
-import { UserContext } from "../App";
 import Motion from "../components/Motion";
 import SplitText from "../components/SplitText";
+import { useUser } from "../contexts/UserContext";
 
 const { Title, Paragraph } = Typography;
 const bgImg =
@@ -57,7 +56,7 @@ const title2 = {
 };
 
 function About() {
-  const { isMobile } = useContext(UserContext);
+  const { isMobile } = useUser()
   return (
     <Motion>
       <div style={{ background: "whitesmoke" }}>

@@ -4,18 +4,24 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
-import { DrawerProvider } from "./contexts/drawerContext";
-import { NotificationProvider } from "./contexts/notificationContext";
+import { DrawerProvider } from "./contexts/DrawerContext";
+import { NotificationProvider } from "./contexts/NotificationContext";
+import { UserProvider } from "./contexts/UserContext";
+import { AuthProvider } from "./contexts/AuthContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-      <DrawerProvider>
-        <NotificationProvider>
-          <App />
-        </NotificationProvider>
-      </DrawerProvider>
+      <UserProvider>
+        <AuthProvider>
+          <DrawerProvider>
+            <NotificationProvider>
+              <App />
+            </NotificationProvider>
+          </DrawerProvider>
+        </AuthProvider>
+      </UserProvider>
     </BrowserRouter>
   </React.StrictMode>
 );

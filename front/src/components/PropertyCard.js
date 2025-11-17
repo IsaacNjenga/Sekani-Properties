@@ -1,10 +1,11 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Card, Carousel, Button, Badge, Tag, Divider, Typography } from "antd";
-import { lightTheme, UserContext } from "../App";
+import { lightTheme } from "../App";
+import { useUser } from "../contexts/UserContext";
 const { Text, Title } = Typography;
 
 function PropertyCard({ c, viewProperty }) {
-  const { isMobile } = useContext(UserContext);
+  const { isMobile } = useUser();
   return (
     <Card
       hoverable
@@ -50,7 +51,7 @@ function PropertyCard({ c, viewProperty }) {
                   <img
                     src={img}
                     alt={c.key}
-                    loading='lazy'
+                    loading="lazy"
                     style={{
                       width: "100%",
                       height: 300,

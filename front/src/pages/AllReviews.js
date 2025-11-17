@@ -1,7 +1,6 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import Motion from "../components/Motion";
-import { UserContext } from "../App";
 import {
   Typography,
   Image,
@@ -29,8 +28,9 @@ import {
   ArrowLeftOutlined,
   CloseOutlined,
 } from "@ant-design/icons";
-import { useDrawer } from "../contexts/drawerContext";
+import { useDrawer } from "../contexts/DrawerContext";
 import AddReview from "./AddReviews";
+import { useUser } from "../contexts/UserContext";
 
 const { Title, Text, Paragraph } = Typography;
 
@@ -117,7 +117,7 @@ function AllReviews() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const { toggleReview, openReview } = useDrawer();
-  const { isMobile } = useContext(UserContext);
+  const { isMobile } = useUser();
   const id = searchParams.get("id");
   const [selectedRating, setSelectedRating] = useState("all");
   const [sortBy, setSortBy] = useState("latest");

@@ -22,7 +22,7 @@ import {
   TeamOutlined,
   MessageOutlined,
 } from "@ant-design/icons";
-import { useNotification } from "../contexts/notificationContext";
+import { useNotification } from "../contexts/NotificationContext";
 import dayjs from "dayjs";
 
 const { Title, Text } = Typography;

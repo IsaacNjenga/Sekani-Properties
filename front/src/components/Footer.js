@@ -1,4 +1,3 @@
-import React, { useContext } from "react";
 import logo from "../assets/images/logo3.png";
 import { Typography } from "antd";
 import {
@@ -9,14 +8,14 @@ import {
   PhoneOutlined,
   MailOutlined,
 } from "@ant-design/icons";
-import { UserContext } from "../App";
+import { useUser } from "../contexts/UserContext";
 
 const iconStyle = { fontSize: 30 };
 
 const { Title, Paragraph } = Typography;
 
 function FooterContent() {
-  const { isMobile } = useContext(UserContext);
+  const { isMobile } = useUser();
   return (
     <footer>
       <div

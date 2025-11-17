@@ -13,7 +13,6 @@ import {
   Button,
   Drawer,
 } from "antd";
-import { useContext } from "react";
 import {
   HomeOutlined,
   EnvironmentOutlined,
@@ -24,16 +23,16 @@ import {
   StarFilled,
   CloseOutlined,
 } from "@ant-design/icons";
-import { UserContext } from "../App";
 import { useNavigate } from "react-router-dom";
-import { useDrawer } from "../contexts/drawerContext";
+import { useDrawer } from "../contexts/DrawerContext";
 import AddReview from "../pages/AddReviews";
 import Schedule from "../pages/Schedule";
+import { useUser } from "../contexts/UserContext";
 
 const { Title, Text, Paragraph } = Typography;
 
 function PropertyModal({ openModal, setOpenModal, loading, content }) {
-  const { isMobile } = useContext(UserContext);
+  const { isMobile } = useUser()
   const { toggleReview, openReview, openSchedule, toggleSchedule } =
     useDrawer();
   const navigate = useNavigate();

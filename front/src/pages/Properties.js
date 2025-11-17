@@ -1,10 +1,4 @@
-import React, {
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-  useCallback,
-} from "react";
+import { useEffect, useMemo, useState, useCallback } from "react";
 import Motion from "../components/Motion";
 import {
   Typography,
@@ -16,7 +10,6 @@ import {
   Tag,
   Skeleton,
 } from "antd";
-import { UserContext } from "../App";
 import PropertyModal from "../components/PropertyModal.js";
 import { CloseOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
@@ -26,6 +19,7 @@ import emptyStreet from "../assets/images/empty_street.png";
 import useFetchAllProperties from "../hooks/fetchAllProperties.js";
 import PropertyCard from "../components/PropertyCard.js";
 import debounce from "lodash.debounce";
+import { useUser } from "../contexts/UserContext/index.js";
 
 const { Title } = Typography;
 const { Search } = Input;
@@ -72,7 +66,7 @@ function Properties() {
   const { properties, propertiesLoading, handleLoadMore } =
     useFetchAllProperties();
 
-  const { isMobile, filteredData, setFilteredData } = useContext(UserContext);
+  const { isMobile, filteredData, setFilteredData } = useUser();
 
   const [openModal, setOpenModal] = useState(false);
   const [content, setContent] = useState(null);

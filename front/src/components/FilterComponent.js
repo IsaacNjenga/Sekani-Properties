@@ -8,9 +8,9 @@ import {
   Card,
   Spin,
 } from "antd";
-import React, { useContext, useState } from "react";
-import { UserContext } from "../App";
+import { useState } from "react";
 import Swal from "sweetalert2";
+import { useUser } from "../contexts/UserContext";
 
 const { Title } = Typography;
 
@@ -96,7 +96,7 @@ const SectionHeader = ({ title, onClear }) => (
 );
 
 function FilterComponent({ realEstateData, setFilterApplied }) {
-  const { setFilteredData, setFilterCriteria } = useContext(UserContext);
+  const { setFilteredData, setFilterCriteria } = useUser();
   const [priceValue, setPriceValue] = useState(5000);
   const [location, setLocation] = useState([]);
   const [propertyType, setPropertyType] = useState("");
