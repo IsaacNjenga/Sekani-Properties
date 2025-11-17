@@ -16,7 +16,7 @@ import {
   EditOutlined,
   MessageOutlined,
 } from "@ant-design/icons";
-import { useNotification } from "../contexts/notificationContext";
+import { useNotification } from "../contexts/NotificationContext";
 
 const { Title, Text } = Typography;
 

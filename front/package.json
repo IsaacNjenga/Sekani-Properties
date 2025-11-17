@@ -12,6 +12,7 @@
     "antd": "^5.27.2",
     "axios": "^1.11.0",
     "date-fns": "^4.1.0",
+    "dayjs": "^1.11.19",
     "framer-motion": "^12.23.12",
     "gsap": "^3.13.0",
     "lodash.debounce": "^4.0.8",

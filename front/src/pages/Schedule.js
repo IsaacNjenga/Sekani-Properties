@@ -551,7 +551,7 @@ function Schedule({ content, openSchedule, toggleSchedule, isMobile }) {
                   <strong>Time:</strong> {selectedTime.format("HH:mm")} (24-hour
                   format)
                 </Text>
-                <Text
+                {/* <Text
                   style={{
                     fontFamily: "Raleway",
                     color: "#047857",
@@ -563,7 +563,7 @@ function Schedule({ content, openSchedule, toggleSchedule, isMobile }) {
                     .hour(selectedTime.hour())
                     .minute(selectedTime.minute())
                     .toISOString()}
-                </Text>
+                </Text> */}
               </Space>
             </Card>
           )}

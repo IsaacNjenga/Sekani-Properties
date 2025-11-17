@@ -195,18 +195,39 @@ const ContactForm = () => {
         onFinish={handleSubmit}
         requiredMark={false}
       >
-        <Form.Item label="" name="full_name" required>
+        <Form.Item
+          label=""
+          name="full_name"
+          rules={[{ required: true, message: "Please input your full name" }]}
+        >
           <Input placeholder="Your full name" style={inputStyle} />
         </Form.Item>
         <Form.Item
           label=""
           name="email_address"
-          required
           extra="We'll use this email to contact you"
+          rules={[
+            { required: true, message: "Please input your email address" },
+          ]}
         >
           <Input placeholder="Email address" type="email" style={inputStyle} />
         </Form.Item>
-        <Form.Item label="" name="message" required>
+
+        <Form.Item
+          label=""
+          name="subject"
+          rules={[{ required: true, message: "Please input a subject" }]}
+        >
+          <Input placeholder="Subject" style={inputStyle} />
+        </Form.Item>
+
+        <Form.Item
+          label=""
+          name="message"
+          rules={[
+            { required: true, message: "Please input your message here" },
+          ]}
+        >
           <Input.TextArea
             rows={5}
             placeholder="Message"
