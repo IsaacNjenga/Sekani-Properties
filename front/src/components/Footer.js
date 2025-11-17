@@ -60,8 +60,8 @@ function FooterContent() {
             Sekani is a cutting-edge real estate platform dedicated to making
             property transactions seamless and efficient. Whether you're looking
             to buy, sell, rent, or invest, Sekani provides the tools and
-            resources you need to make informed decisions in the real estate
-            market.
+            resources you need to make better informed decisions in the real
+            estate market.
           </Paragraph>
           <div
             style={{
