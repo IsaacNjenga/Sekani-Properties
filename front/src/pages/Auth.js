@@ -43,7 +43,7 @@ function Auth() {
     setLoading(true);
     try {
       console.log("Form values:", values);
-      // Handle email/password submission here
+      // Handle email/password sign-in logic here
     } catch (error) {
       console.error(error);
     } finally {
@@ -57,7 +57,7 @@ function Auth() {
       const { user, idToken } = await signInWithGoogle();
 
       const res = await axios.post(
-        "http://localhost:3001/Sekani/firebase-google-login",
+        "https://sekani-properties-server.vercel.app/Sekani/firebase-google-login",
         { idToken }
       );
 
