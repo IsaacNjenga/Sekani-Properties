@@ -2,11 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Drawer, Layout, Menu } from "antd";
 import { Link, Outlet } from "react-router-dom";
 import FooterContent from "./Footer";
-import {
-  CloseOutlined,
-  MenuOutlined,
-  PoweroffOutlined,
-} from "@ant-design/icons";
+import { CloseOutlined, MenuOutlined } from "@ant-design/icons";
 import AuthModal from "./AuthModal";
 import { useUser } from "../contexts/UserContext";
 
@@ -84,7 +80,7 @@ function Navbar() {
               }}
             >
               <img
-                src='https://res.cloudinary.com/dinsdfwod/image/upload/v1763372140/logo3_jdp77t.png'
+                src="https://res.cloudinary.com/dinsdfwod/image/upload/v1763372140/logo3_jdp77t.png"
                 alt="Logo"
                 style={{
                   width: scrolled ? 85 : isMobile ? 100 : 200,
@@ -122,7 +118,14 @@ function Navbar() {
                 />
               </div>
             ) : (
-              <div style={{ background: "red" }}>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  gap: 10,
+                  alignItems: "center",
+                }}
+              >
                 <div>
                   <Menu
                     theme={darkMode ? "dark" : "light"}
@@ -154,10 +157,19 @@ function Navbar() {
                 </div>
                 <div>
                   <Button
+                    type="primary"
                     onClick={handleAuth}
-                    shape="circle"
-                    icon={<PoweroffOutlined />}
-                  />
+                    style={{
+                      fontFamily: "Alegreya Sans",
+                      fontSize: 22,
+                      fontWeight: 300,
+                      color: "#ffffff",
+                      letterSpacing: 1.5,
+                      background: "#bdb890",
+                    }}
+                  >
+                    Sign In
+                  </Button>
                 </div>
               </div>
             )}
