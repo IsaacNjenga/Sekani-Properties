@@ -63,7 +63,7 @@ const tagsData = ["For Sale", "Airbnb", "For Rent", "Commercial", "Land"];
 function Properties() {
   const navigate = useNavigate();
   //const properties = RealEstateData;
-  const { properties, propertiesLoading, handleLoadMore } =
+  const { properties, propertiesLoading, handleLoadMore, propertiesRefresh } =
     useFetchAllProperties();
 
   const { isMobile, filteredData, setFilteredData } = useUser();
@@ -357,6 +357,7 @@ function Properties() {
         openModal={openModal}
         setOpenModal={setOpenModal}
         loading={loading}
+        propertiesRefresh={propertiesRefresh}
       />
     </Motion>
   );

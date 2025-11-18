@@ -12,6 +12,7 @@ import {
   Avatar,
   Button,
   Drawer,
+  Tooltip,
 } from "antd";
 import {
   HomeOutlined,
@@ -22,6 +23,8 @@ import {
   UserOutlined,
   StarFilled,
   CloseOutlined,
+  EditOutlined,
+  DeleteOutlined,
 } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { useDrawer } from "../contexts/DrawerContext";
@@ -30,15 +33,48 @@ import Schedule from "../pages/Schedule";
 import { useUser } from "../contexts/UserContext";
 import { useAuth } from "../contexts/AuthContext";
 import AuthModal from "./AuthModal";
+import EditReview from "../pages/EditReview";
+import { useState } from "react";
 
 const { Title, Text, Paragraph } = Typography;
 
-function PropertyModal({ openModal, setOpenModal, loading, content }) {
+function PropertyModal({
+  openModal,
+  setOpenModal,
+  loading,
+  content,
+  propertiesRefresh,
+}) {
   const { isMobile } = useUser();
-  const { toggleReview, openReview, openSchedule, toggleSchedule } =
-    useDrawer();
-  const { userLoggedIn, openAuthModal, setOpenAuthModal } = useAuth();
+  const {
+    toggleReview,
+    openReview,
+    openSchedule,
+    toggleSchedule,
+    toggleEditReview,
+    openEditReview,
+  } = useDrawer();
+  const { userLoggedIn, openAuthModal, setOpenAuthModal, currentUser } =
+    useAuth();
   const navigate = useNavigate();
+  const [editContent, setEditContent] = useState({});
+
+  const hasUserReviewed = content?.reviews?.some(
+    (r) => r.email === currentUser?.email
+  );
+
+  const editReview = (id) => {
+    if (userLoggedIn) {
+      const review = content?.reviews?.find((r) => r._id === id);
+      toggleEditReview();
+      setEditContent({
+        ...content,
+        reviews: review,
+      });
+    } else {
+      setOpenAuthModal(true);
+    }
+  };
 
   // Calculate average rating
   const averageRating =
@@ -463,7 +499,7 @@ function PropertyModal({ openModal, setOpenModal, loading, content }) {
                     size={16}
                     style={{ width: "100%" }}
                   >
-                    {content.reviews.slice(0, 3).map((review, idx) => (
+                    {content.reviews.slice(0, 2).map((review, idx) => (
                       <Card
                         key={idx}
                         style={{
@@ -511,12 +547,23 @@ function PropertyModal({ openModal, setOpenModal, loading, content }) {
                               {review.name}
                             </Text>
                           </div>
-                          <Rate
-                            disabled
-                            allowHalf
-                            value={review.rating}
-                            style={{ fontSize: 16 }}
-                          />
+                          <div
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: 8,
+                            }}
+                          >
+                            <Rate
+                              disabled
+                              allowHalf
+                              value={review.rating}
+                              style={{ fontSize: 16 }}
+                            />
+                            <Text style={{ fontSize: 14, color: "#bdb890" }}>
+                              ({review.rating})
+                            </Text>
+                          </div>
                         </div>
                         <Paragraph
                           style={{
@@ -528,6 +575,40 @@ function PropertyModal({ openModal, setOpenModal, loading, content }) {
                         >
                           {review.review}
                         </Paragraph>
+
+                        <div style={{ marginTop: 8 }}>
+                          {review.email === currentUser?.email ? (
+                            <div
+                              style={{
+                                display: "flex",
+                                gap: 10,
+                                justifyContent: "flex-end",
+                              }}
+                            >
+                              <Tooltip title="Edit your review">
+                                <Button
+                                  onClick={() => {
+                                    editReview(review._id);
+                                  }}
+                                  icon={<EditOutlined />}
+                                  type="primary"
+                                  shape="circle"
+                                />
+                              </Tooltip>
+                              <Tooltip title="Delete your review">
+                                <Button
+                                  icon={<DeleteOutlined />}
+                                  onClick={() =>
+                                    console.log("delete this review")
+                                  }
+                                  danger
+                                  type="primary"
+                                  shape="circle"
+                                />
+                              </Tooltip>
+                            </div>
+                          ) : null}
+                        </div>
                       </Card>
                     ))}
                   </Space>
@@ -541,7 +622,7 @@ function PropertyModal({ openModal, setOpenModal, loading, content }) {
                       justifyContent: isMobile ? "center" : "flex-start",
                     }}
                   >
-                    {content.reviews.length > 3 && (
+                    {content.reviews.length > 2 && (
                       <Button
                         size="large"
                         onClick={() => navigate(`/reviews?id=${content?._id}`)}
@@ -554,27 +635,47 @@ function PropertyModal({ openModal, setOpenModal, loading, content }) {
                         See All {content.reviews.length} Reviews
                       </Button>
                     )}
-                    <Button
-                      type="primary"
-                      size="large"
-                      onClick={() => {
-                        if (userLoggedIn) {
-                          toggleReview();
-                        } else {
-                          setOpenAuthModal(true);
-                        }
-                      }}
-                      style={{
-                        background: "linear-gradient(135deg, #bdb890, #a8a378)",
-                        border: "none",
-                        borderRadius: 10,
-                        fontFamily: "Raleway",
-                        fontWeight: 600,
-                        boxShadow: "0 4px 12px rgba(189, 184, 144, 0.3)",
-                      }}
-                    >
-                      Write a Review
-                    </Button>
+                    {hasUserReviewed ? (
+                      <Button
+                        type="text"
+                        size="large"
+                        style={{
+                          background:
+                            "linear-gradient(135deg, #bdb890, #a8a378)",
+                          border: "none",
+                          borderRadius: 10,
+                          fontFamily: "Raleway",
+                          fontWeight: 600,
+                          boxShadow: "0 4px 12px rgba(189, 184, 144, 0.3)",
+                          color: "white",
+                        }}
+                      >
+                        You have reviewed this property
+                      </Button>
+                    ) : (
+                      <Button
+                        type="primary"
+                        size="large"
+                        onClick={() => {
+                          if (userLoggedIn) {
+                            toggleReview();
+                          } else {
+                            setOpenAuthModal(true);
+                          }
+                        }}
+                        style={{
+                          background:
+                            "linear-gradient(135deg, #bdb890, #a8a378)",
+                          border: "none",
+                          borderRadius: 10,
+                          fontFamily: "Raleway",
+                          fontWeight: 600,
+                          boxShadow: "0 4px 12px rgba(189, 184, 144, 0.3)",
+                        }}
+                      >
+                        Write a Review
+                      </Button>
+                    )}
                   </div>
                 </>
               )}
@@ -725,6 +826,21 @@ function PropertyModal({ openModal, setOpenModal, loading, content }) {
           openReview={openReview}
           toggleReview={toggleReview}
           isMobile={isMobile}
+          propertiesRefresh={propertiesRefresh}
+        />
+      </Drawer>
+
+      <Drawer
+        open={openEditReview}
+        onClose={toggleEditReview}
+        placement="right"
+      >
+        <EditReview
+          content={editContent}
+          openEditReview={openEditReview}
+          toggleEditReview={toggleEditReview}
+          isMobile={isMobile}
+          propertiesRefresh={propertiesRefresh}
         />
       </Drawer>
 

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Form,
   Input,
@@ -22,19 +22,26 @@ import { useAuth } from "../contexts/AuthContext";
 const { Title, Text } = Typography;
 
 const desc = ["Terrible", "Bad", "Normal", "Good", "Wonderful"];
-
-function AddReviews({
+function EditReview({
   content,
-  openReview,
-  toggleReview,
+  toggleEditReview,
+  openEditReview,
   isMobile,
   propertiesRefresh,
 }) {
-  const [form] = Form.useForm();
   const openNotification = useNotification();
   const [loading, setLoading] = useState(false);
   const [value, setValue] = useState(0);
   const { currentUser } = useAuth();
+  const [form] = Form.useForm();
+  const reviewId = content?.reviews?._id;
+
+  useEffect(() => {
+    if (content) {
+      form.setFieldsValue({ ...content.reviews });
+      setValue(content.reviews.rating);
+    }
+  }, [content, form]);
 
   const handleSubmit = async () => {
     setLoading(true);
@@ -48,24 +55,23 @@ function AddReviews({
         email: currentUser?.email,
       };
 
-      //console.log(allValues);
+      console.log(allValues);
 
-      const res = await axios.post("create-review", allValues);
-      if (res.data.success) {
-        openNotification(
-          "success",
-          "Your feedback is highly appreciated",
-          "Thank you!"
-        );
+        const res = await axios.put(`update-review?id=${reviewId}`, allValues);
+        if (res.data.success) {
+          openNotification(
+            "success",
+            "Your feedback is highly appreciated",
+            "Thank you!"
+          );
 
-        // Close drawer after successful submission
-        setTimeout(() => {
-          toggleReview();
-          form.resetFields();
-          setValue(0);
-        }, 2500);
-        propertiesRefresh();
-      }
+          setTimeout(() => {
+            toggleEditReview();
+            form.resetFields();
+            setValue(0);
+          }, 2500);
+          propertiesRefresh();
+        }
     } catch (error) {
       console.error(error);
       openNotification(
@@ -80,8 +86,8 @@ function AddReviews({
 
   return (
     <Drawer
-      open={openReview}
-      onClose={toggleReview}
+      open={openEditReview}
+      onClose={toggleEditReview}
       width={isMobile ? "100%" : 700}
       placement="right"
       closeIcon={null}
@@ -108,7 +114,7 @@ function AddReviews({
         <Button
           type="text"
           icon={<CloseOutlined />}
-          onClick={toggleReview}
+          onClick={toggleEditReview}
           style={{
             position: "absolute",
             top: 16,
@@ -277,83 +283,6 @@ function AddReviews({
             </div>
           </Form.Item>
 
-          {/* <Row gutter={[32, 32]}>
-            <Col span={12}>
-              <Form.Item
-                label={
-                  <Space>
-                    <UserOutlined style={{ color: "#bdb890" }} />
-                    <Text
-                      strong
-                      style={{
-                        fontSize: 15,
-                        fontFamily: "Raleway",
-                        color: "#1e293b",
-                      }}
-                    >
-                      Your Name
-                    </Text>
-                  </Space>
-                }
-                name="name"
-                rules={[{ required: true, message: "Please enter your name" }]}
-              >
-                <Input
-                  placeholder={`${currentUser?.displayName}`}
-                  size="large"
-                  style={{
-                    borderRadius: 10,
-                    fontFamily: "Raleway",
-                    border: "2px solid #e2e8f0",
-                  }}
-                  onFocus={(e) => (e.target.style.borderColor = "#bdb890")}
-                  onBlur={(e) => (e.target.style.borderColor = "#e2e8f0")}
-                  value={currentUser?.displayName}
-                />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item
-                label={
-                  <Space>
-                    <MailOutlined style={{ color: "#bdb890" }} />
-                    <Text
-                      strong
-                      style={{
-                        fontSize: 15,
-                        fontFamily: "Raleway",
-                        color: "#1e293b",
-                      }}
-                    >
-                      Your Email Address
-                    </Text>
-                  </Space>
-                }
-                name="email"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please enter your email address",
-                  },
-                  { type: "email", message: "Please enter a valid email" },
-                ]}
-              >
-                <Input
-                  placeholder={`${currentUser?.email}`}
-                  size="large"
-                  style={{
-                    borderRadius: 10,
-                    fontFamily: "Raleway",
-                    border: "2px solid #e2e8f0",
-                  }}
-                  onFocus={(e) => (e.target.style.borderColor = "#bdb890")}
-                  onBlur={(e) => (e.target.style.borderColor = "#e2e8f0")}
-                  value={currentUser?.email}
-                />
-              </Form.Item>
-            </Col>
-          </Row> */}
-
           {/* Title */}
           <Form.Item
             label={
@@ -449,12 +378,12 @@ function AddReviews({
                   boxShadow: "0 4px 16px rgba(189, 184, 144, 0.4)",
                 }}
               >
-                {loading ? "Submitting..." : "Submit Review"}
+                {loading ? "Updating..." : "Update Review"}
               </Button>
               <Button
                 size="large"
                 block
-                onClick={toggleReview}
+                onClick={toggleEditReview}
                 style={{
                   borderRadius: 12,
                   height: 50,
@@ -474,4 +403,4 @@ function AddReviews({
   );
 }
 
-export default AddReviews;
+export default EditReview;
