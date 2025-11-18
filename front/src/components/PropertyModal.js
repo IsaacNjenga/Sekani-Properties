@@ -13,6 +13,7 @@ import {
   Button,
   Drawer,
   Tooltip,
+  Popconfirm,
 } from "antd";
 import {
   HomeOutlined,
@@ -35,6 +36,8 @@ import { useAuth } from "../contexts/AuthContext";
 import AuthModal from "./AuthModal";
 import EditReview from "../pages/EditReview";
 import { useState } from "react";
+import axios from "axios";
+import { useNotification } from "../contexts/NotificationContext";
 
 const { Title, Text, Paragraph } = Typography;
 
@@ -57,7 +60,10 @@ function PropertyModal({
   const { userLoggedIn, openAuthModal, setOpenAuthModal, currentUser } =
     useAuth();
   const navigate = useNavigate();
+  const openNotification = useNotification();
   const [editContent, setEditContent] = useState({});
+  const [open, setOpen] = useState(false);
+  const [confirmLoading, setConfirmLoading] = useState(false);
 
   const hasUserReviewed = content?.reviews?.some(
     (r) => r.email === currentUser?.email
@@ -71,6 +77,31 @@ function PropertyModal({
         ...content,
         reviews: review,
       });
+    } else {
+      setOpenAuthModal(true);
+    }
+  };
+
+  const deleteReview = async (id) => {
+    if (userLoggedIn) {
+      try {
+        const res = await axios.delete(`delete-review?id=${id}`);
+        if (res.data.success) {
+          openNotification(
+            "success",
+            "Your review has been deleted",
+            "Success!"
+          );
+          propertiesRefresh();
+        }
+      } catch (error) {
+        console.error(error);
+        openNotification(
+          "warning",
+          "Something went wrong. Please try again or contact us for assistance",
+          "There was an error..."
+        );
+      }
     } else {
       setOpenAuthModal(true);
     }
@@ -596,15 +627,31 @@ function PropertyModal({
                                 />
                               </Tooltip>
                               <Tooltip title="Delete your review">
-                                <Button
-                                  icon={<DeleteOutlined />}
-                                  onClick={() =>
-                                    console.log("delete this review")
-                                  }
-                                  danger
-                                  type="primary"
-                                  shape="circle"
-                                />
+                                <Popconfirm
+                                  title="Delete review?"
+                                  description="This action cannot be undone."
+                                  open={open}
+                                  onConfirm={() => {
+                                    setConfirmLoading(true);
+                                    setTimeout(() => {
+                                      deleteReview(review._id);
+                                      setOpen(false);
+                                      setConfirmLoading(false);
+                                    }, 1000);
+                                  }}
+                                  okButtonProps={{ loading: confirmLoading }}
+                                  onCancel={() => setOpen(false)}
+                                >
+                                  <Button
+                                    icon={<DeleteOutlined />}
+                                    onClick={() => {
+                                      setOpen(true);
+                                    }}
+                                    danger
+                                    type="primary"
+                                    shape="circle"
+                                  />
+                                </Popconfirm>
                               </Tooltip>
                             </div>
                           ) : null}
