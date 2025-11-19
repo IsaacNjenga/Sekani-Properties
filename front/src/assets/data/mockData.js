@@ -265,32 +265,26 @@ export const bookedDates = [
 export const bookedSchedules = [
   {
     date: "2025-11-20",
-
     bookedSlots: ["10:00", "15:00"],
   },
   {
     date: "2025-11-21",
-
     bookedSlots: ["10:00", "15:00"],
   },
   {
     date: "2025-11-22",
-
     bookedSlots: ["10:00", "15:00"],
   },
   {
     date: "2025-11-23",
-
     bookedSlots: ["10:00", "16:00"],
   },
   {
     date: "2025-11-24",
-
     bookedSlots: ["10:00", "15:00"],
   },
   {
     date: "2025-11-25",
-
     bookedSlots: ["10:00", "15:00"],
   },
   {
@@ -301,15 +295,4 @@ export const bookedSchedules = [
     date: "2025-11-27",
     bookedSlots: ["10:00", "12:00"],
   },
-];
-
-export const availableSlots = [
-  "9:00",
-  "10:00",
-  "11:00",
-  "12:00",
-  "14:00",
-  "15:00",
-  "16:00",
-  "17:00",
 ];

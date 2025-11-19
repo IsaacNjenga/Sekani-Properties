@@ -12,6 +12,7 @@ import {
   Alert,
   Row,
   Col,
+  Spin,
 } from "antd";
 import {
   CloseOutlined,
@@ -27,40 +28,71 @@ import { useNotification } from "../contexts/NotificationContext";
 import dayjs from "dayjs";
 import axios from "axios";
 import { format } from "date-fns";
-import { availableSlots, bookedSchedules } from "../assets/data/mockData";
 
 const { Title, Text } = Typography;
 const { TextArea } = Input;
+
+const availableSlots = [
+  "9:00",
+  "10:00",
+  "11:00",
+  "12:00",
+  "14:00",
+  "15:00",
+  "16:00",
+  "17:00",
+];
 
 function Schedule({ content, openSchedule, toggleSchedule, isMobile }) {
   const [form] = Form.useForm();
   const openNotification = useNotification();
   const [loading, setLoading] = useState(false);
+  const [dateLoading, setDateLoading] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedSchedule, setSelectedSchedule] = useState(null);
   const [slotsForTheDay, setSlotsForTheDay] = useState([]);
   const [bookedSlotsForTheDay, setBookedSlotsForTheDay] = useState([]);
 
-  const handleDateChange = (date) => {
+  const handleDateChange = async (date) => {
+    setDateLoading(true);
     setSelectedDate(date);
 
-    const key = date.format("YYYY-MM-DD");
+    try {
+      const res = await axios.get(
+        `schedule-bookings?date=${date.format("YYYY-MM-DD")}`
+      );
 
-    const schedule = bookedSchedules.find((item) => item.date === key);
+      if (res.data.success) {
+        const bookedSchedules = [res.data.bookedSchedules];
 
-    const booked = schedule ? schedule.bookedSlots : [];
-    const filteredSlots = availableSlots.filter(
-      (slot) => !booked.includes(slot)
-    );
+        const key = date.format("YYYY-MM-DD");
 
-    setSlotsForTheDay(filteredSlots);
-    setBookedSlotsForTheDay(booked);
+        const schedule = bookedSchedules.find((item) => item.date === key);
 
-    setSelectedSchedule(schedule || null);
+        const booked = schedule ? schedule.bookedSlots : [];
+        const filteredSlots = availableSlots.filter(
+          (slot) => !booked.includes(slot)
+        );
 
-    // reset selection
-    form.setFieldValue("time", undefined);
+        setSlotsForTheDay(filteredSlots);
+        setBookedSlotsForTheDay(booked);
+
+        setSelectedSchedule(schedule || null);
+
+        // reset selection
+        form.setFieldValue("time", undefined);
+      }
+    } catch (error) {
+      console.error(error);
+      openNotification(
+        "warning",
+        "Something went wrong. Please try again or contact us for assistance",
+        "There was an error..."
+      );
+    } finally {
+      setDateLoading(false);
+    }
   };
 
   const handleTimeChange = (time) => {
@@ -440,61 +472,72 @@ function Schedule({ content, openSchedule, toggleSchedule, isMobile }) {
               />
             </Form.Item>
 
-            {/* Time */}
-            {selectedDate && selectedSchedule && slotsForTheDay && (
-              <div style={{ marginBottom: 20 }}>
-                <Form.Item
-                  label={
-                    <Space>
-                      <ClockCircleOutlined style={{ color: "#bdb890" }} />
-                      <Text
-                        strong
-                        style={{
-                          fontSize: 15,
-                          fontFamily: "Raleway",
-                          color: "#1e293b",
-                        }}
-                      >
-                        Preferred Time
-                      </Text>
-                    </Space>
-                  }
-                  name="time"
-                >
-                  <Row gutter={10}>
-                    {availableSlots.map((slot, index) => {
-                      const isBooked = bookedSlotsForTheDay.includes(slot);
-                      return (
-                        <Col xs={16} md={12} lg={4} key={index}>
-                          <Button
-                            disabled={isBooked}
-                            style={{
-                              borderRadius: 10,
-                              marginBottom: 8,
-                              padding: "10px 18px",
-                              fontFamily: "Raleway",
-                              color: "white",
-                              background: isBooked
-                                ? "gray"
-                                : "linear-gradient(135deg, #bdb890, #a8a378)",
-                              opacity: isBooked ? 0.5 : 1,
-                              cursor: isBooked ? "not-allowed" : "pointer",
-                            }}
-                            onClick={() => !isBooked && handleTimeChange(slot)}
-                          >
-                            {slot}
-                          </Button>
-                        </Col>
-                      );
-                    })}
-                  </Row>
-                </Form.Item>
-
-                <Text style={{ marginTop: 0 }}>
-                  Selected Time: {selectedTime}
-                </Text>
+            {dateLoading && (
+              <div style={{ margin: "auto", width: "0%" }}>
+                <Spin />
               </div>
             )}
+
+            {/* Time */}
+            {selectedDate &&
+              selectedSchedule &&
+              slotsForTheDay &&
+              !dateLoading && (
+                <div style={{ marginBottom: 20 }}>
+                  <Form.Item
+                    label={
+                      <Space>
+                        <ClockCircleOutlined style={{ color: "#bdb890" }} />
+                        <Text
+                          strong
+                          style={{
+                            fontSize: 15,
+                            fontFamily: "Raleway",
+                            color: "#1e293b",
+                          }}
+                        >
+                          Preferred Time
+                        </Text>
+                      </Space>
+                    }
+                    name="time"
+                  >
+                    <Row gutter={10}>
+                      {availableSlots.map((slot, index) => {
+                        const isBooked = bookedSlotsForTheDay.includes(slot);
+                        return (
+                          <Col xs={8} md={8} lg={4} key={index}>
+                            <Button
+                              disabled={isBooked}
+                              style={{
+                                borderRadius: 10,
+                                marginBottom: 8,
+                                padding: "10px 18px",
+                                fontFamily: "Raleway",
+                                color: "white",
+                                background: isBooked
+                                  ? "gray"
+                                  : "linear-gradient(135deg, #bdb890, #a8a378)",
+                                opacity: isBooked ? 0.5 : 1,
+                                cursor: isBooked ? "not-allowed" : "pointer",
+                              }}
+                              onClick={() =>
+                                !isBooked && handleTimeChange(slot)
+                              }
+                            >
+                              {slot}
+                            </Button>
+                          </Col>
+                        );
+                      })}
+                    </Row>
+                  </Form.Item>
+
+                  <Text style={{ marginTop: 0 }}>
+                    Selected Time: {selectedTime}
+                  </Text>
+                </div>
+              )}
 
             {/* Number of People & Notes */}
             {selectedDate && selectedTime && (
