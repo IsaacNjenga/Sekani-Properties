@@ -7,10 +7,11 @@ import {
   Card,
   Space,
   DatePicker,
-  TimePicker,
   Input,
   Select,
   Alert,
+  Row,
+  Col,
 } from "antd";
 import {
   CloseOutlined,
@@ -25,6 +26,8 @@ import {
 import { useNotification } from "../contexts/NotificationContext";
 import dayjs from "dayjs";
 import axios from "axios";
+import { format } from "date-fns";
+import { availableSlots, bookedSchedules } from "../assets/data/mockData";
 
 const { Title, Text } = Typography;
 const { TextArea } = Input;
@@ -35,9 +38,29 @@ function Schedule({ content, openSchedule, toggleSchedule, isMobile }) {
   const [loading, setLoading] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
+  const [selectedSchedule, setSelectedSchedule] = useState(null);
+  const [slotsForTheDay, setSlotsForTheDay] = useState([]);
+  const [bookedSlotsForTheDay, setBookedSlotsForTheDay] = useState([]);
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
+
+    const key = date.format("YYYY-MM-DD");
+
+    const schedule = bookedSchedules.find((item) => item.date === key);
+
+    const booked = schedule ? schedule.bookedSlots : [];
+    const filteredSlots = availableSlots.filter(
+      (slot) => !booked.includes(slot)
+    );
+
+    setSlotsForTheDay(filteredSlots);
+    setBookedSlotsForTheDay(booked);
+
+    setSelectedSchedule(schedule || null);
+
+    // reset selection
+    form.setFieldValue("time", undefined);
   };
 
   const handleTimeChange = (time) => {
@@ -45,13 +68,20 @@ function Schedule({ content, openSchedule, toggleSchedule, isMobile }) {
   };
 
   const handleSubmit = async () => {
+    if (!selectedDate || !selectedTime) {
+      openNotification(
+        "error",
+        "Please select a date and time.",
+        "Validation Error"
+      );
+      return;
+    }
     setLoading(true);
     try {
       const values = await form.validateFields();
 
-      // Format date and time properly
-      const scheduledDate = selectedDate ? selectedDate.toISOString() : null;
-      const scheduledTime = selectedTime ? selectedTime.format("HH:mm") : null;
+      const scheduledDate = format(new Date(selectedDate), "yyyy-MM-dd");
+      const scheduledTime = selectedTime;
 
       const allValues = {
         ...values,
@@ -60,7 +90,7 @@ function Schedule({ content, openSchedule, toggleSchedule, isMobile }) {
         propertyId: content?._id,
       };
 
-      console.log("Scheduled Viewing:", allValues);
+      //console.log("Scheduled Viewing:", allValues);
 
       const res = await axios.post("create-schedule", allValues);
       if (res.data.success) {
@@ -89,7 +119,7 @@ function Schedule({ content, openSchedule, toggleSchedule, isMobile }) {
     }
   };
 
-  // Disable past dates
+  // Disable past dates & booked dates
   const disabledDate = (current) => {
     return current && current < dayjs().startOf("day");
   };
@@ -411,115 +441,140 @@ function Schedule({ content, openSchedule, toggleSchedule, isMobile }) {
             </Form.Item>
 
             {/* Time */}
-            <Form.Item
-              label={
-                <Space>
-                  <ClockCircleOutlined style={{ color: "#bdb890" }} />
-                  <Text
-                    strong
-                    style={{
-                      fontSize: 15,
-                      fontFamily: "Raleway",
-                      color: "#1e293b",
-                    }}
-                  >
-                    Preferred Time
-                  </Text>
-                </Space>
-              }
-              name="time"
-              rules={[{ required: true, message: "Please select a time" }]}
-            >
-              <TimePicker
-                onChange={handleTimeChange}
-                format="HH:mm"
-                size="large"
-                style={{
-                  width: "100%",
-                  borderRadius: 10,
-                  fontFamily: "Raleway",
-                  border: "2px solid #e2e8f0",
-                }}
-                placeholder="Select viewing time"
-                minuteStep={15}
-              />
-            </Form.Item>
+            {selectedDate && selectedSchedule && slotsForTheDay && (
+              <div style={{ marginBottom: 20 }}>
+                <Form.Item
+                  label={
+                    <Space>
+                      <ClockCircleOutlined style={{ color: "#bdb890" }} />
+                      <Text
+                        strong
+                        style={{
+                          fontSize: 15,
+                          fontFamily: "Raleway",
+                          color: "#1e293b",
+                        }}
+                      >
+                        Preferred Time
+                      </Text>
+                    </Space>
+                  }
+                  name="time"
+                >
+                  <Row gutter={10}>
+                    {availableSlots.map((slot, index) => {
+                      const isBooked = bookedSlotsForTheDay.includes(slot);
+                      return (
+                        <Col xs={16} md={12} lg={4} key={index}>
+                          <Button
+                            disabled={isBooked}
+                            style={{
+                              borderRadius: 10,
+                              marginBottom: 8,
+                              padding: "10px 18px",
+                              fontFamily: "Raleway",
+                              color: "white",
+                              background: isBooked
+                                ? "gray"
+                                : "linear-gradient(135deg, #bdb890, #a8a378)",
+                              opacity: isBooked ? 0.5 : 1,
+                              cursor: isBooked ? "not-allowed" : "pointer",
+                            }}
+                            onClick={() => !isBooked && handleTimeChange(slot)}
+                          >
+                            {slot}
+                          </Button>
+                        </Col>
+                      );
+                    })}
+                  </Row>
+                </Form.Item>
 
-            {/* Number of People */}
-            <Form.Item
-              label={
-                <Space>
-                  <TeamOutlined style={{ color: "#bdb890" }} />
-                  <Text
-                    strong
-                    style={{
-                      fontSize: 15,
-                      fontFamily: "Raleway",
-                      color: "#1e293b",
-                    }}
-                  >
-                    Number of People Attending
-                  </Text>
-                </Space>
-              }
-              name="numberOfPeople"
-              initialValue={1}
-              rules={[
-                {
-                  required: true,
-                  message: "Please select number of attendees",
-                },
-              ]}
-            >
-              <Select
-                size="large"
-                style={{
-                  borderRadius: 10,
-                  fontFamily: "Raleway",
-                }}
-                options={[
-                  { label: "Just me", value: 1 },
-                  { label: "2 people", value: 2 },
-                  { label: "3 people", value: 3 },
-                  { label: "4 people", value: 4 },
-                  { label: "5+ people", value: 5 },
-                ]}
-              />
-            </Form.Item>
+                <Text style={{ marginTop: 0 }}>
+                  Selected Time: {selectedTime}
+                </Text>
+              </div>
+            )}
 
-            {/* Additional Notes */}
-            <Form.Item
-              label={
-                <Space>
-                  <MessageOutlined style={{ color: "#bdb890" }} />
-                  <Text
-                    strong
+            {/* Number of People & Notes */}
+            {selectedDate && selectedTime && (
+              <>
+                <Form.Item
+                  label={
+                    <Space>
+                      <TeamOutlined style={{ color: "#bdb890" }} />
+                      <Text
+                        strong
+                        style={{
+                          fontSize: 15,
+                          fontFamily: "Raleway",
+                          color: "#1e293b",
+                        }}
+                      >
+                        Number of People Attending
+                      </Text>
+                    </Space>
+                  }
+                  name="numberOfPeople"
+                  initialValue={1}
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please select number of attendees",
+                    },
+                  ]}
+                >
+                  <Select
+                    size="large"
                     style={{
-                      fontSize: 15,
+                      borderRadius: 10,
                       fontFamily: "Raleway",
-                      color: "#1e293b",
                     }}
-                  >
-                    Additional Notes (Optional)
-                  </Text>
-                </Space>
-              }
-              name="notes"
-            >
-              <TextArea
-                placeholder="Any special requests or questions? (e.g., parking requirements, specific areas of interest)"
-                rows={4}
-                maxLength={300}
-                showCount
-                style={{
-                  borderRadius: 10,
-                  fontFamily: "Raleway",
-                  border: "2px solid #e2e8f0",
-                  fontSize: 15,
-                  resize: "none",
-                }}
-              />
-            </Form.Item>
+                    options={[
+                      { label: "Just me", value: 1 },
+                      { label: "2 people", value: 2 },
+                      { label: "3 people", value: 3 },
+                      { label: "4 people", value: 4 },
+                      { label: "5+ people", value: 5 },
+                    ]}
+                  />
+                </Form.Item>
+
+                {/* Additional Notes */}
+                <Form.Item
+                  label={
+                    <Space>
+                      <MessageOutlined style={{ color: "#bdb890" }} />
+                      <Text
+                        strong
+                        style={{
+                          fontSize: 15,
+                          fontFamily: "Raleway",
+                          color: "#1e293b",
+                        }}
+                      >
+                        Additional Notes (Optional)
+                      </Text>
+                    </Space>
+                  }
+                  name="notes"
+                >
+                  <TextArea
+                    placeholder="Any special requests or questions? (e.g., parking requirements, specific areas of interest)"
+                    rows={4}
+                    maxLength={300}
+                    showCount
+                    style={{
+                      borderRadius: 10,
+                      fontFamily: "Raleway",
+                      border: "2px solid #e2e8f0",
+                      fontSize: 15,
+                      resize: "none",
+                    }}
+                  />
+                </Form.Item>
+              </>
+            )}
           </div>
 
           {/* Summary Display */}
@@ -552,21 +607,8 @@ function Schedule({ content, openSchedule, toggleSchedule, isMobile }) {
                   {selectedDate.format("dddd, MMMM D, YYYY")}
                 </Text>
                 <Text style={{ fontFamily: "Raleway", color: "#047857" }}>
-                  <strong>Time:</strong> {selectedTime.format("HH:mm")}
+                  <strong>Time:</strong> {selectedTime}
                 </Text>
-                {/* <Text
-                  style={{
-                    fontFamily: "Raleway",
-                    color: "#047857",
-                    fontSize: 12,
-                  }}
-                >
-                  ISO DateTime:{" "}
-                  {dayjs(selectedDate)
-                    .hour(selectedTime.hour())
-                    .minute(selectedTime.minute())
-                    .toISOString()}
-                </Text> */}
               </Space>
             </Card>
           )}
@@ -578,6 +620,7 @@ function Schedule({ content, openSchedule, toggleSchedule, isMobile }) {
                 type="primary"
                 htmlType="submit"
                 loading={loading}
+                disabled={!selectedDate || !selectedTime}
                 size="large"
                 block
                 style={{

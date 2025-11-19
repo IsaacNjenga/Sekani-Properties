@@ -1,7 +1,6 @@
 export const RealEstateData = [
   {
     _id: 1,
-    listingId: "KEN-001",
     address: "15 Peponi Road, Westlands",
     city: "Nairobi",
     state: "Nairobi County",
@@ -30,13 +29,10 @@ export const RealEstateData = [
       "https://images.unsplash.com/photo-1560185127-59e4420e2c93?w=900",
     ],
     agent: { name: "Mary Wanjiku", phone: "+254712345678" },
-    rating: 4.5,
+
     reviews: [
       { name: "Susan K", rating: 4.5, review: "Great place to live" },
       { name: "John N", rating: 4.5, review: "Great place to stay" },
-      { name: "Jane N", rating: 3.5, review: "Great place to stay" },
-      { name: "Alex P", rating: 5, review: "Great place to stay" },
-      { name: "Clair M", rating: 4, review: "Great place to stay" },
     ],
   },
   {
@@ -257,26 +253,63 @@ export const RealEstateData = [
   },
 ];
 
-// {
-//     "address": "Ruiru Kamakis, Eastern Bypass",
-//     "city": "Ruiru",
-//     "county": "Kiambu County",
-//     "zip": "00900",
-//     "price": 3500000,
-//     "bedrooms": 0,
-//     "bathrooms": 0,
-//     "squareFeet": null,
-//     "yearBuilt": null,
-//     "propertyType": "Land",
-//     "listingType": "Land",
-//     "furnished": false,
-//     "paymentOptions": ["Cash", "Installments"],
-//     "description":
-//       "1/8th acre prime plot located in the fast-developing Kamakis area, ideal for residential or commercial development.",
-//     "amenities": ["Ready Title Deed", "Electricity on Site", "Water on Site"],
-//     "nearby": ["Eastern Bypass", "Quickmart Kamakis", "Kenya Power Offices"],
-//     "status": "Available",
-//     "img": ["https://images.unsplash.com/photo-1618606338706-fc3bad33dbe6?w=900"],
-//     "agent": { "name": "Susan Kariuki", "phone": "+254734555666" },
-//     "createdBy":"68dba3d8f24a6e8df343f415"
-//   }
+export const bookedDates = [
+  "2025-11-20",
+  "2025-11-21",
+  "2025-11-22",
+  "2025-11-23",
+  "2025-11-24",
+  "2025-11-25",
+];
+
+export const bookedSchedules = [
+  {
+    date: "2025-11-20",
+
+    bookedSlots: ["10:00", "15:00"],
+  },
+  {
+    date: "2025-11-21",
+
+    bookedSlots: ["10:00", "15:00"],
+  },
+  {
+    date: "2025-11-22",
+
+    bookedSlots: ["10:00", "15:00"],
+  },
+  {
+    date: "2025-11-23",
+
+    bookedSlots: ["10:00", "16:00"],
+  },
+  {
+    date: "2025-11-24",
+
+    bookedSlots: ["10:00", "15:00"],
+  },
+  {
+    date: "2025-11-25",
+
+    bookedSlots: ["10:00", "15:00"],
+  },
+  {
+    date: "2025-11-26",
+    bookedSlots: ["10:00", "14:00"],
+  },
+  {
+    date: "2025-11-27",
+    bookedSlots: ["10:00", "12:00"],
+  },
+];
+
+export const availableSlots = [
+  "9:00",
+  "10:00",
+  "11:00",
+  "12:00",
+  "14:00",
+  "15:00",
+  "16:00",
+  "17:00",
+];
