@@ -1,3 +1,6 @@
+import sekaniVid from "../assets/videos/sekani.mp4";
+import sekaniVid2 from "../assets/videos/sekani2.mp4";
+
 export const RealEstateData = [
   {
     _id: 1,
@@ -24,12 +27,12 @@ export const RealEstateData = [
     ],
     nearby: ["Sarit Centre", "Westgate Mall", "Nairobi International School"],
     status: "Available",
+    vid: [sekaniVid, sekaniVid2],
     img: [
       "https://images.unsplash.com/photo-1694457269860-b7926c29e008?w=900",
       "https://images.unsplash.com/photo-1560185127-59e4420e2c93?w=900",
     ],
     agent: { name: "Mary Wanjiku", phone: "+254712345678" },
-
     reviews: [
       { name: "Susan K", rating: 4.5, review: "Great place to live" },
       { name: "John N", rating: 4.5, review: "Great place to stay" },
@@ -56,13 +59,13 @@ export const RealEstateData = [
     amenities: ["Swimming Pool", "Gym", "24/7 Security", "High-Speed Lifts"],
     nearby: ["Yaya Centre", "Nairobi Hospital", "French School"],
     status: "Available",
+    vid: [sekaniVid, sekaniVid2],
     img: [
       "https://images.unsplash.com/photo-1631901999319-efd71a712378?w=900",
       "https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?w=900",
       "https://plus.unsplash.com/premium_photo-1689609950071-af404daa58a0?w=900",
     ],
     agent: { name: "John Otieno", phone: "+254701234567" },
-    rating: 4.5,
     reviews: [
       { name: "Susan K", rating: 4.5, review: "Great place to live" },
       { name: "John N", rating: 4.5, review: "Great place to stay" },
@@ -97,12 +100,11 @@ export const RealEstateData = [
     ],
     nearby: ["Nyali Beach", "City Mall", "Aga Khan Hospital"],
     status: "Under Offer",
+    vid: [sekaniVid, sekaniVid2],
     img: [
       "https://plus.unsplash.com/premium_photo-1689609950069-2961f80b1e70?w=900",
     ],
     agent: { name: "Fatma Said", phone: "+254733222111" },
-    rating: 4.5,
-
     reviews: [
       { name: "Susan K", rating: 4.5, review: "Great place to live" },
       { name: "John N", rating: 4.5, review: "Great place to stay" },
@@ -137,13 +139,12 @@ export const RealEstateData = [
     ],
     nearby: ["Lake Basin Mall", "Maseno University Kisumu Campus"],
     status: "Pending",
+    vid: [sekaniVid, sekaniVid2],
     img: [
       "https://images.unsplash.com/photo-1502005097973-6a7082348e28?w=900",
       "https://images.unsplash.com/photo-1518733057094-95b53143d2a7?w=900",
     ],
     agent: { name: "Peter Oloo", phone: "+254720987654" },
-    rating: 4.5,
-
     reviews: [
       { name: "Susan K", rating: 4.5, review: "Great place to live" },
       { name: "John N", rating: 4.5, review: "Great place to stay" },
@@ -173,10 +174,9 @@ export const RealEstateData = [
     amenities: ["WiFi", "Smart TV", "Fully Equipped Kitchen", "24/7 Security"],
     nearby: ["Yaya Centre", "Adlife Plaza", "Nairobi Hospital"],
     status: "Available",
+    vid: [sekaniVid, sekaniVid2],
     img: ["https://images.unsplash.com/photo-1643665592005-843f3f6b4ece?w=900"],
     agent: { name: "James Mwangi", phone: "+254719876543" },
-    rating: 4.5,
-
     reviews: [
       { name: "Susan K", rating: 4.5, review: "Great place to live" },
       { name: "John N", rating: 4.5, review: "Great place to stay" },
@@ -206,10 +206,9 @@ export const RealEstateData = [
     amenities: ["Parking", "Backup Generator", "Elevator", "Security"],
     nearby: ["Fort Jesus", "Moi Avenue Bus Station", "Banking Halls"],
     status: "Available",
+    vid: [sekaniVid, sekaniVid2],
     img: ["https://images.unsplash.com/photo-1695222322544-8d389d2dc43d?w=900"],
     agent: { name: "Ali Yusuf", phone: "+254722111333" },
-    rating: 4.5,
-
     reviews: [
       { name: "Susan K", rating: 4.5, review: "Great place to live" },
       { name: "John N", rating: 4.5, review: "Great place to stay" },
@@ -239,10 +238,9 @@ export const RealEstateData = [
     amenities: ["Ready Title Deed", "Electricity on Site", "Water on Site"],
     nearby: ["Eastern Bypass", "Quickmart Kamakis", "Kenya Power Offices"],
     status: "Available",
+    vid: [sekaniVid, sekaniVid2],
     img: ["https://images.unsplash.com/photo-1618606338706-fc3bad33dbe6?w=900"],
     agent: { name: "Susan Kariuki", phone: "+254734555666" },
-    rating: 4.5,
-
     reviews: [
       { name: "Susan K", rating: 4.5, review: "Great place to live" },
       { name: "John N", rating: 4.5, review: "Great place to stay" },

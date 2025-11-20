@@ -8,6 +8,7 @@ import { AnimatePresence } from "framer-motion";
 import ScrollToTop from "./components/ScrollToTop";
 import axios from "axios";
 import AllReviews from "./pages/AllReviews";
+import TrialPage from "./pages/TrialPage";
 
 export const lightTheme = {
   backgroundColor: "#f2f5fa",
@@ -40,6 +41,7 @@ function App() {
             <Route path="/properties" element={<Properties />} />
             <Route path="/about" element={<About />} />
             <Route path="/reviews" element={<AllReviews />} />
+            <Route path="/trial" element={<TrialPage />} />
           </Route>
         </Routes>
       </AnimatePresence>

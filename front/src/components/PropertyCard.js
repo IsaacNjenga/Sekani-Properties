@@ -2,6 +2,7 @@ import React from "react";
 import { Card, Carousel, Button, Badge, Tag, Divider, Typography } from "antd";
 import { lightTheme } from "../App";
 import { useUser } from "../contexts/UserContext";
+
 const { Text, Title } = Typography;
 
 function PropertyCard({ c, viewProperty }) {
@@ -40,6 +41,9 @@ function PropertyCard({ c, viewProperty }) {
               fontFamily: "Raleway",
             }}
           >
+            {/* <video style={videoStyle} muted autoPlay loop playsInline>
+              <source src={SekaniVid} type="video/mp4" />
+            </video> */}
             <Carousel
               autoplay
               autoplaySpeed={3800}

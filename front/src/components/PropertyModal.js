@@ -38,6 +38,9 @@ import EditReview from "../pages/EditReview";
 import { useState } from "react";
 import axios from "axios";
 import { useNotification } from "../contexts/NotificationContext";
+import sekaniVid from "../assets/videos/sekani.mp4";
+import sekaniVid2 from "../assets/videos/sekani2.mp4";
+import VideoCarousel from "./VideoCarousel";
 
 const { Title, Text, Paragraph } = Typography;
 
@@ -145,10 +148,6 @@ function PropertyModal({
         body: {
           maxHeight: isMobile ? "100vh" : "90vh",
           overflowY: "auto",
-          // padding: 0,
-          // background: "linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)",
-          // borderRadius: 16,
-          // overflow: "hidden",
         },
       }}
     >
@@ -156,65 +155,81 @@ function PropertyModal({
       <div
         style={{
           position: "relative",
-          width: isMobile ? "100%" : "50%",
-          maxWidth: isMobile ? 700 : "100vh",
+          width: "100%",
+          maxWidth: isMobile ? 700 : "100%",
           height: isMobile ? 500 : "100vh",
           background: "transparent",
           margin: "auto",
           padding: 10,
         }}
       >
-        <Carousel
-          autoplay
-          autoplaySpeed={4200}
-          arrows={!isMobile}
-          dotPosition="bottom"
-        >
-          {Array.isArray(content?.img) && content?.img.length > 0 ? (
-            content.img.map((img, index) => (
-              <div
-                key={index}
-                style={{
-                  position: "relative",
-                }}
+        <Row gutter={[32, 32]} align="center">
+          <Col
+            xs={24}
+            lg={12}
+            style={{
+              width: "100%",
+              height: isMobile ? 300 : "100vh",
+              overflow: "hidden",
+              borderRadius: 18,
+            }}
+          >
+            <VideoCarousel content={[sekaniVid, sekaniVid2]} />           
+          </Col>
+
+          <Col
+            xs={24}
+            lg={12}
+            style={{
+              width: "100%",
+              height: isMobile ? 300 : "100vh",
+              overflow: "hidden",
+              borderRadius: 18,
+            }}
+          >
+            <div
+              style={{
+                borderRadius: 20,
+              }}
+            >
+              <Carousel
+                autoplay
+                autoplaySpeed={4200}
+                arrows={!isMobile}
+                dotPosition="bottom"
               >
-                <Image
-                  src={img}
-                  alt={content?.listingId}
-                  loading="lazy"
-                  height={isMobile ? 500 : "100vh"}
-                  width={isMobile ? 700 : "100vh"}
-                  preview={{
-                    mask: "View Full Size",
-                  }}
-                  style={{
-                    width: isMobile ? "100%" : "100vh",
-                    maxHeight: isMobile ? "100%" : "100vh",
-                    objectFit: "contain",
-                  }}
-                />
-              </div>
-            ))
-          ) : (
-            <div style={{ position: "relative" }}>
-              <Image
-                src={content?.img}
-                alt={content?.listingId}
-                loading="lazy"
-                height={isMobile ? 300 : 800}
-                width={isMobile ? 300 : 800}
-                preview={{
-                  mask: "View Full Size",
-                }}
-                style={{
-                  width: "auto",
-                  maxHeight: "100%",
-                  objectFit: "contain",
-                }}
-              />
+                {(Array.isArray(content?.img)
+                  ? content.img
+                  : [content?.img]
+                ).map((img, index) => (
+                  <div
+                    key={index}
+                    style={{
+                      width: "100%",
+                      height: isMobile ? 300 : "100vh",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      overflow: "hidden",
+                      borderRadius: 18,
+                    }}
+                  >
+                    <Image
+                      src={img}
+                      alt={content?.listingId}
+                      preview={{ mask: "View Full Size" }}
+                      style={{
+                        width: "100vh",
+                        height: "100vh",
+                        objectFit: "contain",
+                      }}
+                    />
+                  </div>
+                ))}
+              </Carousel>
             </div>
-          )}
-        </Carousel>
+          </Col>
+        </Row>
       </div>
 
       {/* Content Section */}
