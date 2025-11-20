@@ -14,6 +14,7 @@ import {
   Drawer,
   Tooltip,
   Popconfirm,
+  Tabs,
 } from "antd";
 import {
   HomeOutlined,
@@ -26,6 +27,8 @@ import {
   CloseOutlined,
   EditOutlined,
   DeleteOutlined,
+  PictureOutlined,
+  PlayCircleOutlined,
 } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { useDrawer } from "../contexts/DrawerContext";
@@ -151,89 +154,136 @@ function PropertyModal({
         },
       }}
     >
-      {/* Hero Image Section */}
       <div
         style={{
           position: "relative",
-          width: "100%",
-          maxWidth: isMobile ? 700 : "100%",
-          height: isMobile ? 500 : "100vh",
-          background: "transparent",
-          margin: "auto",
-          padding: 10,
+          background: "#000",
+          height: "100vh",
+          width: "auto",
         }}
       >
-        <Row gutter={[32, 32]} align="center">
-          <Col
-            xs={24}
-            lg={12}
+        <div style={{ width: "100%" }}>
+          <Tabs
+            defaultActiveKey="images"
+            centered
             style={{
-              width: "100%",
-              height: isMobile ? 300 : "100vh",
-              overflow: "hidden",
-              borderRadius: 18,
+              background: "rgba(0,0,0,0.8)",
             }}
-          >
-            <VideoCarousel content={[sekaniVid, sekaniVid2]} />           
-          </Col>
-
-          <Col
-            xs={24}
-            lg={12}
-            style={{
-              width: "100%",
-              height: isMobile ? 300 : "100vh",
-              overflow: "hidden",
-              borderRadius: 18,
+            tabBarStyle={{
+              marginBottom: 0,
+              background: "rgba(0,0,0,0.8)",
             }}
-          >
-            <div
-              style={{
-                borderRadius: 20,
-              }}
-            >
-              <Carousel
-                autoplay
-                autoplaySpeed={4200}
-                arrows={!isMobile}
-                dotPosition="bottom"
-              >
-                {(Array.isArray(content?.img)
-                  ? content.img
-                  : [content?.img]
-                ).map((img, index) => (
+            items={[
+              {
+                key: "images",
+                label: (
+                  <span style={{ color: "#fff", fontFamily: "Raleway" }}>
+                    <PictureOutlined /> Photos
+                  </span>
+                ),
+                children: (
                   <div
-                    key={index}
                     style={{
                       width: "100%",
-                      height: isMobile ? 300 : "100vh",
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
+                      height: isMobile ? 600 : "100vh",
                       overflow: "hidden",
                       borderRadius: 18,
                     }}
                   >
-                    <Image
-                      src={img}
-                      alt={content?.listingId}
-                      preview={{ mask: "View Full Size" }}
-                      style={{
-                        width: "100vh",
-                        height: "100vh",
-                        objectFit: "contain",
-                      }}
-                    />
+                    <Carousel
+                      autoplay
+                      autoplaySpeed={4000}
+                      arrows
+                      dots
+                      dotPosition="top"
+                    >
+                      {(Array.isArray(content?.img)
+                        ? content.img
+                        : [content?.img]
+                      ).map((img, index) => (
+                        <div
+                          key={index}
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            background: "#000",
+                            width: "100%",
+                            height: isMobile ? 600 : "100vh",
+                            overflow: "hidden",
+                            borderRadius: 18,
+                          }}
+                        >
+                          <Image
+                            src={img}
+                            alt={`Property ${index + 1}`}
+                            preview={{
+                              mask: "⛶ Click to view",
+                            }}
+                            style={{
+                              width: "100%",
+                              height: "100%",
+                              objectFit: isMobile ? "cover" : "contain",
+                              objectPosition: "center",
+                            }}
+                          />
+                        </div>
+                      ))}
+                    </Carousel>
                   </div>
-                ))}
-              </Carousel>
-            </div>
-          </Col>
-        </Row>
+                ),
+              },
+              {
+                key: "videos",
+                label: (
+                  <span style={{ color: "#fff", fontFamily: "Raleway" }}>
+                    <PlayCircleOutlined /> Videos
+                  </span>
+                ),
+                children: (
+                  <div
+                    style={{
+                      height: "50vh",
+                      minHeight: 300,
+                      maxHeight: 400,
+                    }}
+                  >
+                    {content?.vid?.length !== 0 || //TODO: will change later
+                    content?.vid !== undefined ? ( //TODO: will change later
+                      <div
+                        style={{
+                          margin: "auto",
+                          width: "50%",
+                          justifyContent: "center",
+                          display: "flex",
+                          alignItems: "center",
+                          alignContent:'center',alignSelf:'center'
+                        }}
+                      >
+                        <Text
+                          style={{
+                            color: "#fff",
+                            textAlign: "center",
+                            fontFamily: "Raleway",
+                            fontSize: "1.6rem",
+                          }}
+                        >
+                          Sorry, there are no videos available yet
+                        </Text>
+                      </div>
+                    ) : (
+                      <VideoCarousel content={[sekaniVid, sekaniVid2]} />
+                    )}
+                  </div>
+                ),
+              },
+            ]}
+          />
+        </div>
       </div>
 
       {/* Content Section */}
-      <div style={{ padding: isMobile ? 20 : 40 }}>
+      <div style={{ padding: isMobile ? 20 : 40, marginTop: 20 }}>
         <Row gutter={[32, 32]}>
           {/* Left Column - Main Info */}
           <Col xs={24} lg={16}>

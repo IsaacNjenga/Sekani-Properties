@@ -39,7 +39,7 @@ function CleanVideoPlayer({ src, style }) {
         autoPlay
         loop
         onClick={togglePlay}
-        style={{ width: "100%", height: "100vh", objectFit: "cover", ...style }}
+        style={style}
       >
         <source src={src} type="video/mp4" />
       </video>

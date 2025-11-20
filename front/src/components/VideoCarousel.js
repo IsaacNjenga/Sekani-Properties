@@ -35,7 +35,7 @@ function VideoCarousel({ content, isMobile }) {
       ref={carouselRef}
       autoplay={false}
       arrows={!isMobile}
-      dotPosition="bottom"
+      dotPosition="top"
       beforeChange={(from, to) => handleSlideChange(to)}
     >
       {content.map((src, index) => (
@@ -43,7 +43,7 @@ function VideoCarousel({ content, isMobile }) {
           <CleanVideoPlayer
             src={src}
             style={{
-              objectFit: isMobile ? "contain" : "cover",
+              objectFit: isMobile ? "cover" : "cover",
               width: "100%",
               height: "100vh",
               background: "#000",
