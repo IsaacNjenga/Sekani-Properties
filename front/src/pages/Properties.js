@@ -20,6 +20,7 @@ import useFetchAllProperties from "../hooks/fetchAllProperties.js";
 import PropertyCard from "../components/PropertyCard.js";
 import debounce from "lodash.debounce";
 import { useUser } from "../contexts/UserContext/index.js";
+import {RealEstateData } from '../assets/data/mockData.js';
 
 const { Title } = Typography;
 const { Search } = Input;
@@ -62,8 +63,8 @@ const tagsData = ["For Sale", "Airbnb", "For Rent", "Commercial", "Land"];
 
 function Properties() {
   const navigate = useNavigate();
-  //const properties = RealEstateData;
-  const { properties, propertiesLoading, handleLoadMore, propertiesRefresh } =
+  const properties = RealEstateData;
+  const {  propertiesLoading, handleLoadMore, propertiesRefresh } =
     useFetchAllProperties();
 
   const { isMobile, filteredData, setFilteredData } = useUser();

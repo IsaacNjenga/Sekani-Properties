@@ -1,5 +1,5 @@
-import sekaniVid from "../assets/videos/sekani.mp4";
-import sekaniVid2 from "../assets/videos/sekani2.mp4";
+import sekaniVid from "../videos/sekani.mp4";
+import sekaniVid2 from "../videos/sekani2.mp4";
 
 export const RealEstateData = [
   {

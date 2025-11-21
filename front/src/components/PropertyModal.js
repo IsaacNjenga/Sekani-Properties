@@ -41,8 +41,8 @@ import EditReview from "../pages/EditReview";
 import { useState } from "react";
 import axios from "axios";
 import { useNotification } from "../contexts/NotificationContext";
-import sekaniVid from "../assets/videos/sekani.mp4";
-import sekaniVid2 from "../assets/videos/sekani2.mp4";
+// import sekaniVid from "../assets/videos/sekani.mp4";
+// import sekaniVid2 from "../assets/videos/sekani2.mp4";
 import VideoCarousel from "./VideoCarousel";
 
 const { Title, Text, Paragraph } = Typography;
@@ -158,7 +158,7 @@ function PropertyModal({
         style={{
           position: "relative",
           background: "#000",
-          height: "100vh",
+          height: isMobile ? "auto" : "100vh",
           width: "auto",
         }}
       >
@@ -184,10 +184,11 @@ function PropertyModal({
                 children: (
                   <div
                     style={{
-                      width: "100%",
-                      height: isMobile ? 600 : "100vh",
-                      overflow: "hidden",
-                      borderRadius: 18,
+                      height: isMobile ? "auto" : "50vh",
+                      minHeight: 300,
+                      maxHeight: 400,
+                      margin: "auto",
+                      width: "50%",
                     }}
                   >
                     <Carousel
@@ -196,6 +197,11 @@ function PropertyModal({
                       arrows
                       dots
                       dotPosition="top"
+                      style={{
+                        height: "auto",
+                        margin: "auto",
+                        width: isMobile ? "100%" : "50%",
+                      }}
                     >
                       {(Array.isArray(content?.img)
                         ? content.img
@@ -208,10 +214,12 @@ function PropertyModal({
                             alignItems: "center",
                             justifyContent: "center",
                             background: "#000",
-                            width: "100%",
-                            height: isMobile ? 600 : "100vh",
+                            height: isMobile ? "auto" : "90vh",
                             overflow: "hidden",
-                            borderRadius: 18,
+                            margin: "auto",
+                            width: isMobile ? "100%" : "50%",
+                            alignContent: "center",
+                            alignSelf: "center",
                           }}
                         >
                           <Image
@@ -222,9 +230,10 @@ function PropertyModal({
                             }}
                             style={{
                               width: "100%",
-                              height: "100%",
+                              height: isMobile ? "auto" : "90vh",
                               objectFit: isMobile ? "cover" : "contain",
                               objectPosition: "center",
+                              marginTop: isMobile ? 20 : 0,
                             }}
                           />
                         </div>
@@ -243,13 +252,13 @@ function PropertyModal({
                 children: (
                   <div
                     style={{
-                      height: "50vh",
-                      minHeight: 300,
-                      maxHeight: 400,
+                      height: isMobile ? "auto" : "50vh",
+                       minHeight: 300,
+                      // maxHeight: 400,
                     }}
                   >
-                    {content?.vid?.length !== 0 || //TODO: will change later
-                    content?.vid !== undefined ? ( //TODO: will change later
+                    {content?.vid?.length === 0 ||
+                    content?.vid === undefined ? (
                       <div
                         style={{
                           margin: "auto",
@@ -257,7 +266,8 @@ function PropertyModal({
                           justifyContent: "center",
                           display: "flex",
                           alignItems: "center",
-                          alignContent:'center',alignSelf:'center'
+                          alignContent: "center",
+                          alignSelf: "center",
                         }}
                       >
                         <Text
@@ -272,7 +282,7 @@ function PropertyModal({
                         </Text>
                       </div>
                     ) : (
-                      <VideoCarousel content={[sekaniVid, sekaniVid2]} />
+                      <VideoCarousel content={content?.vid} />
                     )}
                   </div>
                 ),

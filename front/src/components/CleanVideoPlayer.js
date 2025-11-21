@@ -5,7 +5,7 @@ import { SoundOutlined, SoundFilled } from "@ant-design/icons";
 function CleanVideoPlayer({ src, style }) {
   const videoRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [volume, setVolume] = useState(10); // store as 0-10 for Slider compatibility
+  const [volume, setVolume] = useState(10);
 
   const togglePlay = () => {
     if (!videoRef.current) return;
@@ -26,12 +26,11 @@ function CleanVideoPlayer({ src, style }) {
 
   const changeVolume = (val) => {
     setVolume(val);
-    videoRef.current.volume = val / 10; // convert 0–10 → 0–1
+    videoRef.current.volume = val / 10;
   };
 
   return (
     <div style={{ position: "relative", width: "100%", height: "100%" }}>
-      {/* VIDEO */}
       <video
         ref={videoRef}
         muted={volume === 0}
@@ -44,7 +43,6 @@ function CleanVideoPlayer({ src, style }) {
         <source src={src} type="video/mp4" />
       </video>
 
-      {/* CONTROLS BAR */}
       <div
         style={{
           position: "absolute",
@@ -54,13 +52,12 @@ function CleanVideoPlayer({ src, style }) {
           display: "flex",
           alignItems: "center",
           gap: 20,
-          background: "rgba(0,0,0,0.35)",
+          background: "rgba(0,0,0,0.25)",
           padding: "10px 14px",
           borderRadius: 12,
-          backdropFilter: "blur(6px)",
+          backdropFilter: "blur(3px)",
         }}
       >
-        {/* Play / Pause */}
         <button
           onClick={togglePlay}
           style={{
@@ -74,7 +71,6 @@ function CleanVideoPlayer({ src, style }) {
           {isPlaying ? "❚❚" : "►"}
         </button>
 
-        {/* VOLUME */}
         <div
           style={{
             display: "flex",
