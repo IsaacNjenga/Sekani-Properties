@@ -156,144 +156,127 @@ function PropertyModal({
     >
       <div
         style={{
-          position: "relative",
           background: "#000",
+          width: "100%",
+          //minHeight: "100vh",
+          padding: isMobile ? "10px 0" : "20px 0",
           height: isMobile ? "auto" : "100vh",
-          width: "auto",
         }}
       >
-        <div style={{ width: "100%" }}>
-          <Tabs
-            defaultActiveKey="images"
-            centered
-            style={{
-              background: "rgba(0,0,0,0.8)",
-            }}
-            tabBarStyle={{
-              marginBottom: 0,
-              background: "rgba(0,0,0,0.8)",
-            }}
-            items={[
-              {
-                key: "images",
-                label: (
-                  <span style={{ color: "#fff", fontFamily: "Raleway" }}>
-                    <PictureOutlined /> Photos
-                  </span>
-                ),
-                children: (
-                  <div
-                    style={{
-                      height: isMobile ? "auto" : "50vh",
-                      minHeight: 300,
-                      maxHeight: 400,
-                      margin: "auto",
-                      width: "50%",
-                    }}
-                  >
-                    <Carousel
-                      autoplay
-                      autoplaySpeed={4000}
-                      arrows
-                      dots
-                      dotPosition="top"
-                      style={{
-                        height: "auto",
-                        margin: "auto",
-                        width: isMobile ? "100%" : "50%",
-                      }}
-                    >
-                      {(Array.isArray(content?.img)
-                        ? content.img
-                        : [content?.img]
-                      ).map((img, index) => (
-                        <div
-                          key={index}
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            background: "#000",
-                            height: isMobile ? "auto" : "90vh",
-                            overflow: "hidden",
-                            margin: "auto",
-                            width: isMobile ? "100%" : "50%",
-                            alignContent: "center",
-                            alignSelf: "center",
-                          }}
-                        >
-                          <Image
-                            src={img}
-                            alt={`Property ${index + 1}`}
-                            preview={{
-                              mask: "⛶ Click to view",
-                            }}
-                            style={{
-                              width: "100%",
-                              height: isMobile ? "auto" : "90vh",
-                              objectFit: isMobile ? "cover" : "contain",
-                              objectPosition: "center",
-                              marginTop: isMobile ? 20 : 0,
-                            }}
-                          />
-                        </div>
-                      ))}
-                    </Carousel>
-                  </div>
-                ),
-              },
-              {
-                key: "videos",
-                label: (
-                  <span style={{ color: "#fff", fontFamily: "Raleway" }}>
-                    <PlayCircleOutlined /> Videos
-                  </span>
-                ),
-                children: (
-                  <div
-                    style={{
-                      height: isMobile ? "auto" : "50vh",
-                       minHeight: 300,
-                      // maxHeight: 400,
-                    }}
-                  >
-                    {content?.vid?.length === 0 ||
-                    content?.vid === undefined ? (
+        <Tabs
+          defaultActiveKey="images"
+          centered
+          tabBarStyle={{
+            background: "rgba(0,0,0,0.6)",
+            padding: "10px",
+            marginBottom: 0,
+          }}
+          items={[
+            {
+              key: "images",
+              label: (
+                <span style={{ color: "#fff", fontFamily: "Raleway" }}>
+                  <PictureOutlined /> Photos
+                </span>
+              ),
+              children: (
+                <div
+                  style={{
+                    width: "100%",
+                    maxWidth: 1000,
+                    margin: "20px auto",
+                  }}
+                >
+                  <Carousel autoplay autoplaySpeed={4000} arrows dots>
+                    {(Array.isArray(content?.img)
+                      ? content.img
+                      : [content?.img]
+                    ).map((img, index) => (
                       <div
+                        key={index}
                         style={{
-                          margin: "auto",
-                          width: "50%",
-                          justifyContent: "center",
+                          width: "100%",
+                          height: isMobile ? 260 : "70vh",
                           display: "flex",
                           alignItems: "center",
-                          alignContent: "center",
-                          alignSelf: "center",
+                          justifyContent: "center",
+                          background: "#000",
+                          overflow: "hidden",
                         }}
                       >
-                        <Text
+                        <Image
+                          src={img}
+                          alt={`Property ${index + 1}`}
+                          preview={{ mask: "View Full Size" }}
                           style={{
-                            color: "#fff",
-                            textAlign: "center",
-                            fontFamily: "Raleway",
-                            fontSize: "1.6rem",
+                            width: "100%",
+                            height: "100%",
+                            objectFit: "cover", // makes image look FULL
+                            objectPosition: "center",
+                            borderRadius: 10,
                           }}
-                        >
-                          Sorry, there are no videos available yet
-                        </Text>
+                        />
                       </div>
-                    ) : (
-                      <VideoCarousel content={content?.vid} />
-                    )}
-                  </div>
-                ),
-              },
-            ]}
-          />
-        </div>
+                    ))}
+                  </Carousel>
+                </div>
+              ),
+            },
+
+            {
+              key: "videos",
+              label: (
+                <span style={{ color: "#fff", fontFamily: "Raleway" }}>
+                  <PlayCircleOutlined /> Videos
+                </span>
+              ),
+              children: (
+                <div
+                  style={{
+                    width: "100%",
+                    margin: "20px auto",
+                  }}
+                >
+                  {content?.vid?.length ? (
+                    <div
+                      style={{
+                        width: "100%",
+                        height: isMobile ? "auto" : "70vh",
+                      }}
+                    >
+                      <VideoCarousel
+                        content={content?.vid}
+                        isMobile={isMobile}
+                      />
+                    </div>
+                  ) : (
+                    <div
+                      style={{
+                        width: "100%",
+                        textAlign: "center",
+                        padding: "40px 0",
+                      }}
+                    >
+                      <Text
+                        style={{
+                          color: "#fff",
+                          fontFamily: "Raleway",
+                          fontSize: "1.3rem",
+                        }}
+                      >
+                        Sorry, there are no videos available yet.
+                      </Text>
+                    </div>
+                  )}
+                </div>
+              ),
+            },
+          ]}
+        />
       </div>
 
       {/* Content Section */}
-      <div style={{ padding: isMobile ? 20 : 40, marginTop: 20 }}>
+      <div style={{ padding: isMobile ? 20 : 40, marginTop: 30 }}>
         <Row gutter={[32, 32]}>
           {/* Left Column - Main Info */}
           <Col xs={24} lg={16}>

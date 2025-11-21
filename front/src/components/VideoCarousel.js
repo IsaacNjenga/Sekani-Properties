@@ -43,9 +43,9 @@ function VideoCarousel({ content, isMobile }) {
           <CleanVideoPlayer
             src={src}
             style={{
-              objectFit: isMobile ? "cover" : "cover",
+              objectFit: isMobile ? "contain" : "cover",
               width: "100%",
-              height: "100vh",
+              height: isMobile ? "auto" : "100vh",
               background: "#000",
             }}
           />
