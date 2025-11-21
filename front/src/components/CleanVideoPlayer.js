@@ -5,7 +5,7 @@ import { useRef, useState } from "react";
 function CleanVideoPlayer({ src, style }) {
   const videoRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(!false);
-  const [volume, setVolume] = useState(10);
+  //const [volume, setVolume] = useState(10);
 
   const togglePlay = () => {
     if (!videoRef.current) return;
@@ -33,7 +33,7 @@ function CleanVideoPlayer({ src, style }) {
     <div style={{ position: "relative", width: "100%", height: "100%" }}>
       <video
         ref={videoRef}
-        muted={volume === 0}
+        muted
         playsInline
         autoPlay
         loop

@@ -1,7 +1,5 @@
 import {
-  Carousel,
   Col,
-  Image,
   Modal,
   Row,
   Typography,
@@ -41,9 +39,8 @@ import EditReview from "../pages/EditReview";
 import { useState } from "react";
 import axios from "axios";
 import { useNotification } from "../contexts/NotificationContext";
-// import sekaniVid from "../assets/videos/sekani.mp4";
-// import sekaniVid2 from "../assets/videos/sekani2.mp4";
 import VideoCarousel from "./VideoCarousel";
+import ImageCarousel from "./ImageCarousel";
 
 const { Title, Text, Paragraph } = Typography;
 
@@ -143,7 +140,7 @@ function PropertyModal({
       bodyStyle={{
         padding: 0,
         background: "linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)",
-        borderRadius: 16,
+        borderRadius: 10,
         overflow: "hidden",
       }}
       style={{ top: isMobile ? 0 : 20 }}
@@ -158,7 +155,6 @@ function PropertyModal({
         style={{
           background: "#000",
           width: "100%",
-          //minHeight: "100vh",
           padding: 0,
           height: isMobile ? "auto" : "100vh",
         }}
@@ -187,38 +183,30 @@ function PropertyModal({
                     margin: "0px auto",
                   }}
                 >
-                  <Carousel autoplay autoplaySpeed={4000} arrows dots dotPosition="top">
-                    {(Array.isArray(content?.img)
-                      ? content.img
-                      : [content?.img]
-                    ).map((img, index) => (
-                      <div
-                        key={index}
+                  {content?.img?.length ? (
+                    <ImageCarousel content={content?.img} isMobile={isMobile} />
+                  ) : (
+                    <div
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <Text
                         style={{
-                          width: "100%",
-                          height: isMobile ? 260 : "70vh",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          background: "#000",
-                          overflow: "hidden",
-                    
+                          color: "#fff",
+                          fontFamily: "Raleway",
+                          fontSize: "1.3rem",
                         }}
                       >
-                        <Image
-                          src={img}
-                          alt={`Property ${index + 1}`}
-                          preview={{ mask: "View Full Size" }}
-                          style={{
-                            width: "100%",
-                            height: "100%",
-                            objectFit: "cover", // makes image look FULL
-                            objectPosition: "center",
-                          }}
-                        />
-                      </div>
-                    ))}
-                  </Carousel>
+                        Sorry, there are no photos available yet. We'll update
+                        them shortly.
+                      </Text>
+                    </div>
+                  )}
                 </div>
               ),
             },
@@ -276,7 +264,7 @@ function PropertyModal({
       </div>
 
       {/* Content Section */}
-      <div style={{ padding: isMobile ? 0 : 20, marginTop: 20 }}>
+      <div style={{ padding: isMobile ? 10 : 20, marginTop: 30 }}>
         <Row gutter={[32, 32]}>
           {/* Left Column - Main Info */}
           <Col xs={24} lg={16}>
