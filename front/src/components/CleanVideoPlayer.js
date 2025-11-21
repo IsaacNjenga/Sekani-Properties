@@ -1,10 +1,10 @@
 import { useRef, useState } from "react";
-import { Slider } from "antd";
-import { SoundOutlined, SoundFilled } from "@ant-design/icons";
+// import { Slider } from "antd";
+// import { SoundOutlined, SoundFilled } from "@ant-design/icons";
 
 function CleanVideoPlayer({ src, style }) {
   const videoRef = useRef(null);
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(!false);
   const [volume, setVolume] = useState(10);
 
   const togglePlay = () => {
@@ -24,10 +24,10 @@ function CleanVideoPlayer({ src, style }) {
     }
   };
 
-  const changeVolume = (val) => {
-    setVolume(val);
-    videoRef.current.volume = val / 10;
-  };
+  // const changeVolume = (val) => {
+  //   setVolume(val);
+  //   videoRef.current.volume = val / 10;
+  // };
 
   return (
     <div style={{ position: "relative", width: "100%", height: "100%" }}>
