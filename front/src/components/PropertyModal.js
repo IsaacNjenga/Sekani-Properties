@@ -159,7 +159,7 @@ function PropertyModal({
           background: "#000",
           width: "100%",
           //minHeight: "100vh",
-          padding: isMobile ? "10px 0" : "20px 0",
+          padding: 0,
           height: isMobile ? "auto" : "100vh",
         }}
       >
@@ -168,7 +168,7 @@ function PropertyModal({
           centered
           tabBarStyle={{
             background: "rgba(0,0,0,0.6)",
-            padding: "10px",
+            padding: "5px",
             marginBottom: 0,
           }}
           items={[
@@ -184,10 +184,10 @@ function PropertyModal({
                   style={{
                     width: "100%",
                     maxWidth: 1000,
-                    margin: "20px auto",
+                    margin: "0px auto",
                   }}
                 >
-                  <Carousel autoplay autoplaySpeed={4000} arrows dots>
+                  <Carousel autoplay autoplaySpeed={4000} arrows dots dotPosition="top">
                     {(Array.isArray(content?.img)
                       ? content.img
                       : [content?.img]
@@ -202,6 +202,7 @@ function PropertyModal({
                           justifyContent: "center",
                           background: "#000",
                           overflow: "hidden",
+                    
                         }}
                       >
                         <Image
@@ -213,7 +214,6 @@ function PropertyModal({
                             height: "100%",
                             objectFit: "cover", // makes image look FULL
                             objectPosition: "center",
-                            borderRadius: 10,
                           }}
                         />
                       </div>
@@ -234,7 +234,7 @@ function PropertyModal({
                 <div
                   style={{
                     width: "100%",
-                    margin: "20px auto",
+                    margin: "0px auto",
                   }}
                 >
                   {content?.vid?.length ? (
@@ -276,7 +276,7 @@ function PropertyModal({
       </div>
 
       {/* Content Section */}
-      <div style={{ padding: isMobile ? 20 : 40, marginTop: 30 }}>
+      <div style={{ padding: isMobile ? 0 : 20, marginTop: 20 }}>
         <Row gutter={[32, 32]}>
           {/* Left Column - Main Info */}
           <Col xs={24} lg={16}>

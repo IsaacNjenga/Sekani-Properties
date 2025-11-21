@@ -46,16 +46,16 @@ function CleanVideoPlayer({ src, style }) {
       <div
         style={{
           position: "absolute",
-          bottom: 20,
+          bottom: 15,
           left: 20,
           right: 20,
           display: "flex",
           alignItems: "center",
           gap: 20,
-          background: "rgba(0,0,0,0.25)",
-          padding: "10px 14px",
+          background: "rgba(0,0,0,0.15)",
+          padding: "2px 10px",
           borderRadius: 12,
-          backdropFilter: "blur(3px)",
+          backdropFilter: "blur(1px)",
         }}
       >
         <button
@@ -71,7 +71,7 @@ function CleanVideoPlayer({ src, style }) {
           {isPlaying ? "❚❚" : "►"}
         </button>
 
-        <div
+        {/* <div
           style={{
             display: "flex",
             alignItems: "center",
@@ -94,7 +94,7 @@ function CleanVideoPlayer({ src, style }) {
             onChange={changeVolume}
             tooltip={{ open: false }}
           />
-        </div>
+        </div> */}
 
         {/* Fullscreen */}
         <button
