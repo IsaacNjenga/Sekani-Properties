@@ -2,11 +2,13 @@ import React from "react";
 import { Card, Carousel, Button, Badge, Tag, Divider, Typography } from "antd";
 import { lightTheme } from "../App";
 import { useUser } from "../contexts/UserContext";
+import { useNavigate } from "react-router-dom";
 
 const { Text, Title } = Typography;
 
 function PropertyCard({ c, viewProperty }) {
   const { isMobile } = useUser();
+  const navigate = useNavigate();
   return (
     <Card
       hoverable
@@ -41,9 +43,6 @@ function PropertyCard({ c, viewProperty }) {
               fontFamily: "Raleway",
             }}
           >
-            {/* <video style={videoStyle} muted autoPlay loop playsInline>
-              <source src={SekaniVid} type="video/mp4" />
-            </video> */}
             <Carousel
               autoplay
               autoplaySpeed={3800}
@@ -184,7 +183,8 @@ function PropertyCard({ c, viewProperty }) {
             border: "1px solid #333",
             color: "#333",
           }}
-          onClick={() => viewProperty(c)}
+          //onClick={() => viewProperty(c)}
+          onClick={() => navigate(`/properties/property?id=${c._id}`)}
         >
           View
         </Button>

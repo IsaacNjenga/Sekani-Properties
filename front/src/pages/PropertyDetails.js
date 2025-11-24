@@ -1,6 +1,8 @@
+import React, { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
+import { RealEstateData } from "../assets/data/mockData";
 import {
   Col,
-  Modal,
   Row,
   Typography,
   Tag,
@@ -9,10 +11,10 @@ import {
   Card,
   Avatar,
   Button,
-  Drawer,
   Tooltip,
   Popconfirm,
-  Tabs,
+  Image,
+  Drawer,
 } from "antd";
 import {
   HomeOutlined,
@@ -22,35 +24,43 @@ import {
   PhoneOutlined,
   UserOutlined,
   StarFilled,
-  CloseOutlined,
   EditOutlined,
   DeleteOutlined,
-  PictureOutlined,
-  PlayCircleOutlined,
 } from "@ant-design/icons";
-import { useNavigate } from "react-router-dom";
-import { useDrawer } from "../contexts/DrawerContext";
-import AddReview from "../pages/AddReviews";
-import Schedule from "../pages/Schedule";
 import { useUser } from "../contexts/UserContext";
+import { StatCard } from "../components/PropertyModal";
+import { useDrawer } from "../contexts/DrawerContext";
 import { useAuth } from "../contexts/AuthContext";
-import AuthModal from "./AuthModal";
-import EditReview from "../pages/EditReview";
-import { useState } from "react";
-import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { useNotification } from "../contexts/NotificationContext";
-import VideoCarousel from "./VideoCarousel";
-import ImageCarousel from "./ImageCarousel";
+import axios from "axios";
+import VideoCarousel from "../components/VideoCarousel";
+import AddReview from "../pages/AddReviews";
+import EditReview from "./EditReview";
+import Schedule from "./Schedule";
+import AuthModal from "../components/AuthModal";
+import useFetchProperty from "../hooks/fetchProperty";
 
 const { Title, Text, Paragraph } = Typography;
 
-function PropertyModal({
-  openModal,
-  setOpenModal,
-  loading,
-  content,
-  propertiesRefresh,
-}) {
+const heroContainer = {
+  position: "relative",
+  width: "100%",
+  height: "100vh",
+  overflow: "hidden",
+};
+
+const videoStyle = {
+  position: "absolute",
+  top: 0,
+  left: 0,
+  width: "100%",
+  height: "100%",
+  objectFit: "cover",
+  zIndex: 1,
+};
+
+function PropertyDetails() {
   const { isMobile } = useUser();
   const {
     toggleReview,
@@ -64,20 +74,40 @@ function PropertyModal({
     useAuth();
   const navigate = useNavigate();
   const openNotification = useNotification();
+  const searchParams = useSearchParams();
+  const id = searchParams.get("id") ?? "";
+  //const id = useParams();
+  console.log(id);
+
   const [editContent, setEditContent] = useState({});
   const [open, setOpen] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
+  const { propertyRefresh, propertyData, propertyDataLoading, fetchProperty } =
+    useFetchProperty();
 
-  const hasUserReviewed = content?.reviews?.some(
+  useEffect(() => {
+    fetchProperty(id);
+    //eslint-disable-next-line
+  }, [id]);
+
+  useEffect(() => {
+    if (propertyData) {
+      console.log(propertyData);
+    }
+  }, [propertyData]);
+
+  const property = RealEstateData[0];
+
+  const hasUserReviewed = property?.reviews?.some(
     (r) => r.email === currentUser?.email
   );
 
   const editReview = (id) => {
     if (userLoggedIn) {
-      const review = content?.reviews?.find((r) => r._id === id);
+      const review = property?.reviews?.find((r) => r._id === id);
       toggleEditReview();
       setEditContent({
-        ...content,
+        ...property,
         reviews: review,
       });
     } else {
@@ -95,7 +125,7 @@ function PropertyModal({
             "Your review has been deleted",
             "Success!"
           );
-          propertiesRefresh();
+          //propertiesRefresh();
         }
       } catch (error) {
         console.error(error);
@@ -112,161 +142,28 @@ function PropertyModal({
 
   // Calculate average rating
   const averageRating =
-    content?.reviews?.length > 0
+    property?.reviews?.length > 0
       ? (
-          content.reviews.reduce((sum, r) => sum + r.rating, 0) /
-          content.reviews.length
+          property.reviews.reduce((sum, r) => sum + r.rating, 0) /
+          property.reviews.length
         ).toFixed(1)
       : 0;
 
+  //   return <div>{id}</div>;
   return (
-    <Modal
-      footer={null}
-      open={openModal}
-      onCancel={() => setOpenModal(false)}
-      confirmLoading={loading}
-      width="95%"
-      closeIcon={
-        <CloseOutlined
-          style={{
-            fontSize: 24,
-            color: "#fff",
-            background: "rgba(0,0,0,0.5)",
-            padding: 8,
-            borderRadius: "50%",
-          }}
-        />
-      }
-      bodyStyle={{
-        padding: 0,
-        background: "linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)",
-        borderRadius: 10,
-        overflow: "hidden",
-      }}
-      style={{ top: isMobile ? 0 : 20 }}
-      styles={{
-        body: {
-          maxHeight: isMobile ? "100vh" : "90vh",
-          overflowY: "auto",
-        },
-      }}
-    >
-      <div
-        style={{
-          background: "#000",
-          width: "100%",
-          padding: 0,
-          height: isMobile ? "auto" : "100vh",
-        }}
-      >
-        <Tabs
-          defaultActiveKey="images"
-          centered
-          tabBarStyle={{
-            background: "rgba(0,0,0,0.6)",
-            padding: "5px",
-            marginBottom: 0,
-          }}
-          items={[
-            {
-              key: "images",
-              label: (
-                <span style={{ color: "#fff", fontFamily: "Raleway" }}>
-                  <PictureOutlined /> Photos
-                </span>
-              ),
-              children: (
-                <div
-                  style={{
-                    width: "100%",
-                    maxWidth: 1000,
-                    margin: "0px auto",
-                  }}
-                >
-                  {content?.img?.length ? (
-                    <ImageCarousel content={content?.img} isMobile={isMobile} />
-                  ) : (
-                    <div
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                    >
-                      <Text
-                        style={{
-                          color: "#fff",
-                          fontFamily: "Raleway",
-                          fontSize: "1.3rem",
-                        }}
-                      >
-                        Sorry, there are no photos available yet. We'll update
-                        them shortly.
-                      </Text>
-                    </div>
-                  )}
-                </div>
-              ),
-            },
-
-            {
-              key: "videos",
-              label: (
-                <span style={{ color: "#fff", fontFamily: "Raleway" }}>
-                  <PlayCircleOutlined /> Videos
-                </span>
-              ),
-              children: (
-                <div
-                  style={{
-                    width: "100%",
-                    margin: "0px auto",
-                  }}
-                >
-                  {content?.vid?.length ? (
-                    <div
-                      style={{
-                        width: "100%",
-                        height: isMobile ? "auto" : "70vh",
-                      }}
-                    >
-                      <VideoCarousel
-                        content={content?.vid}
-                        isMobile={isMobile}
-                      />
-                    </div>
-                  ) : (
-                    <div
-                      style={{
-                        width: "100%",
-                        textAlign: "center",
-                        padding: "40px 0",
-                      }}
-                    >
-                      <Text
-                        style={{
-                          color: "#fff",
-                          fontFamily: "Raleway",
-                          fontSize: "1.3rem",
-                        }}
-                      >
-                        Sorry, there are no videos available yet.
-                      </Text>
-                    </div>
-                  )}
-                </div>
-              ),
-            },
-          ]}
-        />
+    <div>
+      <div style={heroContainer}>
+        <video style={videoStyle} muted autoPlay loop playsInline>
+          <source src={property.vid[0]} type="video/mp4" />
+        </video>
       </div>
 
-      {/* Content Section */}
-      <div style={{ padding: isMobile ? 10 : 20, marginTop: 30 }}>
+      <div
+        style={{ padding: isMobile ? 5 : 20, margin: isMobile ? 10 : "0 90px" }}
+      >
         <Row gutter={[32, 32]}>
           {/* Left Column - Main Info */}
+
           <Col xs={24} lg={16}>
             {/* Property Title & Location */}
             <div
@@ -293,7 +190,7 @@ function PropertyModal({
                   }}
                 />
                 <Title
-                  level={isMobile ? 3 : 2}
+                  level={isMobile ? 3 : 1}
                   style={{
                     margin: 0,
                     fontFamily: "Alegreya Sans",
@@ -303,9 +200,9 @@ function PropertyModal({
                     backgroundClip: "text",
                   }}
                 >
-                  {content?.propertyType}
-                  {content?.bedrooms > 0 &&
-                    ` • ${content?.bedrooms} BR / ${content?.bathrooms} BA`}
+                  {property?.propertyType}
+                  {property?.bedrooms > 0 &&
+                    ` • ${property?.bedrooms} BR / ${property?.bathrooms} BA`}
                 </Title>
               </div>
 
@@ -320,7 +217,7 @@ function PropertyModal({
                     color: "#64748b",
                   }}
                 >
-                  {content?.address}, {content?.city}, {content?.county}
+                  {property?.address}, {property?.city}, {property?.county}
                 </Text>
               </div>
               <div style={{ marginTop: 10, marginBottom: 0 }}>
@@ -333,16 +230,16 @@ function PropertyModal({
                     borderRadius: 24,
                     border: "none",
                     background:
-                      content?.status === "Available"
+                      property?.status === "Available"
                         ? "linear-gradient(135deg, #10b981, #059669)"
-                        : content?.status === "Pending"
+                        : property?.status === "Pending"
                         ? "linear-gradient(135deg, #f59e0b, #d97706)"
                         : "linear-gradient(135deg, #ef4444, #dc2626)",
                     color: "#fff",
                     boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
                   }}
                 >
-                  {content?.status}
+                  {property?.status}
                 </Tag>
               </div>
               {/* Quick Stats */}
@@ -356,21 +253,21 @@ function PropertyModal({
                   marginTop: 24,
                 }}
               >
-                {content?.squareFeet && (
+                {property?.squareFeet && (
                   <StatCard
                     icon={<HomeOutlined />}
                     label="Size"
-                    value={`${content.squareFeet} sq. ft`}
+                    value={`${property.squareFeet} sq. ft`}
                   />
                 )}
-                {content?.yearBuilt && (
+                {property?.yearBuilt && (
                   <StatCard
                     icon={<CalendarOutlined />}
                     label="Price"
-                    value={`KES. ${content.price?.toLocaleString()}`}
+                    value={`KES. ${property.price?.toLocaleString()}`}
                   />
                 )}
-                {content?.rating > 0 && (
+                {property?.rating > 0 && (
                   <StatCard
                     icon={<StarFilled />}
                     label="Rating"
@@ -378,6 +275,57 @@ function PropertyModal({
                   />
                 )}
               </div>
+            </div>
+
+            {/* Media */}
+            <div
+              style={{
+                background: "#fff",
+                padding: isMobile ? 20 : 32,
+                borderRadius: 20,
+                marginBottom: 24,
+                boxShadow: "0 4px 20px rgba(0,0,0,0.08)",
+              }}
+            >
+              <Card>
+                <Title>Media</Title>{" "}
+                <div
+                  style={{
+                    width: "100%",
+                    height: "auto",
+                    padding: 4,
+                  }}
+                >
+                  <VideoCarousel content={property?.vid} isMobile={isMobile} />
+                </div>
+                <div
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: isMobile
+                      ? "repeat(1, 1fr)"
+                      : "repeat(2, 1fr)",
+                    gap: 8,
+                    padding: 4,
+                  }}
+                >
+                  {(Array.isArray(property.img)
+                    ? property.img
+                    : [property?.img]
+                  ).map((img, i) => (
+                    <Image
+                      key={i}
+                      src={img}
+                      alt={`Property ${i + 1}`}
+                      style={{
+                        width: "100%",
+                        height: isMobile ? 180 : 250,
+                        objectFit: "cover",
+                        borderRadius: 6,
+                      }}
+                    />
+                  ))}
+                </div>{" "}
+              </Card>
             </div>
 
             {/* Description */}
@@ -408,12 +356,12 @@ function PropertyModal({
                   color: "#475569",
                 }}
               >
-                {content?.description}
+                {property?.description}
               </Paragraph>
             </div>
 
             {/* Amenities */}
-            {content?.amenities?.length > 0 && (
+            {property?.amenities?.length > 0 && (
               <div
                 style={{
                   background: "#fff",
@@ -434,7 +382,7 @@ function PropertyModal({
                   Amenities & Features
                 </Title>
                 <Space wrap size={[12, 12]}>
-                  {content.amenities.map((item, index) => (
+                  {property.amenities.map((item, index) => (
                     <Tag
                       key={index}
                       style={{
@@ -456,7 +404,7 @@ function PropertyModal({
             )}
 
             {/* Nearby Landmarks */}
-            {content?.nearby?.length > 0 && (
+            {property?.nearby?.length > 0 && (
               <div
                 style={{
                   background: "#fff",
@@ -477,7 +425,7 @@ function PropertyModal({
                   Nearby Landmarks
                 </Title>
                 <Space wrap size={[12, 12]}>
-                  {content.nearby.map((item, index) => (
+                  {property.nearby.map((item, index) => (
                     <Tag
                       key={index}
                       icon={<EnvironmentOutlined />}
@@ -510,7 +458,7 @@ function PropertyModal({
               <div
                 style={{
                   display: "flex",
-                  justifyContent: "space-between",
+                  justifyproperty: "space-between",
                   alignItems: "center",
                   marginBottom: 24,
                   flexWrap: "wrap",
@@ -526,10 +474,10 @@ function PropertyModal({
                   }}
                 >
                   Reviews{" "}
-                  {content?.reviews?.length > 0 &&
-                    `(${content.reviews.length})`}
+                  {property?.reviews?.length > 0 &&
+                    `(${property.reviews.length})`}
                 </Title>
-                {content?.reviews?.length > 0 && (
+                {property?.reviews?.length > 0 && (
                   <div
                     style={{ display: "flex", alignItems: "center", gap: 8 }}
                   >
@@ -545,7 +493,7 @@ function PropertyModal({
                 )}
               </div>
 
-              {content?.reviews?.length === 0 || !content?.reviews ? (
+              {property?.reviews?.length === 0 || !property?.reviews ? (
                 <div
                   style={{
                     textAlign: "center",
@@ -576,7 +524,7 @@ function PropertyModal({
                     size={16}
                     style={{ width: "100%" }}
                   >
-                    {content.reviews.slice(0, 2).map((review, idx) => (
+                    {property.reviews.slice(0, 2).map((review, idx) => (
                       <Card
                         key={idx}
                         style={{
@@ -589,7 +537,7 @@ function PropertyModal({
                         <div
                           style={{
                             display: "flex",
-                            justifyContent: "space-between",
+                            justifyproperty: "space-between",
                             alignItems: "flex-start",
                             marginBottom: 12,
                             flexWrap: "wrap",
@@ -659,7 +607,7 @@ function PropertyModal({
                               style={{
                                 display: "flex",
                                 gap: 10,
-                                justifyContent: "flex-end",
+                                justifyproperty: "flex-end",
                               }}
                             >
                               <Tooltip title="Edit your review">
@@ -712,20 +660,20 @@ function PropertyModal({
                       gap: 12,
                       marginTop: 24,
                       flexWrap: "wrap",
-                      justifyContent: isMobile ? "center" : "flex-start",
+                      justifyproperty: isMobile ? "center" : "flex-start",
                     }}
                   >
-                    {content.reviews.length > 2 && (
+                    {property.reviews.length > 2 && (
                       <Button
                         size="large"
-                        onClick={() => navigate(`/reviews?id=${content?._id}`)}
+                        onClick={() => navigate(`/reviews?id=${property?._id}`)}
                         style={{
                           borderRadius: 10,
                           fontFamily: "Raleway",
                           fontWeight: 600,
                         }}
                       >
-                        See All {content.reviews.length} Reviews
+                        See All {property.reviews.length} Reviews
                       </Button>
                     )}
                     {hasUserReviewed ? (
@@ -836,13 +784,13 @@ function PropertyModal({
                         marginBottom: 8,
                       }}
                     >
-                      {content?.agent?.name}
+                      {property?.agent?.name}
                     </Text>
                     <div
                       style={{
                         display: "flex",
                         alignItems: "center",
-                        justifyContent: "center",
+                        justifyproperty: "center",
                         gap: 8,
                       }}
                     >
@@ -854,7 +802,7 @@ function PropertyModal({
                           fontSize: 16,
                         }}
                       >
-                        {content?.agent?.phone}
+                        {property?.agent?.phone}
                       </Text>
                     </div>
                   </div>
@@ -868,7 +816,7 @@ function PropertyModal({
                   block
                   icon={<PhoneOutlined />}
                   onClick={() =>
-                    (window.location.href = `tel:${content?.agent?.phone}`)
+                    (window.location.href = `tel:${property?.agent?.phone}`)
                   }
                   style={{
                     background: "linear-gradient(135deg, #bdb890, #a8a378)",
@@ -915,11 +863,11 @@ function PropertyModal({
 
       <Drawer open={openReview} onClose={toggleReview} placement="right">
         <AddReview
-          content={content}
+          content={property}
           openReview={openReview}
           toggleReview={toggleReview}
           isMobile={isMobile}
-          propertiesRefresh={propertiesRefresh}
+          propertyRefresh={propertyRefresh}
         />
       </Drawer>
 
@@ -933,13 +881,13 @@ function PropertyModal({
           openEditReview={openEditReview}
           toggleEditReview={toggleEditReview}
           isMobile={isMobile}
-          propertiesRefresh={propertiesRefresh}
+          propertyRefresh={propertyRefresh}
         />
       </Drawer>
 
       <Drawer open={openSchedule} onClose={toggleSchedule} placement="right">
         <Schedule
-          content={content}
+          content={property}
           openSchedule={openSchedule}
           toggleSchedule={toggleSchedule}
           isMobile={isMobile}
@@ -951,54 +899,8 @@ function PropertyModal({
         setOpenAuthModal={setOpenAuthModal}
         isMobile={isMobile}
       />
-    </Modal>
+    </div>
   );
 }
 
-// Helper Component for Stats Cards
-export const StatCard = ({ icon, label, value }) => (
-  <div
-    style={{
-      background: "linear-gradient(135deg, #f8fafc, #f1f5f9)",
-      padding: 16,
-      borderRadius: 12,
-      border: "1px solid #e2e8f0",
-      display: "flex",
-      alignItems: "center",
-      gap: 12,
-    }}
-  >
-    <div
-      style={{
-        fontSize: 24,
-        color: "#bdb890",
-      }}
-    >
-      {icon}
-    </div>
-    <div>
-      <Text
-        style={{
-          display: "block",
-          fontSize: 12,
-          color: "#64748b",
-          fontFamily: "Raleway",
-        }}
-      >
-        {label}
-      </Text>
-      <Text
-        strong
-        style={{
-          fontSize: 16,
-          color: "#1e293b",
-          fontFamily: "Raleway",
-        }}
-      >
-        {value}
-      </Text>
-    </div>
-  </div>
-);
-
-export default PropertyModal;
+export default PropertyDetails;

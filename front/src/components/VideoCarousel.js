@@ -45,8 +45,9 @@ function VideoCarousel({ content, isMobile }) {
             style={{
               objectFit: isMobile ? "contain" : "cover",
               width: "100%",
-              height: isMobile ? "auto" : "100vh",
+              height: isMobile ? 180 : "auto",
               background: "#000",
+                        borderRadius: 6,
             }}
           />
         </div>
