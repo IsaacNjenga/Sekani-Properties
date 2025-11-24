@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
-import { RealEstateData } from "../assets/data/mockData";
 import {
   Col,
   Row,
@@ -15,6 +14,7 @@ import {
   Popconfirm,
   Image,
   Drawer,
+  Spin,
 } from "antd";
 import {
   HomeOutlined,
@@ -27,6 +27,7 @@ import {
   EditOutlined,
   DeleteOutlined,
 } from "@ant-design/icons";
+import SekaniHero from "../components/SekaniHero";
 import { useUser } from "../contexts/UserContext";
 import { StatCard } from "../components/PropertyModal";
 import { useDrawer } from "../contexts/DrawerContext";
@@ -46,7 +47,7 @@ const { Title, Text, Paragraph } = Typography;
 const heroContainer = {
   position: "relative",
   width: "100%",
-  height: "100vh",
+  height: "auto",
   overflow: "hidden",
 };
 
@@ -74,10 +75,8 @@ function PropertyDetails() {
     useAuth();
   const navigate = useNavigate();
   const openNotification = useNotification();
-  const searchParams = useSearchParams();
-  const id = searchParams.get("id") ?? "";
-  //const id = useParams();
-  console.log(id);
+  const [searchParams] = useSearchParams();
+  const id = searchParams.get("id");
 
   const [editContent, setEditContent] = useState({});
   const [open, setOpen] = useState(false);
@@ -85,77 +84,104 @@ function PropertyDetails() {
   const { propertyRefresh, propertyData, propertyDataLoading, fetchProperty } =
     useFetchProperty();
 
+  // Only fetch once when id changes
   useEffect(() => {
-    fetchProperty(id);
-    //eslint-disable-next-line
-  }, [id]);
-
-  useEffect(() => {
-    if (propertyData) {
-      console.log(propertyData);
+    if (id) {
+      fetchProperty(id);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id]); 
+
+  // Safely extract property with fallback
+  const property = useMemo(() => {
+    return propertyData?.[0] || null;
   }, [propertyData]);
 
-  const property = RealEstateData[0];
+  // Calculate derived values with memoization
+  const hasUserReviewed = useMemo(() => {
+    if (!property?.reviews || !currentUser?.email) return false;
+    return property.reviews.some((r) => r.email === currentUser.email);
+  }, [property?.reviews, currentUser?.email]);
 
-  const hasUserReviewed = property?.reviews?.some(
-    (r) => r.email === currentUser?.email
-  );
+  const averageRating = useMemo(() => {
+    if (!property?.reviews?.length) return 0;
+    const sum = property.reviews.reduce((acc, r) => acc + (r.rating || 0), 0);
+    return (sum / property.reviews.length).toFixed(1);
+  }, [property?.reviews]);
 
   const editReview = (id) => {
     if (userLoggedIn) {
       const review = property?.reviews?.find((r) => r._id === id);
-      toggleEditReview();
-      setEditContent({
-        ...property,
-        reviews: review,
-      });
-    } else {
-      setOpenAuthModal(true);
-    }
-  };
-
-  const deleteReview = async (id) => {
-    if (userLoggedIn) {
-      try {
-        const res = await axios.delete(`delete-review?id=${id}`);
-        if (res.data.success) {
-          openNotification(
-            "success",
-            "Your review has been deleted",
-            "Success!"
-          );
-          //propertiesRefresh();
-        }
-      } catch (error) {
-        console.error(error);
-        openNotification(
-          "warning",
-          "Something went wrong. Please try again or contact us for assistance",
-          "There was an error..."
-        );
+      if (review) {
+        toggleEditReview();
+        setEditContent({
+          ...property,
+          reviews: review,
+        });
       }
     } else {
       setOpenAuthModal(true);
     }
   };
 
-  // Calculate average rating
-  const averageRating =
-    property?.reviews?.length > 0
-      ? (
-          property.reviews.reduce((sum, r) => sum + r.rating, 0) /
-          property.reviews.length
-        ).toFixed(1)
-      : 0;
+  const deleteReview = async (reviewId) => {
+    if (!userLoggedIn) {
+      setOpenAuthModal(true);
+      return;
+    }
 
-  //   return <div>{id}</div>;
+    try {
+      const res = await axios.delete(`delete-review?id=${reviewId}`);
+      if (res.data.success) {
+        openNotification(
+          "success",
+          "Your review has been deleted",
+          "Success!"
+        );
+        propertyRefresh(); 
+      }
+    } catch (error) {
+      console.error(error);
+      openNotification(
+        "warning",
+        "Something went wrong. Please try again or contact us for assistance",
+        "There was an error..."
+      );
+    }
+  };
+
+  // Show loading state
+  if (propertyDataLoading) {
+    return <Spin fullscreen tip="Loading property..." />;
+  }
+
+  if (!property) {
+    return (
+      <div style={{ textAlign: "center", padding: "100px 20px" }}>
+        <Title level={3}>Property not found</Title>
+        <Button type="primary" onClick={() => navigate("/")}>
+          Back to Home
+        </Button>
+      </div>
+    );
+  }
+
   return (
     <div>
       <div style={heroContainer}>
-        <video style={videoStyle} muted autoPlay loop playsInline>
-          <source src={property.vid[0]} type="video/mp4" />
-        </video>
+        {!property.vid?.length > 0 ? (
+          <video style={videoStyle} muted autoPlay loop playsInline>
+            <source src={property.vid[0]} type="video/mp4" />
+          </video>
+        ) : (
+          <SekaniHero
+            heroImg={property.img}
+            heroText={property.propertyType || "Property"}
+            heroTitle={`${property.address || ""} ${property.city || ""}, ${
+              property.county || ""
+            }`}
+          />
+        )}
       </div>
 
       <div
@@ -163,7 +189,6 @@ function PropertyDetails() {
       >
         <Row gutter={[32, 32]}>
           {/* Left Column - Main Info */}
-
           <Col xs={24} lg={16}>
             {/* Property Title & Location */}
             <div
@@ -200,9 +225,9 @@ function PropertyDetails() {
                     backgroundClip: "text",
                   }}
                 >
-                  {property?.propertyType}
-                  {property?.bedrooms > 0 &&
-                    ` • ${property?.bedrooms} BR / ${property?.bathrooms} BA`}
+                  {property.propertyType || "Property"}
+                  {property.bedrooms > 0 &&
+                    ` • ${property.bedrooms} BR / ${property.bathrooms} BA`}
                 </Title>
               </div>
 
@@ -217,7 +242,8 @@ function PropertyDetails() {
                     color: "#64748b",
                   }}
                 >
-                  {property?.address}, {property?.city}, {property?.county}
+                  {property.address || "Address not available"},{" "}
+                  {property.city || ""}, {property.county || ""}
                 </Text>
               </div>
               <div style={{ marginTop: 10, marginBottom: 0 }}>
@@ -230,18 +256,19 @@ function PropertyDetails() {
                     borderRadius: 24,
                     border: "none",
                     background:
-                      property?.status === "Available"
+                      property.status === "Available"
                         ? "linear-gradient(135deg, #10b981, #059669)"
-                        : property?.status === "Pending"
+                        : property.status === "Pending"
                         ? "linear-gradient(135deg, #f59e0b, #d97706)"
                         : "linear-gradient(135deg, #ef4444, #dc2626)",
                     color: "#fff",
                     boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
                   }}
                 >
-                  {property?.status}
+                  {property.status || "Unknown"}
                 </Tag>
               </div>
+
               {/* Quick Stats */}
               <div
                 style={{
@@ -253,21 +280,21 @@ function PropertyDetails() {
                   marginTop: 24,
                 }}
               >
-                {property?.squareFeet && (
+                {property.squareFeet && (
                   <StatCard
                     icon={<HomeOutlined />}
                     label="Size"
                     value={`${property.squareFeet} sq. ft`}
                   />
                 )}
-                {property?.yearBuilt && (
+                {property.price && (
                   <StatCard
                     icon={<CalendarOutlined />}
                     label="Price"
-                    value={`KES. ${property.price?.toLocaleString()}`}
+                    value={`KES. ${property.price.toLocaleString()}`}
                   />
                 )}
-                {property?.rating > 0 && (
+                {property.reviews?.length > 0 && (
                   <StatCard
                     icon={<StarFilled />}
                     label="Rating"
@@ -278,90 +305,104 @@ function PropertyDetails() {
             </div>
 
             {/* Media */}
-            <div
-              style={{
-                background: "#fff",
-                padding: isMobile ? 20 : 32,
-                borderRadius: 20,
-                marginBottom: 24,
-                boxShadow: "0 4px 20px rgba(0,0,0,0.08)",
-              }}
-            >
-              <Card>
-                <Title>Media</Title>{" "}
-                <div
-                  style={{
+            {(property.vid?.length > 0 || property.img?.length > 0) && (
+              <div
+                style={{
+                  background: "#fff",
+                  padding: isMobile ? 20 : 32,
+                  borderRadius: 20,
+                  marginBottom: 24,
+                  boxShadow: "0 4px 20px rgba(0,0,0,0.08)",
+                }}
+              >
+                <Card>
+                  <Title level={4}>Media</Title>
+                  {property.vid?.length > 0 && (
+                    <div
+                     style={{
                     width: "100%",
                     height: "auto",
                     padding: 4,
                   }}
-                >
-                  <VideoCarousel content={property?.vid} isMobile={isMobile} />
-                </div>
-                <div
-                  style={{
-                    display: "grid",
-                    gridTemplateColumns: isMobile
-                      ? "repeat(1, 1fr)"
-                      : "repeat(2, 1fr)",
-                    gap: 8,
-                    padding: 4,
-                  }}
-                >
-                  {(Array.isArray(property.img)
-                    ? property.img
-                    : [property?.img]
-                  ).map((img, i) => (
-                    <Image
-                      key={i}
-                      src={img}
-                      alt={`Property ${i + 1}`}
+                    >
+                      <VideoCarousel
+                        content={property.vid}
+                        isMobile={isMobile}
+                      />
+                    </div>
+                  )}
+                  {property.img?.length > 0 && (
+                    <div
                       style={{
-                        width: "100%",
-                        height: isMobile ? 180 : 250,
-                        objectFit: "cover",
-                        borderRadius: 6,
+                        display: "grid",
+                        gridTemplateColumns: isMobile
+                          ? "repeat(1, 1fr)"
+                          : "repeat(2, 1fr)",
+                        gap: 8,
+                        padding: 4,
                       }}
-                    />
-                  ))}
-                </div>{" "}
-              </Card>
-            </div>
+                    >
+                      {(Array.isArray(property.img)
+                        ? property.img
+                        : [property.img]
+                      )
+                        .filter(Boolean)
+                        .map((img, i) => (
+                          <Image
+                            key={i}
+                            src={img}
+                            alt={`Property ${i + 1}`}
+                            preview={{ mask: "Click to view full image" }}
+                            style={{
+                              width: "100%",
+                              height: isMobile ? 180 : 250,
+                              objectFit: "cover",
+                              borderRadius: 6,
+                            }}
+                          />
+                        ))}
+                    </div>
+                  )}
+                </Card>
+              </div>
+            )}
 
             {/* Description */}
-            <div
-              style={{
-                background: "#fff",
-                padding: isMobile ? 20 : 32,
-                borderRadius: 20,
-                marginBottom: 24,
-                boxShadow: "0 4px 20px rgba(0,0,0,0.08)",
-              }}
-            >
-              <Title
-                level={4}
+            {property.description && (
+              <div
                 style={{
-                  fontFamily: "Raleway",
-                  color: "#1e293b",
-                  marginBottom: 16,
+                  background: "#fff",
+                  padding: isMobile ? 20 : 32,
+                  borderRadius: 20,
+                  marginBottom: 24,
+                  boxShadow: "0 4px 20px rgba(0,0,0,0.08)",
                 }}
               >
-                About This Property
-              </Title>
-              <Paragraph
-                style={{
-                  fontFamily: "Raleway",
-                  fontSize: 16,
-                  lineHeight: 1.8,
-                  color: "#475569",
-                }}
-              >
-                {property?.description}
-              </Paragraph>
-            </div>
+                <Title
+                  level={4}
+                  style={{
+                    fontFamily: "Raleway",
+                    color: "#1e293b",
+                    marginBottom: 16,
+                  }}
+                >
+                  About This Property
+                </Title>
+                <Paragraph
+                  style={{
+                    fontFamily: "Raleway",
+                    fontSize: 16,
+                    lineHeight: 1.8,
+                    color: "#475569",
+                  }}
+                >
+                  {property.description}
+                </Paragraph>
+              </div>
+            )}
 
             {/* Amenities */}
-            {property?.amenities?.length > 0 && (
+            {property.amenities?.length > 0 && (
               <div
                 style={{
                   background: "#fff",
@@ -404,7 +445,7 @@ function PropertyDetails() {
             )}
 
             {/* Nearby Landmarks */}
-            {property?.nearby?.length > 0 && (
+            {property.nearby?.length > 0 && (
               <div
                 style={{
                   background: "#fff",
@@ -458,7 +499,7 @@ function PropertyDetails() {
               <div
                 style={{
                   display: "flex",
-                  justifyproperty: "space-between",
+                  justifyContent: "space-between",
                   alignItems: "center",
                   marginBottom: 24,
                   flexWrap: "wrap",
@@ -474,10 +515,10 @@ function PropertyDetails() {
                   }}
                 >
                   Reviews{" "}
-                  {property?.reviews?.length > 0 &&
+                  {property.reviews?.length > 0 &&
                     `(${property.reviews.length})`}
                 </Title>
-                {property?.reviews?.length > 0 && (
+                {property.reviews?.length > 0 && (
                   <div
                     style={{ display: "flex", alignItems: "center", gap: 8 }}
                   >
@@ -493,7 +534,7 @@ function PropertyDetails() {
                 )}
               </div>
 
-              {property?.reviews?.length === 0 || !property?.reviews ? (
+              {!property.reviews || property.reviews.length === 0 ? (
                 <div
                   style={{
                     textAlign: "center",
@@ -505,7 +546,13 @@ function PropertyDetails() {
                   <Text style={{ fontFamily: "Raleway", fontSize: 16 }}>
                     No reviews yet.{" "}
                     <span
-                      onClick={toggleReview}
+                      onClick={() => {
+                        if (userLoggedIn) {
+                          toggleReview();
+                        } else {
+                          setOpenAuthModal(true);
+                        }
+                      }}
                       style={{
                         color: "#bdb890",
                         cursor: "pointer",
@@ -526,7 +573,7 @@ function PropertyDetails() {
                   >
                     {property.reviews.slice(0, 2).map((review, idx) => (
                       <Card
-                        key={idx}
+                        key={review._id || idx}
                         style={{
                           borderRadius: 12,
                           border: "1px solid #e2e8f0",
@@ -537,7 +584,7 @@ function PropertyDetails() {
                         <div
                           style={{
                             display: "flex",
-                            justifyproperty: "space-between",
+                            justifyContent: "space-between",
                             alignItems: "flex-start",
                             marginBottom: 12,
                             flexWrap: "wrap",
@@ -560,7 +607,7 @@ function PropertyDetails() {
                                 fontWeight: 600,
                               }}
                             >
-                              {review.name[0]}
+                              {review.name?.[0] || "?"}
                             </Avatar>
                             <Text
                               strong
@@ -569,7 +616,7 @@ function PropertyDetails() {
                                 fontSize: 16,
                               }}
                             >
-                              {review.name}
+                              {review.name || "Anonymous"}
                             </Text>
                           </div>
                           <div
@@ -582,11 +629,11 @@ function PropertyDetails() {
                             <Rate
                               disabled
                               allowHalf
-                              value={review.rating}
+                              value={review.rating || 0}
                               style={{ fontSize: 16 }}
                             />
                             <Text style={{ fontSize: 14, color: "#bdb890" }}>
-                              ({review.rating})
+                              ({review.rating || 0})
                             </Text>
                           </div>
                         </div>
@@ -601,55 +648,49 @@ function PropertyDetails() {
                           {review.review}
                         </Paragraph>
 
-                        <div style={{ marginTop: 8 }}>
-                          {review.email === currentUser?.email ? (
-                            <div
-                              style={{
-                                display: "flex",
-                                gap: 10,
-                                justifyproperty: "flex-end",
-                              }}
-                            >
-                              <Tooltip title="Edit your review">
+                        {review.email === currentUser?.email && (
+                          <div
+                            style={{
+                              marginTop: 12,
+                              display: "flex",
+                              gap: 10,
+                              justifyContent: "flex-end",
+                            }}
+                          >
+                            <Tooltip title="Edit your review">
+                              <Button
+                                onClick={() => editReview(review._id)}
+                                icon={<EditOutlined />}
+                                type="primary"
+                                shape="circle"
+                              />
+                            </Tooltip>
+                            <Tooltip title="Delete your review">
+                              <Popconfirm
+                                title="Delete review?"
+                                description="This action cannot be undone."
+                                open={open}
+                                onConfirm={() => {
+                                  setConfirmLoading(true);
+                                  deleteReview(review._id).finally(() => {
+                                    setOpen(false);
+                                    setConfirmLoading(false);
+                                  });
+                                }}
+                                okButtonProps={{ loading: confirmLoading }}
+                                onCancel={() => setOpen(false)}
+                              >
                                 <Button
-                                  onClick={() => {
-                                    editReview(review._id);
-                                  }}
-                                  icon={<EditOutlined />}
+                                  icon={<DeleteOutlined />}
+                                  onClick={() => setOpen(true)}
+                                  danger
                                   type="primary"
                                   shape="circle"
                                 />
-                              </Tooltip>
-                              <Tooltip title="Delete your review">
-                                <Popconfirm
-                                  title="Delete review?"
-                                  description="This action cannot be undone."
-                                  open={open}
-                                  onConfirm={() => {
-                                    setConfirmLoading(true);
-                                    setTimeout(() => {
-                                      deleteReview(review._id);
-                                      setOpen(false);
-                                      setConfirmLoading(false);
-                                    }, 1000);
-                                  }}
-                                  okButtonProps={{ loading: confirmLoading }}
-                                  onCancel={() => setOpen(false)}
-                                >
-                                  <Button
-                                    icon={<DeleteOutlined />}
-                                    onClick={() => {
-                                      setOpen(true);
-                                    }}
-                                    danger
-                                    type="primary"
-                                    shape="circle"
-                                  />
-                                </Popconfirm>
-                              </Tooltip>
-                            </div>
-                          ) : null}
-                        </div>
+                              </Popconfirm>
+                            </Tooltip>
+                          </div>
+                        )}
                       </Card>
                     ))}
                   </Space>
@@ -660,13 +701,13 @@ function PropertyDetails() {
                       gap: 12,
                       marginTop: 24,
                       flexWrap: "wrap",
-                      justifyproperty: isMobile ? "center" : "flex-start",
+                      justifyContent: isMobile ? "center" : "flex-start",
                     }}
                   >
                     {property.reviews.length > 2 && (
                       <Button
                         size="large"
-                        onClick={() => navigate(`/reviews?id=${property?._id}`)}
+                        onClick={() => navigate(`/reviews?id=${property._id}`)}
                         style={{
                           borderRadius: 10,
                           fontFamily: "Raleway",
@@ -680,6 +721,7 @@ function PropertyDetails() {
                       <Button
                         type="text"
                         size="large"
+                        disabled
                         style={{
                           background:
                             "linear-gradient(135deg, #bdb890, #a8a378)",
@@ -725,138 +767,141 @@ function PropertyDetails() {
 
           {/* Right Column - Agent & CTA */}
           <Col xs={24} lg={8}>
-            {/* Agent Card */}
-            <div
-              style={{
-                background: "linear-gradient(135deg, #1e293b 0%, #334155 100%)",
-                padding: isMobile ? 24 : 32,
-                borderRadius: 20,
-                boxShadow: "0 8px 32px rgba(0,0,0,0.2)",
-                position: isMobile ? "relative" : "sticky",
-                top: 20,
-              }}
-            >
-              <Title
-                level={4}
-                style={{
-                  fontFamily: "Raleway",
-                  color: "#fff",
-                  marginBottom: 24,
-                  textAlign: "center",
-                }}
-              >
-                Contact Agent
-              </Title>
-
+            {property.agent && (
               <div
                 style={{
-                  background: "rgba(255,255,255,0.1)",
-                  backdropFilter: "blur(10px)",
-                  padding: 24,
-                  borderRadius: 16,
-                  marginBottom: 24,
+                  background:
+                    "linear-gradient(135deg, #1e293b 0%, #334155 100%)",
+                  padding: isMobile ? 24 : 32,
+                  borderRadius: 20,
+                  boxShadow: "0 8px 32px rgba(0,0,0,0.2)",
+                  position: isMobile ? "relative" : "sticky",
+                  top: 20,
                 }}
               >
-                <div
+                <Title
+                  level={4}
                   style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    gap: 16,
+                    fontFamily: "Raleway",
+                    color: "#fff",
+                    marginBottom: 24,
+                    textAlign: "center",
                   }}
                 >
-                  <Avatar
-                    size={80}
-                    icon={<UserOutlined />}
+                  Contact Agent
+                </Title>
+
+                <div
+                  style={{
+                    background: "rgba(255,255,255,0.1)",
+                    backdropFilter: "blur(10px)",
+                    padding: 24,
+                    borderRadius: 16,
+                    marginBottom: 24,
+                  }}
+                >
+                  <div
                     style={{
-                      background: "linear-gradient(135deg, #bdb890, #a8a378)",
-                      fontSize: 32,
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      gap: 16,
                     }}
-                  />
-                  <div style={{ textAlign: "center" }}>
-                    <Text
-                      strong
+                  >
+                    <Avatar
+                      size={80}
+                      icon={<UserOutlined />}
                       style={{
-                        color: "#fff",
-                        fontSize: 20,
-                        fontFamily: "Raleway",
-                        display: "block",
-                        marginBottom: 8,
+                        background: "linear-gradient(135deg, #bdb890, #a8a378)",
+                        fontSize: 32,
                       }}
-                    >
-                      {property?.agent?.name}
-                    </Text>
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyproperty: "center",
-                        gap: 8,
-                      }}
-                    >
-                      <PhoneOutlined style={{ color: "#bdb890" }} />
+                    />
+                    <div style={{ textAlign: "center" }}>
                       <Text
+                        strong
                         style={{
-                          color: "#cbd5e1",
+                          color: "#fff",
+                          fontSize: 20,
                           fontFamily: "Raleway",
-                          fontSize: 16,
+                          display: "block",
+                          marginBottom: 8,
                         }}
                       >
-                        {property?.agent?.phone}
+                        {property.agent.name || "Agent"}
                       </Text>
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          gap: 8,
+                        }}
+                      >
+                        <PhoneOutlined style={{ color: "#bdb890" }} />
+                        <Text
+                          style={{
+                            color: "#cbd5e1",
+                            fontFamily: "Raleway",
+                            fontSize: 16,
+                          }}
+                        >
+                          {property.agent.phone || "No phone"}
+                        </Text>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
 
-              <Space direction="vertical" size={12} style={{ width: "100%" }}>
-                <Button
-                  type="primary"
-                  size="large"
-                  block
-                  icon={<PhoneOutlined />}
-                  onClick={() =>
-                    (window.location.href = `tel:${property?.agent?.phone}`)
-                  }
-                  style={{
-                    background: "linear-gradient(135deg, #bdb890, #a8a378)",
-                    border: "none",
-                    borderRadius: 12,
-                    height: 48,
-                    fontFamily: "Raleway",
-                    fontWeight: 600,
-                    fontSize: 16,
-                    boxShadow: "0 4px 16px rgba(189, 184, 144, 0.4)",
-                  }}
-                >
-                  Call Agent
-                </Button>
-                <Button
-                  size="large"
-                  block
-                  icon={<CalendarOutlined />}
-                  onClick={() => {
-                    if (userLoggedIn) {
-                      toggleSchedule();
-                    } else {
-                      setOpenAuthModal(true);
+                <Space direction="vertical" size={12} style={{ width: "100%" }}>
+                  <Button
+                    type="primary"
+                    size="large"
+                    block
+                    icon={<PhoneOutlined />}
+                    onClick={() =>
+                      (window.location.href = `tel:${property.agent.phone}`)
                     }
-                  }}
-                  style={{
-                    background: "rgba(255,255,255,0.1)",
-                    border: "1px solid rgba(255,255,255,0.3)",
-                    color: "#fff",
-                    borderRadius: 12,
-                    height: 48,
-                    fontFamily: "Raleway",
-                    fontWeight: 600,
-                    fontSize: 16,
-                  }}
-                >
-                  Schedule Viewing
-                </Button>
-              </Space>
-            </div>
+                    disabled={!property.agent.phone}
+                    style={{
+                      background: "linear-gradient(135deg, #bdb890, #a8a378)",
+                      border: "none",
+                      borderRadius: 12,
+                      height: 48,
+                      fontFamily: "Raleway",
+                      fontWeight: 600,
+                      fontSize: 16,
+                      boxShadow: "0 4px 16px rgba(189, 184, 144, 0.4)",
+                    }}
+                  >
+                    Call Agent
+                  </Button>
+                  <Button
+                    size="large"
+                    block
+                    icon={<CalendarOutlined />}
+                    onClick={() => {
+                      if (userLoggedIn) {
+                        toggleSchedule();
+                      } else {
+                        setOpenAuthModal(true);
+                      }
+                    }}
+                    style={{
+                      background: "rgba(255,255,255,0.1)",
+                      border: "1px solid rgba(255,255,255,0.3)",
+                      color: "#fff",
+                      borderRadius: 12,
+                      height: 48,
+                      fontFamily: "Raleway",
+                      fontWeight: 600,
+                      fontSize: 16,
+                    }}
+                  >
+                    Schedule Viewing
+                  </Button>
+                </Space>
+              </div>
+            )}
           </Col>
         </Row>
       </div>

@@ -41,7 +41,7 @@ function App() {
             <Route path="/properties" element={<Properties />} />
             <Route path="/about" element={<About />} />
             <Route path="/reviews" element={<AllReviews />} />
-            <Route path="/property/" element={<PropertyDetails />} />
+            <Route path="/properties/property" element={<PropertyDetails />} />
           </Route>
         </Routes>
       </AnimatePresence>

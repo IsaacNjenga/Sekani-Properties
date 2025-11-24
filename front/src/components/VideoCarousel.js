@@ -34,7 +34,7 @@ function VideoCarousel({ content, isMobile }) {
     <Carousel
       ref={carouselRef}
       autoplay={false}
-      arrows={!isMobile}
+      arrows
       dotPosition="top"
       beforeChange={(from, to) => handleSlideChange(to)}
     >

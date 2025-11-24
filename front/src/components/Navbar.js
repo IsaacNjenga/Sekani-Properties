@@ -22,7 +22,7 @@ const menuItems = [
   { key: 2, label: "Featured Properties", path: "/properties" },
   { key: 3, label: "About", path: "/about" },
   { key: 4, label: "Contact Us", path: "/contact" },
-  { key: 5, label: "Trial", path: "/trial" },
+  //{ key: 5, label: "Trial", path: "/trial" },
 ];
 
 function Navbar() {
