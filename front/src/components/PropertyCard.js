@@ -3,6 +3,7 @@ import { Card, Carousel, Button, Badge, Tag, Divider, Typography } from "antd";
 import { lightTheme } from "../App";
 import { useUser } from "../contexts/UserContext";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const { Text, Title } = Typography;
 
@@ -183,8 +184,17 @@ function PropertyCard({ c, viewProperty }) {
             border: "1px solid #333",
             color: "#333",
           }}
-          //onClick={() => viewProperty(c)}
-          onClick={() => navigate(`/properties/property?id=${c._id}`)}
+          onClick={() => {
+            navigate(`/properties/property?id=${c._id}`);
+
+            const url = `${process.env.REACT_APP_API_URL}/analytics/clicks/${c._id}`;
+
+            if (navigator.sendBeacon) {
+              navigator.sendBeacon(url);
+            } else {
+              axios.post(url).catch(() => {});
+            }
+          }}
         >
           View
         </Button>
