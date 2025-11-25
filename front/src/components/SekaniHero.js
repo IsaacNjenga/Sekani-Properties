@@ -70,8 +70,8 @@ function SekaniHero({ heroImg, heroTitle, heroText }) {
               {heroTitle}
             </Title>
           }
-          delay={100}
-          duration={0.2}
+          delay={50}
+          duration={0.1}
           ease="power3.out"
           splitType="chars"
           from={{ opacity: 0, y: 40 }}

@@ -160,17 +160,12 @@ function Home() {
               />
             ))}
           </Carousel>
-          <div style={{ ...heroStyle }}>
+          <div className="banner-hero-style">
             <SplitText
               text={
                 <Title
                   level={isMobile ? 5 : 3}
-                  style={{
-                    ...titleStyle,
-                    fontSize: isMobile ? 24 : 38,
-                    padding: 0,
-                    fontWeight: 400,
-                  }}
+                  style={{ ...titleStyle, fontSize: isMobile ? 26 : 38 }}
                 >
                   YOUR HOME MADE SIMPLE
                 </Title>
@@ -406,18 +401,6 @@ function Home() {
                           />
                         )}
                       </Carousel>
-
-                      {/* <Image
-                        src={c.img}
-                        alt={c.key}
-                        preview={false}
-                        style={{
-                          width: "100%",
-                          height: "100%",
-                          objectFit: "cover",
-                          borderRadius: 12,
-                        }}
-                      /> */}
                     </div>
                   }
                 >

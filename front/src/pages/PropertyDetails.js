@@ -89,8 +89,8 @@ function PropertyDetails() {
     if (id) {
       fetchProperty(id);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id]); 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id]);
 
   // Safely extract property with fallback
   const property = useMemo(() => {
@@ -133,12 +133,8 @@ function PropertyDetails() {
     try {
       const res = await axios.delete(`delete-review?id=${reviewId}`);
       if (res.data.success) {
-        openNotification(
-          "success",
-          "Your review has been deleted",
-          "Success!"
-        );
-        propertyRefresh(); 
+        openNotification("success", "Your review has been deleted", "Success!");
+        propertyRefresh();
       }
     } catch (error) {
       console.error(error);
@@ -169,9 +165,9 @@ function PropertyDetails() {
   return (
     <div>
       <div style={heroContainer}>
-        {!property.vid?.length > 0 ? (
+        {!property?.vid?.length ? (
           <video style={videoStyle} muted autoPlay loop playsInline>
-            <source src={property.vid[0]} type="video/mp4" />
+            <source src={property?.vid[0]} type="video/mp4" />
           </video>
         ) : (
           <SekaniHero
@@ -319,11 +315,11 @@ function PropertyDetails() {
                   <Title level={4}>Media</Title>
                   {property.vid?.length > 0 && (
                     <div
-                     style={{
-                    width: "100%",
-                    height: "auto",
-                    padding: 4,
-                  }}
+                      style={{
+                        width: "100%",
+                        height: "auto",
+                        padding: 4,
+                      }}
                     >
                       <VideoCarousel
                         content={property.vid}

@@ -15,7 +15,6 @@ function useFetchProperty() {
       const res = await axios.get(`fetch-property?id=${id}`);
       if (res.data.success) {
         setPropertyData(res.data.property);
-        console.log(res.data.property);
       }
     } catch (error) {
       console.error("Error in fetching property:", error);

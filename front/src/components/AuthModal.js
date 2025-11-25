@@ -10,16 +10,19 @@ function AuthModal({ openAuthModal, setOpenAuthModal, isMobile }) {
       centered
       onCancel={() => setOpenAuthModal(false)}
       closable={true}
-      width={isMobile ? "95%" : "600px"}
+      width={isMobile ? "auto" : "600px"}
+      height={"auto"}
       maskStyle={{
         backgroundColor: "rgba(0,0,0,0.6)",
         backdropFilter: "blur(6px)",
       }}
       bodyStyle={{
         padding: 0,
+        height: 'auto',
       }}
       style={{
         padding: 0,
+        height: '0vh',
       }}
       closeIcon={
         <CloseOutlined
