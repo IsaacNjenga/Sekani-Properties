@@ -6,6 +6,7 @@ import {
   Carousel,
   Col,
   Image,
+  Rate,
   Row,
   Space,
   Tag,
@@ -24,6 +25,7 @@ import bgImg6 from "../assets/images/bg6.jpeg";
 import bgImg7 from "../assets/images/bg7.jpeg";
 import { useUser } from "../contexts/UserContext";
 import {
+  ArrowRightOutlined,
   EnvironmentOutlined,
   EyeOutlined,
   HeartOutlined,
@@ -51,15 +53,15 @@ const titleStyle = {
   color: "#fff",
   fontFamily: "Bodoni Moda",
   textAlign: "center",
-  fontWeight: 400,
-  letterSpacing: 2,
+  fontWeight: "600",
+  letterSpacing: 1.2,
   marginBottom: 0,
 };
 
 const subTitleStyle = {
   marginTop: 5,
   color: "#fff",
-  fontFamily: "Bodoni Moda",
+  fontFamily: "Alegreya Sans",
   fontWeight: 300,
   textAlign: "center",
 };
@@ -176,7 +178,11 @@ function Home() {
               text={
                 <Title
                   level={isMobile ? 5 : 2}
-                  style={{ ...titleStyle, fontSize: isMobile ? 26 : 38 }}
+                  style={{
+                    ...titleStyle,
+                    fontSize: isMobile ? 20 : 38,
+                    margin: 0,
+                  }}
                 >
                   YOUR HOME MADE SIMPLE
                 </Title>
@@ -234,19 +240,26 @@ function Home() {
         </div>
 
         {/* home body */}
-        <div>
+        <div style={{ margin: "10px 0" }}>
           <div style={{ textAlign: "center" }}>
             <SplitText
               text={
                 <Title
-                  level={3}
-                  style={{ ...titleStyle, color: "#333", marginBottom: 0 }}
+                  level={2}
+                  style={{
+                    ...titleStyle,
+                    color: "#333",
+                    marginBottom: 0,
+                    fontWeight: 500,
+                    fontSize: isMobile ? 20 : 38,
+                    margin: 0,
+                  }}
                 >
                   HOW CAN WE HELP?
                 </Title>
               }
               delay={100}
-              duration={0.6}
+              duration={0.3}
               ease="power3.out"
               splitType="chars"
               from={{ opacity: 0, y: 40 }}
@@ -256,7 +269,7 @@ function Home() {
               textAlign="center"
             />
             <Title
-              level={5}
+              level={2}
               style={{
                 ...subTitleStyle,
                 color: "#333",
@@ -308,11 +321,11 @@ function Home() {
                 <div style={{ position: "absolute", bottom: 0 }}>
                   <Text
                     style={{
-                      fontFamily: "Alegray Sans",
+                      fontFamily: "Bodoni Moda",
                       color: "#fff",
                       letterSpacing: 3,
                       fontSize: 36,
-                      fontWeight: 800,
+                      fontWeight: 600,
                     }}
                   >
                     {grid.text}
@@ -322,20 +335,28 @@ function Home() {
             ))}
           </div>
         </div>
-        {/* Listings */}
-        <div style={{ margin: "0 20px" }}>
+
+        {/* Featured Listings */}
+        <div style={{ margin: "10px 20px" }}>
           <div style={{ textAlign: "center" }}>
             <SplitText
               text={
                 <Title
-                  level={3}
-                  style={{ ...titleStyle, color: "#333", marginBottom: 0 }}
+                  level={2}
+                  style={{
+                    ...titleStyle,
+                    color: "#333",
+                    marginBottom: 0,
+                    fontWeight: 500,
+                    fontSize: isMobile ? 20 : 38,
+                    margin: 0,
+                  }}
                 >
                   HANDPICKED JUST FOR YOU
                 </Title>
               }
               delay={100}
-              duration={0.6}
+              duration={0.2}
               ease="power3.out"
               splitType="chars"
               from={{ opacity: 0, y: 40 }}
@@ -345,7 +366,7 @@ function Home() {
               textAlign="center"
             />
             <Title
-              level={5}
+              level={2}
               style={{
                 ...subTitleStyle,
                 color: "#333",
@@ -357,14 +378,15 @@ function Home() {
               Featured Listings
             </Title>
           </div>
+
           <Row gutter={[16, 16]}>
             {cardData.map((c) => (
               <Col key={c.key} xs={24} sm={12} md={8}>
                 <Card
                   hoverable
                   style={{
-                    minHeight: 250,
-                    borderRadius: 20,
+                    minHeight: 260,
+                    borderRadius: 12,
                     overflow: "hidden",
                     boxShadow: "0 8px 24px rgba(0,0,0,0.12)",
                     background: "#fff",
@@ -373,7 +395,7 @@ function Home() {
                     position: "relative",
                   }}
                   bodyStyle={{
-                    padding: "20px",
+                    padding: "25px",
                     background:
                       "linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%)",
                   }}
@@ -469,9 +491,10 @@ function Home() {
                             border: "none",
                             borderRadius: 20,
                             padding: "4px 12px",
-                            fontSize: 13,
-                            fontWeight: 600,
+                            fontSize: 16,
+                            fontWeight: 200,
                             boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
+                            fontFamily: "Raleway",
                           }}
                         >
                           {c.status || "Available"}
@@ -488,7 +511,14 @@ function Home() {
                         }}
                       >
                         <Tag
-                          icon={<HomeOutlined />}
+                          icon={
+                            <HomeOutlined
+                              style={{
+                                fontSize: 16,
+                                fontWeight: 200,
+                              }}
+                            />
+                          }
                           style={{
                             background: "rgba(255,255,255,0.95)",
                             backdropFilter: "blur(10px)",
@@ -496,9 +526,10 @@ function Home() {
                             border: "none",
                             borderRadius: 20,
                             padding: "4px 12px",
-                            fontSize: 13,
-                            fontWeight: 600,
+                            fontSize: 16,
+                            fontWeight: 200,
                             boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
+                            fontFamily: "Raleway",
                           }}
                         >
                           {c.propertyType || "Airbnb"}
@@ -574,16 +605,17 @@ function Home() {
                   {/* Content */}
                   <div style={{ position: "relative", zIndex: 1 }}>
                     {/* Location */}
-                    <div style={{ marginBottom: 2 }}>
+                    <div style={{ marginBottom: 0 }}>
                       <Space size={4}>
                         <EnvironmentOutlined
                           style={{ color: "#bdb890", fontSize: 16 }}
                         />
                         <Text
+                          type="secondary"
                           style={{
                             color: "#8c8c8c",
-                            fontSize: 14,
-                            fontFamily: "Roboto",
+                            fontSize: 16,
+                            fontFamily: "Bodoni Moda",
                           }}
                         >
                           {c.city || "Nairobi"}, {c.county || "Nairobi County"}
@@ -600,9 +632,10 @@ function Home() {
                         whiteSpace: "nowrap",
                         overflow: "hidden",
                         textOverflow: "ellipsis",
-                        fontFamily: "Alegreya Sans",
+                        fontFamily: "Raleway",
                         color: "#1e293b",
                         fontSize: isMobile ? 18 : 22,
+                        fontWeight: 400,
                       }}
                     >
                       {c.address}
@@ -634,11 +667,18 @@ function Home() {
                               fontWeight: 600,
                               color: "#1e293b",
                               lineHeight: 1.2,
+                              fontFamily: "Raleway",
                             }}
                           >
                             {c.bedrooms}
                           </Text>{" "}
-                          <Text style={{ fontSize: 15, color: "#8c8c8c" }}>
+                          <Text
+                            style={{
+                              fontSize: 15,
+                              color: "#8c8c8c",
+                              fontFamily: "Raleway",
+                            }}
+                          >
                             Beds
                           </Text>
                         </div>
@@ -660,11 +700,18 @@ function Home() {
                                 fontWeight: 600,
                                 color: "#1e293b",
                                 lineHeight: 1.2,
+                                fontFamily: "Raleway",
                               }}
                             >
                               {c.bathrooms}
                             </Text>{" "}
-                            <Text style={{ fontSize: 15, color: "#8c8c8c" }}>
+                            <Text
+                              style={{
+                                fontSize: 15,
+                                color: "#8c8c8c",
+                                fontFamily: "Raleway",
+                              }}
+                            >
                               Baths
                             </Text>
                           </div>
@@ -684,12 +731,13 @@ function Home() {
                         <Title
                           level={isMobile ? 4 : 3}
                           style={{
-                            fontFamily: "Raleway",
+                            fontFamily: "Bodoni Moda",
                             margin: 0,
                             WebkitBackgroundClip: "text",
                             backgroundClip: "text",
                             fontSize: isMobile ? 20 : 24,
-                            color: "#b0aa94",
+                            color: "#3c3b38ff",
+                            fontWeight: 300,
                           }}
                         >
                           KES {c.price.toLocaleString()}
@@ -721,8 +769,9 @@ function Home() {
                         <Text
                           style={{
                             color: "white",
-                            fontWeight: 600,
-                            fontSize: 14,
+                            fontWeight: 300,
+                            fontSize: 16,
+                            fontFamily: "Raleway",
                           }}
                         >
                           View Details
@@ -752,25 +801,35 @@ function Home() {
                 letterSpacing: 1,
               }}
               type="primary"
+              icon={<ArrowRightOutlined />}
+              iconPosition="end"
               onClick={() => navigate("/properties")}
             >
-              View All
+              View More
             </Button>
           </div>
         </div>
+
         {/* testimonials */}
-        <div style={{ textAlign: "center", marginTop: 15 }}>
+        <div style={{ textAlign: "center", marginTop: 20 }}>
           <SplitText
             text={
               <Title
-                level={3}
-                style={{ ...titleStyle, color: "#333", marginBottom: 0 }}
+                level={2}
+                style={{
+                  ...titleStyle,
+                  color: "#333",
+                  marginBottom: 0,
+                  fontWeight: 500,
+                  fontSize: isMobile ? 20 : 38,
+                  margin: 0,
+                }}
               >
                 WHY CHOOSE US?
               </Title>
             }
             delay={100}
-            duration={0.6}
+            duration={0.2}
             ease="power3.out"
             splitType="chars"
             from={{ opacity: 0, y: 40 }}
@@ -780,7 +839,7 @@ function Home() {
             textAlign="center"
           />
           <Title
-            level={5}
+            level={2}
             style={{
               ...subTitleStyle,
               color: "#333",
@@ -809,17 +868,17 @@ function Home() {
               style={{
                 width: "100%",
                 maxWidth: isMobile ? "100%" : 900,
-                fontFamily: "Alegreya Sans",
+                fontFamily: "Bodoni Moda",
                 color: "#fff",
                 fontSize: isMobile ? 22 : 30,
                 alignItems: "center",
                 justifyContent: "center",
               }}
             >
-              "Sekani took the time to understand exactly what we wanted and
-              found us a home that exceeded our expectations. Their market
-              knowledge and negotiation skills helped us secure the property at
-              a great price, even in this competitive market."
+              "Sekani took the time to understand exactly what I wanted and
+              found me a home that exceeded my expectations. Their market
+              knowledge and negotiation skills really helped me secure the
+              property at a great price, even in this competitive market."
             </Paragraph>
             <div
               style={{
@@ -834,16 +893,21 @@ function Home() {
                   "https://plus.unsplash.com/premium_photo-1726768854379-105f9aeef18d?w=900"
                 }
               />
-              <div>
-                <Text
-                  style={{
-                    fontFamily: "Alegreya Sans",
-                    color: "#fff",
-                    fontSize: isMobile ? 18 : 22,
-                  }}
-                >
-                  John Doe, <span>Buyer</span>
-                </Text>
+              <div style={{ display: "flex", flexDirection: "column" }}>
+                <div>
+                  <Text
+                    style={{
+                      fontFamily: "Raleway",
+                      color: "#fff",
+                      fontSize: isMobile ? 18 : 22,
+                    }}
+                  >
+                    John Doe, <span>Buyer</span>
+                  </Text>
+                </div>
+                <div>
+                  <Rate defaultValue={5} />
+                </div>
               </div>
             </div>
           </div>

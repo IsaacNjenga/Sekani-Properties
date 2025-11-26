@@ -9,6 +9,7 @@ import ScrollToTop from "./components/ScrollToTop";
 import axios from "axios";
 import AllReviews from "./pages/AllReviews";
 import PropertyDetails from "./pages/PropertyDetails";
+import Favourites from "./pages/Favourites";
 
 export const lightTheme = {
   backgroundColor: "#f2f5fa",
@@ -40,6 +41,7 @@ function App() {
             <Route path="/contact" element={<Contact />} />
             <Route path="/properties" element={<Properties />} />
             <Route path="/about" element={<About />} />
+            <Route path="/favourites" element={<Favourites />} />
             <Route path="/reviews" element={<AllReviews />} />
             <Route path="/properties/property" element={<PropertyDetails />} />
           </Route>

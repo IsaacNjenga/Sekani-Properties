@@ -158,7 +158,7 @@ function Navbar() {
                           to={path}
                           style={{
                             fontSize: 22,
-                            fontFamily: "Alegreya Sans",
+                            fontFamily: "Bodoni Moda",
                             fontWeight: 300,
                             color: "#ffffff",
                             letterSpacing: 1.5,
@@ -289,14 +289,15 @@ function Navbar() {
             margin: 0,
             //paddingTop: `${headerHeight}px`,
             minHeight: "100vh",
-            background: darkMode ? "#090c11" : "#f2f5fa",
+            background: !darkMode ? "#090c11" : "#f2f5fa",
           }}
         >
           <Outlet />
         </Content>
         <Footer
           style={{
-            background: "#918f76",
+            background:
+              "linear-gradient(to left, #000000ff 0%, #000000 100%)",
           }}
         >
           <FooterContent />
