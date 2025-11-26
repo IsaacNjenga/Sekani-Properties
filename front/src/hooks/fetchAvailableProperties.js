@@ -34,6 +34,7 @@ function useFetchAvailableProperties() {
 
   useEffect(() => {
     fetchProperties();
+    //eslint-disable-next-line
   }, [refreshKey]);
 
   return {

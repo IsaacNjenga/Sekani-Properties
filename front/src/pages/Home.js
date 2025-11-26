@@ -1,4 +1,4 @@
-import { lightTheme } from "../App";
+//import { lightTheme } from "../App";
 import {
   Avatar,
   Button,
@@ -7,6 +7,8 @@ import {
   Col,
   Image,
   Row,
+  Space,
+  Tag,
   Typography,
 } from "antd";
 import "../assets/css/home.css";
@@ -21,6 +23,12 @@ import bgImg5 from "../assets/images/bg5.jpeg";
 import bgImg6 from "../assets/images/bg6.jpeg";
 import bgImg7 from "../assets/images/bg7.jpeg";
 import { useUser } from "../contexts/UserContext";
+import {
+  EnvironmentOutlined,
+  EyeOutlined,
+  HeartOutlined,
+  HomeOutlined,
+} from "@ant-design/icons";
 
 const { Title, Text, Paragraph } = Typography;
 
@@ -41,7 +49,7 @@ const heroStyle = {
 
 const titleStyle = {
   color: "#fff",
-  fontFamily: "Alegreya Sans",
+  fontFamily: "Bodoni Moda",
   textAlign: "center",
   fontWeight: 400,
   letterSpacing: 2,
@@ -51,7 +59,7 @@ const titleStyle = {
 const subTitleStyle = {
   marginTop: 5,
   color: "#fff",
-  fontFamily: "Alegreya Sans",
+  fontFamily: "Bodoni Moda",
   fontWeight: 300,
   textAlign: "center",
 };
@@ -112,6 +120,7 @@ const cardData = [
     ],
     address: "780 Kiambu Rd, Kiambu",
     bedrooms: 3,
+    bathrooms: 2,
     price: 300000,
   },
   {
@@ -122,6 +131,7 @@ const cardData = [
     ],
     address: "210 Muthaiga, Kiambu",
     bedrooms: 2,
+    bathrooms: 2,
     price: 100000,
   },
   {
@@ -132,6 +142,7 @@ const cardData = [
     ],
     address: "491 Lavington, Nairobi",
     bedrooms: 2,
+    bathrooms: 2,
     price: 200000,
   },
 ];
@@ -164,7 +175,7 @@ function Home() {
             <SplitText
               text={
                 <Title
-                  level={isMobile ? 5 : 3}
+                  level={isMobile ? 5 : 2}
                   style={{ ...titleStyle, fontSize: isMobile ? 26 : 38 }}
                 >
                   YOUR HOME MADE SIMPLE
@@ -352,95 +363,372 @@ function Home() {
                 <Card
                   hoverable
                   style={{
-                    minHeight: 220,
-                    borderRadius: 12,
-                    display: "flex",
-                    flexDirection: "column",
-                    boxShadow: "0 4px 12px rgba(0,0,0,0.07)",
-                    background: "#eae4ac81",
-                    border: `1px solid #ffffff7e`,
+                    minHeight: 250,
+                    borderRadius: 20,
+                    overflow: "hidden",
+                    boxShadow: "0 8px 24px rgba(0,0,0,0.12)",
+                    background: "#fff",
+                    border: "none",
+                    transition: "all 0.3s ease",
+                    position: "relative",
+                  }}
+                  bodyStyle={{
+                    padding: "20px",
+                    background:
+                      "linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%)",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = "translateY(-4px)";
+                    e.currentTarget.style.boxShadow =
+                      "0 12px 32px rgba(0,0,0,0.18)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = "translateY(0)";
+                    e.currentTarget.style.boxShadow =
+                      "0 8px 24px rgba(0,0,0,0.12)";
                   }}
                   cover={
                     <div
                       style={{
                         position: "relative",
                         width: "100%",
-                        height: 500,
+                        height: isMobile ? 280 : 320,
                         overflow: "hidden",
-                        borderTopLeftRadius: 12,
-                        borderTopRightRadius: 12,
-                        padding: 1,
                       }}
                     >
+                      {/* Decorative Pattern Overlay */}
+                      <div
+                        style={{
+                          position: "absolute",
+                          top: 0,
+                          left: 0,
+                          right: 0,
+                          bottom: 0,
+                          background: `
+              radial-gradient(circle at 20% 80%, rgba(189, 184, 144, 0.15) 0%, transparent 50%),
+              radial-gradient(circle at 80% 20%, rgba(118, 75, 162, 0.1) 0%, transparent 50%)
+            `,
+                          zIndex: 1,
+                          pointerEvents: "none",
+                        }}
+                      />
+
                       <Carousel autoplay autoplaySpeed={3500} fade dots={false}>
-                        {c.img.length > 1 ? (
-                          c.img.map((img) => (
-                            <Image
-                              src={img}
-                              alt={c.key}
-                              preview={false}
+                        {(Array.isArray(c.img) ? c.img : [c.img]).map(
+                          (img, index) => (
+                            <div
+                              key={index}
                               style={{
-                                width: "100%",
-                                height: "100%",
-                                objectFit: "cover",
-                                borderRadius: 12,
+                                position: "relative",
+                                height: isMobile ? 280 : 320,
                               }}
-                            />
-                          ))
-                        ) : (
-                          <Image
-                            src={c.img}
-                            alt={c.key}
-                            preview={false}
-                            style={{
-                              width: "100%",
-                              height: "100%",
-                              objectFit: "cover",
-                              borderRadius: 12,
-                            }}
-                          />
+                            >
+                              <Image
+                                src={img}
+                                alt={`${c.address} - Image ${index + 1}`}
+                                preview={{ mask: "Click to view" }}
+                                style={{
+                                  width: "100%",
+                                  height: "100%",
+                                  objectFit: "cover",
+                                }}
+                              />
+                              {/* Gradient Overlay */}
+                              <div
+                                style={{
+                                  position: "absolute",
+                                  bottom: 0,
+                                  left: 0,
+                                  right: 0,
+                                  height: "40%",
+                                  background:
+                                    "linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 100%)",
+                                }}
+                              />
+                            </div>
+                          )
                         )}
                       </Carousel>
+
+                      {/* Status Badge */}
+                      <div
+                        style={{
+                          position: "absolute",
+                          top: 16,
+                          left: 16,
+                          zIndex: 2,
+                        }}
+                      >
+                        <Tag
+                          style={{
+                            background:
+                              c.status === "Available"
+                                ? "linear-gradient(135deg, #52c41a, #73d13d)"
+                                : "linear-gradient(135deg, #faad14, #ffc53d)",
+                            color: "white",
+                            border: "none",
+                            borderRadius: 20,
+                            padding: "4px 12px",
+                            fontSize: 13,
+                            fontWeight: 600,
+                            boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
+                          }}
+                        >
+                          {c.status || "Available"}
+                        </Tag>
+                      </div>
+
+                      {/* Property Type Badge */}
+                      <div
+                        style={{
+                          position: "absolute",
+                          top: 16,
+                          right: 16,
+                          zIndex: 2,
+                        }}
+                      >
+                        <Tag
+                          icon={<HomeOutlined />}
+                          style={{
+                            background: "rgba(255,255,255,0.95)",
+                            backdropFilter: "blur(10px)",
+                            color: "#1890ff",
+                            border: "none",
+                            borderRadius: 20,
+                            padding: "4px 12px",
+                            fontSize: 13,
+                            fontWeight: 600,
+                            boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
+                          }}
+                        >
+                          {c.propertyType || "Airbnb"}
+                        </Tag>
+                      </div>
+
+                      {/* Views/Favorite Icons */}
+                      <div
+                        style={{
+                          position: "absolute",
+                          bottom: 16,
+                          right: 16,
+                          zIndex: 2,
+                          display: "flex",
+                          gap: 8,
+                          flexDirection: "column",
+                        }}
+                      >
+                        <div
+                          style={{
+                            background: "rgba(255,255,255,0.95)",
+                            backdropFilter: "blur(10px)",
+                            borderRadius: 20,
+                            padding: "6px 12px",
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 6,
+                            boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
+                          }}
+                        >
+                          <HeartOutlined
+                            style={{ color: "#ff4d4f", fontSize: 14 }}
+                          />
+                          <Text
+                            style={{
+                              fontSize: 13,
+                              fontWeight: 600,
+                              color: "#595959",
+                            }}
+                          >
+                            {c.likes || 20}
+                          </Text>
+                        </div>
+                        <div
+                          style={{
+                            background: "rgba(255,255,255,0.95)",
+                            backdropFilter: "blur(10px)",
+                            borderRadius: 20,
+                            padding: "6px 12px",
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 6,
+                            boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
+                          }}
+                        >
+                          <EyeOutlined
+                            style={{ color: "#8c8c8c", fontSize: 14 }}
+                          />
+                          <Text
+                            style={{
+                              fontSize: 13,
+                              fontWeight: 600,
+                              color: "#595959",
+                            }}
+                          >
+                            {c.views || 20}
+                          </Text>
+                        </div>
+                      </div>
                     </div>
                   }
                 >
-                  <Card.Meta
-                    title={
-                      <Title
-                        level={isMobile ? 4 : 3}
-                        style={{
-                          marginTop: 1,
-                          marginBottom: 2,
-                          whiteSpace: "nowrap",
-                          overflow: "hidden",
-                          textOverflow: "ellipsis",
-                          fontFamily: "Alegreya Sans",
-                          color: lightTheme.color,
-                        }}
-                      >
-                        {c.address}
-                      </Title>
-                    }
-                    description={
-                      <Text
-                        type="secondary"
-                        style={{
-                          fontFamily: "Roboto",
-                          fontWeight: 500,
-                          fontSize: 18,
-                        }}
-                      >
-                        {c.bedrooms} Bedrooms
-                      </Text>
-                    }
-                  />
-                  <div>
+                  {/* Content */}
+                  <div style={{ position: "relative", zIndex: 1 }}>
+                    {/* Location */}
+                    <div style={{ marginBottom: 2 }}>
+                      <Space size={4}>
+                        <EnvironmentOutlined
+                          style={{ color: "#bdb890", fontSize: 16 }}
+                        />
+                        <Text
+                          style={{
+                            color: "#8c8c8c",
+                            fontSize: 14,
+                            fontFamily: "Roboto",
+                          }}
+                        >
+                          {c.city || "Nairobi"}, {c.county || "Nairobi County"}
+                        </Text>
+                      </Space>
+                    </div>
+
+                    {/* Title */}
                     <Title
                       level={isMobile ? 4 : 3}
-                      style={{ fontFamily: "Raleway" }}
+                      style={{
+                        marginTop: 0,
+                        marginBottom: 12,
+                        whiteSpace: "nowrap",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        fontFamily: "Alegreya Sans",
+                        color: "#1e293b",
+                        fontSize: isMobile ? 18 : 22,
+                      }}
                     >
-                      KES. {c.price.toLocaleString()}
+                      {c.address}
                     </Title>
+
+                    {/* Property Details */}
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 16,
+                        marginBottom: 16,
+                        paddingBottom: 16,
+                        borderBottom: "1px solid #f0f0f0",
+                      }}
+                    >
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: 10,
+                          flexDirection: "row",
+                        }}
+                      >
+                        <div>
+                          <Text
+                            style={{
+                              fontSize: 15,
+                              fontWeight: 600,
+                              color: "#1e293b",
+                              lineHeight: 1.2,
+                            }}
+                          >
+                            {c.bedrooms}
+                          </Text>{" "}
+                          <Text style={{ fontSize: 15, color: "#8c8c8c" }}>
+                            Beds
+                          </Text>
+                        </div>
+                      </div>
+
+                      {c.bathrooms && (
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 10,
+                            flexDirection: "row",
+                          }}
+                        >
+                          <div>
+                            <Text
+                              style={{
+                                fontSize: 15,
+                                fontWeight: 600,
+                                color: "#1e293b",
+                                lineHeight: 1.2,
+                              }}
+                            >
+                              {c.bathrooms}
+                            </Text>{" "}
+                            <Text style={{ fontSize: 15, color: "#8c8c8c" }}>
+                              Baths
+                            </Text>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Price */}
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                      }}
+                    >
+                      <div>
+                        <Title
+                          level={isMobile ? 4 : 3}
+                          style={{
+                            fontFamily: "Raleway",
+                            margin: 0,
+                            WebkitBackgroundClip: "text",
+                            backgroundClip: "text",
+                            fontSize: isMobile ? 20 : 24,
+                            color: "#b0aa94",
+                          }}
+                        >
+                          KES {c.price.toLocaleString()}
+                        </Title>
+                      </div>
+
+                      {/* View Details Button */}
+                      <div
+                        style={{
+                          background:
+                            "linear-gradient(135deg, #b0aa94, #b0aa94)",
+                          borderRadius: 10,
+                          padding: "10px 20px",
+                          cursor: "pointer",
+                          transition: "all 0.3s ease",
+                          boxShadow: "0 4px 12px rgba(102, 126, 234, 0.3)",
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.transform = "scale(1.05)";
+                          e.currentTarget.style.boxShadow =
+                            "0 6px 16px rgba(102, 126, 234, 0.4)";
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.transform = "scale(1)";
+                          e.currentTarget.style.boxShadow =
+                            "0 4px 12px rgba(102, 126, 234, 0.3)";
+                        }}
+                      >
+                        <Text
+                          style={{
+                            color: "white",
+                            fontWeight: 600,
+                            fontSize: 14,
+                          }}
+                        >
+                          View Details
+                        </Text>
+                      </div>
+                    </div>
                   </div>
                 </Card>
               </Col>
