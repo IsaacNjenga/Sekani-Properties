@@ -397,13 +397,14 @@ function PropertyCards({ c }) {
             }}
             onClick={() => {
               navigate(`/properties/property?id=${c._id}`);
-
               const url = `${process.env.REACT_APP_API_URL}/analytics/clicks/${c._id}`;
+              const url2 = `${process.env.REACT_APP_API_URL}/analytics/views/${c._id}`;
 
               if (navigator.sendBeacon) {
                 navigator.sendBeacon(url);
+                navigator.sendBeacon(url2);
               } else {
-                axios.post(url).catch(() => {});
+                axios.all([axios.post(url), axios.post(url2)]).catch(() => {});
               }
             }}
           >

@@ -25,6 +25,8 @@ import {
   StarFilled,
   EditOutlined,
   DeleteOutlined,
+  HeartOutlined,
+  HeartFilled,
 } from "@ant-design/icons";
 import SekaniHero from "../components/SekaniHero";
 import { useUser } from "../contexts/UserContext";
@@ -39,6 +41,7 @@ import EditReview from "./EditReview";
 import Schedule from "./Schedule";
 import AuthModal from "../components/AuthModal";
 import useFetchProperty from "../hooks/fetchProperty";
+import { FavouriteFunctions } from "../utils/FavouriteFunctions";
 
 const { Title, Text, Paragraph } = Typography;
 
@@ -81,6 +84,8 @@ function PropertyDetails() {
   const [confirmLoading, setConfirmLoading] = useState(false);
   const { propertyRefresh, propertyData, propertyDataLoading, fetchProperty } =
     useFetchProperty();
+  const { addToFavourites, removeFromFavourites, isInFavourites } =
+    FavouriteFunctions();
 
   // Only fetch once when id changes
   useEffect(() => {
@@ -784,125 +789,166 @@ function PropertyDetails() {
                   top: 20,
                 }}
               >
-                <Title
-                  level={4}
-                  style={{
-                    fontFamily: "Bodoni Moda",
-                    color: "#fff",
-                    marginBottom: 24,
-                    textAlign: "center",
-                  }}
-                >
-                  Contact Agent
-                </Title>
-
-                <div
-                  style={{
-                    background: "rgba(255,255,255,0.1)",
-                    backdropFilter: "blur(10px)",
-                    padding: 24,
-                    borderRadius: 16,
-                    marginBottom: 24,
-                  }}
-                >
-                  <div
+                <div>
+                  <Title
+                    level={4}
                     style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      gap: 16,
+                      fontFamily: "Bodoni Moda",
+                      color: "#fff",
+                      marginBottom: 24,
+                      textAlign: "center",
                     }}
                   >
-                    <Avatar
-                      size={80}
-                      src={
-                        "https://plus.unsplash.com/premium_photo-1726768854379-105f9aeef18d?w=900"
-                      }
-                    />
-                    <div style={{ textAlign: "center" }}>
-                      <Text
-                        strong
-                        style={{
-                          color: "#fff",
-                          fontSize: 20,
-                          fontFamily: "Raleway",
-                          display: "block",
-                          marginBottom: 8,
-                        }}
-                      >
-                        {property.agent.name || "Agent"}
-                      </Text>
-                      <div
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          gap: 8,
-                        }}
-                      >
-                        <PhoneOutlined style={{ color: "#bdb890" }} />
+                    Contact Agent
+                  </Title>
+
+                  <div
+                    style={{
+                      background: "rgba(255,255,255,0.1)",
+                      backdropFilter: "blur(10px)",
+                      padding: 24,
+                      borderRadius: 16,
+                      marginBottom: 24,
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        gap: 16,
+                      }}
+                    >
+                      <Avatar
+                        size={80}
+                        src={
+                          "https://plus.unsplash.com/premium_photo-1726768854379-105f9aeef18d?w=900"
+                        }
+                      />
+                      <div style={{ textAlign: "center" }}>
                         <Text
+                          strong
                           style={{
-                            color: "#cbd5e1",
+                            color: "#fff",
+                            fontSize: 20,
                             fontFamily: "Raleway",
-                            fontSize: 16,
+                            display: "block",
+                            marginBottom: 8,
                           }}
                         >
-                          {property.agent.phone || "No phone"}
+                          {property.agent.name || "Agent"}
                         </Text>
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            gap: 8,
+                          }}
+                        >
+                          <PhoneOutlined style={{ color: "#bdb890" }} />
+                          <Text
+                            style={{
+                              color: "#cbd5e1",
+                              fontFamily: "Raleway",
+                              fontSize: 16,
+                            }}
+                          >
+                            {property.agent.phone || "No phone"}
+                          </Text>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
 
-                <Space direction="vertical" size={12} style={{ width: "100%" }}>
-                  <Button
-                    type="primary"
-                    size="large"
-                    block
-                    icon={<PhoneOutlined />}
-                    onClick={() =>
-                      (window.location.href = `tel:${property.agent.phone}`)
-                    }
-                    disabled={!property.agent.phone}
-                    style={{
-                      background: "linear-gradient(135deg, #bdb890, #a8a378)",
-                      border: "none",
-                      borderRadius: 12,
-                      height: 48,
-                      fontFamily: "Raleway",
-                      fontWeight: 600,
-                      fontSize: 16,
-                      boxShadow: "0 4px 16px rgba(189, 184, 144, 0.4)",
-                    }}
+                  <Space
+                    direction="vertical"
+                    size={12}
+                    style={{ width: "100%" }}
                   >
-                    Call Agent
-                  </Button>
-                  <Button
-                    size="large"
-                    block
-                    icon={<CalendarOutlined />}
-                    onClick={() => {
-                      if (userLoggedIn) {
-                        toggleSchedule();
-                      } else {
-                        setOpenAuthModal(true);
+                    <Button
+                      type="primary"
+                      size="large"
+                      block
+                      icon={<PhoneOutlined />}
+                      onClick={() =>
+                        (window.location.href = `tel:${property.agent.phone}`)
                       }
-                    }}
-                    style={{
-                      background: "rgba(255,255,255,0.1)",
-                      border: "1px solid rgba(255,255,255,0.3)",
-                      color: "#fff",
-                      borderRadius: 12,
-                      height: 48,
-                      fontFamily: "Raleway",
-                      fontWeight: 600,
-                      fontSize: 16,
-                    }}
-                  >
-                    Schedule Viewing
-                  </Button>
-                </Space>
+                      disabled={!property.agent.phone}
+                      style={{
+                        background: "linear-gradient(135deg, #bdb890, #a8a378)",
+                        border: "none",
+                        borderRadius: 12,
+                        height: 48,
+                        fontFamily: "Raleway",
+                        fontWeight: 600,
+                        fontSize: 16,
+                        boxShadow: "0 4px 16px rgba(189, 184, 144, 0.4)",
+                      }}
+                    >
+                      Call Agent
+                    </Button>
+                    <Button
+                      size="large"
+                      block
+                      icon={<CalendarOutlined />}
+                      onClick={() => {
+                        if (userLoggedIn) {
+                          toggleSchedule();
+                        } else {
+                          setOpenAuthModal(true);
+                        }
+                      }}
+                      style={{
+                        background: "rgba(255,255,255,0.1)",
+                        border: "1px solid rgba(255,255,255,0.3)",
+                        color: "#fff",
+                        borderRadius: 12,
+                        height: 48,
+                        fontFamily: "Raleway",
+                        fontWeight: 600,
+                        fontSize: 16,
+                      }}
+                    >
+                      Schedule Viewing
+                    </Button>
+                    <Button
+                      size="large"
+                      block
+                      icon={
+                        isInFavourites(property) ? (
+                          <HeartFilled
+                            style={{ color: "#b0aa94", fontSize: 14 }}
+                          />
+                        ) : (
+                          <HeartOutlined
+                            style={{ color: "#b0aa94", fontSize: 14 }}
+                          />
+                        )
+                      }
+                      onClick={() => {
+                       if (isInFavourites(property)) {
+                    removeFromFavourites(property._id);
+                  } else {
+                    addToFavourites(property);
+                    openNotification("success", "", "Added!");
+                  }
+                      }}
+                      style={{
+                        background: "rgba(255,255,255,0.1)",
+                        border: "1px solid rgba(255,255,255,0.3)",
+                        color: "#fff",
+                        borderRadius: 12,
+                        height: 48,
+                        fontFamily: "Raleway",
+                        fontWeight: 600,
+                        fontSize: 16,
+                      }}
+                    >
+                      Add to favourites
+                    </Button>
+                  </Space>
+                </div>
               </div>
             )}
           </Col>
