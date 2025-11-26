@@ -22,14 +22,12 @@ import {
   CalendarOutlined,
   CheckCircleOutlined,
   PhoneOutlined,
-  UserOutlined,
   StarFilled,
   EditOutlined,
   DeleteOutlined,
 } from "@ant-design/icons";
 import SekaniHero from "../components/SekaniHero";
 import { useUser } from "../contexts/UserContext";
-import { StatCard } from "../components/PropertyModal";
 import { useDrawer } from "../contexts/DrawerContext";
 import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -148,7 +146,7 @@ function PropertyDetails() {
 
   // Show loading state
   if (propertyDataLoading) {
-    return <Spin fullscreen  size='large'/>;
+    return <Spin fullscreen size="large" />;
   }
 
   if (!property) {
@@ -184,9 +182,7 @@ function PropertyDetails() {
         style={{ padding: isMobile ? 5 : 20, margin: isMobile ? 10 : "0 90px" }}
       >
         <Row gutter={[32, 32]}>
-          {/* Left Column - Main Info */}
           <Col xs={24} lg={16}>
-            {/* Property Title & Location */}
             <div
               style={{
                 background: "#fff",
@@ -214,7 +210,7 @@ function PropertyDetails() {
                   level={isMobile ? 3 : 1}
                   style={{
                     margin: 0,
-                    fontFamily: "Alegreya Sans",
+                    fontFamily: "Raleway",
                     background: "linear-gradient(135deg, #1e293b, #334155)",
                     WebkitBackgroundClip: "text",
                     WebkitTextFillColor: "transparent",
@@ -233,7 +229,7 @@ function PropertyDetails() {
                 />
                 <Text
                   style={{
-                    fontFamily: "Raleway",
+                    fontFamily: "Bodoni Moda",
                     fontSize: 16,
                     color: "#64748b",
                   }}
@@ -259,6 +255,7 @@ function PropertyDetails() {
                         : "linear-gradient(135deg, #ef4444, #dc2626)",
                     color: "#fff",
                     boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
+                    fontFamily: "Raleway",
                   }}
                 >
                   {property.status || "Unknown"}
@@ -312,7 +309,12 @@ function PropertyDetails() {
                 }}
               >
                 <Card>
-                  <Title level={4}>Media</Title>
+                  <Title
+                    level={4}
+                    style={{ margin: 0, fontFamily: "Bodoni Moda" }}
+                  >
+                    Media
+                  </Title>
                   {property.vid?.length > 0 && (
                     <div
                       style={{
@@ -377,7 +379,7 @@ function PropertyDetails() {
                 <Title
                   level={4}
                   style={{
-                    fontFamily: "Raleway",
+                    fontFamily: "Bodoni Moda",
                     color: "#1e293b",
                     marginBottom: 16,
                   }}
@@ -411,7 +413,7 @@ function PropertyDetails() {
                 <Title
                   level={4}
                   style={{
-                    fontFamily: "Raleway",
+                    fontFamily: "Bodoni Moda",
                     color: "#1e293b",
                     marginBottom: 16,
                   }}
@@ -454,7 +456,7 @@ function PropertyDetails() {
                 <Title
                   level={4}
                   style={{
-                    fontFamily: "Raleway",
+                    fontFamily: "Bodoni Moda",
                     color: "#1e293b",
                     marginBottom: 16,
                   }}
@@ -505,7 +507,7 @@ function PropertyDetails() {
                 <Title
                   level={4}
                   style={{
-                    fontFamily: "Raleway",
+                    fontFamily: "Bodoni Moda",
                     color: "#1e293b",
                     margin: 0,
                   }}
@@ -523,7 +525,14 @@ function PropertyDetails() {
                       allowHalf
                       value={parseFloat(averageRating)}
                     />
-                    <Text strong style={{ fontSize: 18, color: "#bdb890" }}>
+                    <Text
+                      strong
+                      style={{
+                        fontSize: 18,
+                        color: "#bdb890",
+                        fontFamily: "Bodoni Moda",
+                      }}
+                    >
                       {averageRating}
                     </Text>
                   </div>
@@ -778,7 +787,7 @@ function PropertyDetails() {
                 <Title
                   level={4}
                   style={{
-                    fontFamily: "Raleway",
+                    fontFamily: "Bodoni Moda",
                     color: "#fff",
                     marginBottom: 24,
                     textAlign: "center",
@@ -806,11 +815,9 @@ function PropertyDetails() {
                   >
                     <Avatar
                       size={80}
-                      icon={<UserOutlined />}
-                      style={{
-                        background: "linear-gradient(135deg, #bdb890, #a8a378)",
-                        fontSize: 32,
-                      }}
+                      src={
+                        "https://plus.unsplash.com/premium_photo-1726768854379-105f9aeef18d?w=900"
+                      }
                     />
                     <div style={{ textAlign: "center" }}>
                       <Text
@@ -943,5 +950,50 @@ function PropertyDetails() {
     </div>
   );
 }
+
+export const StatCard = ({ icon, label, value }) => (
+  <div
+    style={{
+      background: "linear-gradient(135deg, #f8fafc, #f1f5f9)",
+      padding: 16,
+      borderRadius: 12,
+      border: "1px solid #e2e8f0",
+      display: "flex",
+      alignItems: "center",
+      gap: 12,
+    }}
+  >
+    <div
+      style={{
+        fontSize: 24,
+        color: "#bdb890",
+      }}
+    >
+      {icon}
+    </div>
+    <div>
+      <Text
+        style={{
+          display: "block",
+          fontSize: 12,
+          color: "#64748b",
+          fontFamily: "Bodoni Moda",
+        }}
+      >
+        {label}
+      </Text>
+      <Text
+        strong
+        style={{
+          fontSize: 16,
+          color: "#1e293b",
+          fontFamily: "Raleway",
+        }}
+      >
+        {value}
+      </Text>
+    </div>
+  </div>
+);
 
 export default PropertyDetails;

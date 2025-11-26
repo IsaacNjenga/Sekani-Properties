@@ -33,18 +33,18 @@ const heroStyle = {
 
 const titleStyle = {
   color: "#fff",
-  fontFamily: "Alegreya Sans",
+  fontFamily: "Bodoni Moda",
   fontWeight: 600,
   letterSpacing: 2,
   fontSize: 42,
 };
 
 const subTitleStyle = {
-  marginTop: 16,
+  marginTop: 5,
   color: "#fff",
   fontFamily: "Alegreya Sans",
   fontWeight: 400,
-  fontSize: 20,
+  fontSize: 26,
   maxWidth: 600,
 };
 
@@ -178,7 +178,7 @@ const ContactForm = () => {
       <div style={{ marginBottom: 20 }}>
         <Title
           level={3}
-          style={{ fontFamily: "Alegreya Sans", marginBottom: 0 }}
+          style={{ fontFamily: "Bodoni Moda", marginBottom: 0 }}
         >
           Your Needs Matter
         </Title>
@@ -252,7 +252,7 @@ function Contact() {
 
   return (
     <Motion>
-      <div style={{ background: "#fafafa" }}>
+      <div style={{ background: "whitesmoke" }}>
         {/* Hero Section */}
         <div style={{ position: "relative" }}>
           <Image
@@ -277,7 +277,7 @@ function Contact() {
                 </Title>
               }
               delay={100}
-              duration={0.6}
+              duration={0.2}
               ease="power3.out"
               splitType="chars"
               from={{ opacity: 0, y: 40 }}
@@ -300,8 +300,8 @@ function Contact() {
             flexDirection: isMobile ? "column" : "row",
             gap: 5,
             justifyContent: "space-around",
-            background:
-              "linear-gradient(to top, #8c7e029b 0%, #f0ebd4 33%, #f0ebd4 66%, #8c7e0256 100%)",
+            // background:
+            //   "linear-gradient(to top, #8c7e029b 0%, #f0ebd4 33%, #f0ebd4 66%, #8c7e0256 100%)",
             padding: 18,
           }}
         >
@@ -326,7 +326,7 @@ function Contact() {
             >
               <Title
                 level={3}
-                style={{ fontFamily: "Alegreya Sans", marginBottom: 30 }}
+                style={{ fontFamily: "Bodoni Moda", marginBottom: 30 }}
               >
                 Reach out to us any time
               </Title>

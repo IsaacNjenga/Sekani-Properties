@@ -22,6 +22,7 @@ const menuItems = [
   { key: 2, label: "Featured Properties", path: "/properties" },
   { key: 3, label: "About", path: "/about" },
   { key: 4, label: "Contact Us", path: "/contact" },
+  { key: 5, label: "Favourites", path: "/favourites" },
   //{ key: 5, label: "Trial", path: "/trial" },
 ];
 
@@ -161,7 +162,7 @@ function Navbar() {
                             fontFamily: "Bodoni Moda",
                             fontWeight: 300,
                             color: "#ffffff",
-                            letterSpacing: 1.5,
+                            letterSpacing: 1,
                           }}
                         >
                           {label}

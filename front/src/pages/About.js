@@ -22,7 +22,7 @@ const heroStyle = {
 
 const titleStyle = {
   color: "#fff",
-  fontFamily: "Alegreya Sans",
+  fontFamily: "Bodoni Moda",
   textAlign: "center",
   fontWeight: 400,
   letterSpacing: 2,
@@ -33,7 +33,7 @@ const imgStyle = {
   width: "100%",
   objectFit: "cover",
   borderRadius: 14,
-  transition: "transform 0.4s ease",
+  transition: "all 0.4s ease-in-out",
   border: "2px solid #918f76",
 };
 
@@ -44,7 +44,7 @@ const paragraphStyle = {
 };
 
 const title2 = {
-  fontFamily: "Alegreya Sans",
+  fontFamily: "Bodoni Moda",
   fontSize: "2.6rem",
   letterSpacing: 2,
 };
@@ -71,7 +71,7 @@ function About() {
               text={
                 <Title
                   level={3}
-                  style={{ ...titleStyle, fontSize: isMobile ? 34 : 38 }}
+                  style={{ ...titleStyle, fontSize: isMobile ? 20 : 38 }}
                 >
                   ABOUT US
                 </Title>
@@ -133,7 +133,7 @@ function About() {
               loading="lazy"
               style={imgStyle}
               onMouseEnter={(e) =>
-                (e.currentTarget.style.transform = "scale(1.03)")
+                (e.currentTarget.style.transform = "scale(1.02)")
               }
               onMouseLeave={(e) =>
                 (e.currentTarget.style.transform = "scale(1)")
@@ -156,7 +156,7 @@ function About() {
               height={350}
               style={imgStyle}
               onMouseEnter={(e) =>
-                (e.currentTarget.style.transform = "scale(1.05)")
+                (e.currentTarget.style.transform = "scale(1.02)")
               }
               onMouseLeave={(e) =>
                 (e.currentTarget.style.transform = "scale(1)")

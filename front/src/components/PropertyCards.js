@@ -1,20 +1,27 @@
-import { Button, Card, Carousel, Space, Tag, Typography } from "antd";
+import { Button, Card, Carousel, Space, Tag, Typography, Tooltip } from "antd";
 import "../assets/css/home.css";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../contexts/UserContext";
 import {
   EnvironmentOutlined,
   EyeOutlined,
+  HeartFilled,
   HeartOutlined,
   HomeOutlined,
 } from "@ant-design/icons";
 import axios from "axios";
+import { useNotification } from "../contexts/NotificationContext";
+import { FavouriteFunctions } from "../utils/FavouriteFunctions";
 
 const { Title, Text } = Typography;
 
 function PropertyCards({ c }) {
   const { isMobile } = useUser();
   const navigate = useNavigate();
+
+  const { addToFavourites, removeFromFavourites, isInFavourites } =
+    FavouriteFunctions();
+  const openNotification = useNotification();
 
   return (
     <Card
@@ -155,32 +162,53 @@ function PropertyCards({ c }) {
               flexDirection: "column",
             }}
           >
-            <div
-              style={{
-                background: "rgba(255,255,255,0.95)",
-                backdropFilter: "blur(10px)",
-                borderRadius: 20,
-                padding: "6px 12px",
-                display: "flex",
-                alignItems: "center",
-                gap: 6,
-                boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
-              }}
+            <Tooltip
+              title={
+                isInFavourites(c)
+                  ? "Remove from favourites"
+                  : "Add to favourites"
+              }
+              placement="right"
             >
-              <HeartOutlined style={{ color: "#ff4d4f", fontSize: 14 }} />
-              <Text
+              <div
                 style={{
-                  fontSize: 13,
-                  fontWeight: 600,
-                  color: "#595959",
+                  background: "rgba(255,255,255,0.75)",
+                  backdropFilter: "blur(10px)",
+                  borderRadius: 20,
+                  padding: "6px 12px",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 6,
+                  boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
+                }}
+                onClick={() => {
+                  if (isInFavourites(c)) {
+                    removeFromFavourites(c._id);
+                  } else {
+                    addToFavourites(c);
+                    openNotification("success", "", "Added!");
+                  }
                 }}
               >
-                {c.likes || 20}
-              </Text>
-            </div>
+                {isInFavourites(c) ? (
+                  <HeartFilled style={{ color: "#b0aa94", fontSize: 14 }} />
+                ) : (
+                  <HeartOutlined style={{ color: "#b0aa94", fontSize: 14 }} />
+                )}
+                <Text
+                  style={{
+                    fontSize: 13,
+                    fontWeight: 600,
+                    color: "#595959",
+                  }}
+                >
+                  {c.likes || 20}
+                </Text>
+              </div>
+            </Tooltip>
             <div
               style={{
-                background: "rgba(255,255,255,0.95)",
+                background: "rgba(255,255,255,0.75)",
                 backdropFilter: "blur(10px)",
                 borderRadius: 20,
                 padding: "6px 12px",

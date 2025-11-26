@@ -8,6 +8,7 @@ import { DrawerProvider } from "./contexts/DrawerContext";
 import { NotificationProvider } from "./contexts/NotificationContext";
 import { UserProvider } from "./contexts/UserContext";
 import { AuthProvider } from "./contexts/AuthContext";
+import { FavouriteProvider } from "./contexts/FavouritesContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -16,9 +17,11 @@ root.render(
       <UserProvider>
         <AuthProvider>
           <DrawerProvider>
-            <NotificationProvider>
-              <App />
-            </NotificationProvider>
+            <FavouriteProvider>
+              <NotificationProvider>
+                <App />
+              </NotificationProvider>
+            </FavouriteProvider>
           </DrawerProvider>
         </AuthProvider>
       </UserProvider>

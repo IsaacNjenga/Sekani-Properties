@@ -56,12 +56,12 @@ function SekaniHero({ heroImg, heroTitle, heroText }) {
         <SplitText
           text={
             <Title
-              level={isMobile ? 5 : 3}
+              level={isMobile ? 5 : 2}
               style={{
                 color: "#fff",
-                fontFamily: "Alegreya Sans",
+                fontFamily: "Bodoni Moda",
                 textAlign: "center",
-                fontSize: isMobile ? 24 : 38,
+                fontSize: isMobile ? 20 : 38,
                 margin: 0,
                 fontWeight: 400,
                 letterSpacing: 2,

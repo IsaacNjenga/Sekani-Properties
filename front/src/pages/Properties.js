@@ -43,7 +43,7 @@ const heroStyle = {
 
 const titleStyle = {
   color: "#fff",
-  fontFamily: "Alegreya Sans",
+  fontFamily: "Bodoni Moda",
   textAlign: "center",
   fontWeight: 400,
   letterSpacing: 2,
