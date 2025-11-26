@@ -927,12 +927,12 @@ function PropertyDetails() {
                         )
                       }
                       onClick={() => {
-                       if (isInFavourites(property)) {
-                    removeFromFavourites(property._id);
-                  } else {
-                    addToFavourites(property);
-                    openNotification("success", "", "Added!");
-                  }
+                        if (isInFavourites(property)) {
+                          removeFromFavourites(property._id);
+                        } else {
+                          addToFavourites(property);
+                          //openNotification("success", "", "Added!");
+                        }
                       }}
                       style={{
                         background: "rgba(255,255,255,0.1)",

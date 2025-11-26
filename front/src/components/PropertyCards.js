@@ -10,7 +10,7 @@ import {
   HomeOutlined,
 } from "@ant-design/icons";
 import axios from "axios";
-import { useNotification } from "../contexts/NotificationContext";
+//import { useNotification } from "../contexts/NotificationContext";
 import { FavouriteFunctions } from "../utils/FavouriteFunctions";
 import { useEffect, useState } from "react";
 
@@ -21,7 +21,7 @@ function PropertyCards({ c }) {
   const navigate = useNavigate();
   const { addToFavourites, removeFromFavourites, isInFavourites } =
     FavouriteFunctions();
-  const openNotification = useNotification();
+  //const openNotification = useNotification();
   const [likes, setLikes] = useState(c?.analytics[0]?.likes || 0);
 
   useEffect(() => {
@@ -193,7 +193,7 @@ function PropertyCards({ c }) {
                   } else {
                     addToFavourites(c);
                     setLikes((prev) => prev + 1);
-                    openNotification("success", "", "Added!");
+                    //openNotification("success", "", "Added!");
                   }
                 }}
               >
