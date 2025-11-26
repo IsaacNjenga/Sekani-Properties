@@ -157,7 +157,7 @@ function Home() {
       <div style={{ background: "whitesmoke" }}>
         {/* banner */}
         <div style={{ position: "relative", marginBottom: 10 }}>
-          <Carousel autoplay autoplaySpeed={3500} dots={false}>
+          <Carousel autoplay autoplaySpeed={3800} dots={false} fade>
             {bgCarousel.map((img) => (
               <Image
                 src={img}

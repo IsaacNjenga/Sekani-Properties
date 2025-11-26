@@ -12,16 +12,21 @@ import {
 import axios from "axios";
 import { useNotification } from "../contexts/NotificationContext";
 import { FavouriteFunctions } from "../utils/FavouriteFunctions";
+import { useEffect, useState } from "react";
 
 const { Title, Text } = Typography;
 
 function PropertyCards({ c }) {
   const { isMobile } = useUser();
   const navigate = useNavigate();
-
   const { addToFavourites, removeFromFavourites, isInFavourites } =
     FavouriteFunctions();
   const openNotification = useNotification();
+  const [likes, setLikes] = useState(c?.analytics[0]?.likes || 0);
+
+  useEffect(() => {
+    setLikes(c?.analytics[0]?.likes || 0);
+  }, [c]);
 
   return (
     <Card
@@ -184,8 +189,10 @@ function PropertyCards({ c }) {
                 onClick={() => {
                   if (isInFavourites(c)) {
                     removeFromFavourites(c._id);
+                    setLikes((prev) => Math.max(prev - 1, 0));
                   } else {
                     addToFavourites(c);
+                    setLikes((prev) => prev + 1);
                     openNotification("success", "", "Added!");
                   }
                 }}
@@ -202,7 +209,7 @@ function PropertyCards({ c }) {
                     color: "#595959",
                   }}
                 >
-                  {c.likes || 20}
+                  {likes}
                 </Text>
               </div>
             </Tooltip>
@@ -226,7 +233,7 @@ function PropertyCards({ c }) {
                   color: "#595959",
                 }}
               >
-                {c.views || 20}
+                {c?.analytics[0]?.clicks || 0}
               </Text>
             </div>
           </div>

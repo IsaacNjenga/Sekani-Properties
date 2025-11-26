@@ -25,7 +25,7 @@ export const darkTheme = {
   borderColor: "#fff",
 };
 
-axios.defaults.baseURL = "https://sekani-admin-server.vercel.app/Sekani";
+axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 axios.defaults.withCredentials = true;
 
 function App() {
