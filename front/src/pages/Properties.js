@@ -17,7 +17,8 @@ import bgImg from "../assets/images/propertyBg.jpeg";
 import FilterComponent from "../components/FilterComponent.js";
 import emptyStreet from "../assets/images/empty_street.png";
 import useFetchAllProperties from "../hooks/fetchAllProperties.js";
-import PropertyCard from "../components/PropertyCard.js";
+import PropertyCards from "../components/PropertyCards.js";
+//import PropertyCard from "../components/PropertyCard.js";
 import debounce from "lodash.debounce";
 import { useUser } from "../contexts/UserContext/index.js";
 //import {RealEstateData } from '../assets/data/mockData.js';
@@ -245,7 +246,7 @@ function Properties() {
           <Row gutter={[24, 24]}>
             {filteredProperties.map((c) => (
               <Col key={c._id || c.key} xs={24} sm={12} md={8}>
-                <PropertyCard c={c} viewProperty={viewProperty} />
+                <PropertyCards c={c} viewProperty={viewProperty} />
               </Col>
             ))}
           </Row>
@@ -253,9 +254,28 @@ function Properties() {
           {/* Load more button for pagination */}
           <div style={{ textAlign: "center", marginTop: 24 }}>
             <Button
+              type="primary"
               onClick={() => handleLoadMore()}
               loading={propertiesLoading}
-              type="default"
+              style={{
+                background: "linear-gradient(135deg, #b0aa94, #b0aa94)",
+                borderRadius: 10,
+                padding: "2px 16px",
+                cursor: "pointer",
+                transition: "all 0.3s ease",
+                boxShadow: "0 4px 12px rgba(102, 126, 234, 0.3)",
+                fontFamily: "Raleway",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = "scale(1.05)";
+                e.currentTarget.style.boxShadow =
+                  "0 6px 16px rgba(102, 126, 234, 0.4)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = "scale(1)";
+                e.currentTarget.style.boxShadow =
+                  "0 4px 12px rgba(102, 126, 234, 0.3)";
+              }}
             >
               Load more
             </Button>

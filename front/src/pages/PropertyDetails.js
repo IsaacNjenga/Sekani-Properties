@@ -148,7 +148,7 @@ function PropertyDetails() {
 
   // Show loading state
   if (propertyDataLoading) {
-    return <Spin fullscreen tip="Loading property..." />;
+    return <Spin fullscreen  size='large'/>;
   }
 
   if (!property) {

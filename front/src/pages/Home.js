@@ -240,7 +240,7 @@ function Home() {
         </div>
 
         {/* home body */}
-        <div style={{ margin: "10px 0" }}>
+        <div style={{ margin: "30px 0" }}>
           <div style={{ textAlign: "center" }}>
             <SplitText
               text={
@@ -337,7 +337,7 @@ function Home() {
         </div>
 
         {/* Featured Listings */}
-        <div style={{ margin: "10px 20px" }}>
+        <div style={{ margin: "30px 20px" }}>
           <div style={{ textAlign: "center" }}>
             <SplitText
               text={
@@ -731,13 +731,13 @@ function Home() {
                         <Title
                           level={isMobile ? 4 : 3}
                           style={{
-                            fontFamily: "Bodoni Moda",
+                            fontFamily: "Abril Fatface",
                             margin: 0,
                             WebkitBackgroundClip: "text",
                             backgroundClip: "text",
                             fontSize: isMobile ? 20 : 24,
-                            color: "#3c3b38ff",
-                            fontWeight: 300,
+                            color: "#b0aa94",
+                            letterSpacing: 2,
                           }}
                         >
                           KES {c.price.toLocaleString()}
@@ -811,7 +811,7 @@ function Home() {
         </div>
 
         {/* testimonials */}
-        <div style={{ textAlign: "center", marginTop: 20 }}>
+        <div style={{ textAlign: "center", marginTop: 30 }}>
           <SplitText
             text={
               <Title
