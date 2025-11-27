@@ -19,14 +19,15 @@ const { Title, Text } = Typography;
 function PropertyCards({ c }) {
   const { isMobile } = useUser();
   const navigate = useNavigate();
+  const [likes, setLikes] = useState(c?.analytics[0]?.likes || 0);
   const { addToFavourites, removeFromFavourites, isInFavourites } =
     FavouriteFunctions();
-  //const openNotification = useNotification();
-  const [likes, setLikes] = useState(c?.analytics[0]?.likes || 0);
 
   useEffect(() => {
     setLikes(c?.analytics[0]?.likes || 0);
   }, [c]);
+
+  if (!c) return;
 
   return (
     <Card
@@ -73,7 +74,7 @@ function PropertyCards({ c }) {
             dots={false}
             style={{ height: "100%" }}
           >
-            {(Array.isArray(c.img) ? c.img : [c.img]).map((img, i) => (
+            {(Array.isArray(c?.img) ? c?.img : [c?.img]).map((img, i) => (
               <div key={i} style={{ width: "100%", height: 300 }}>
                 <img
                   src={img}

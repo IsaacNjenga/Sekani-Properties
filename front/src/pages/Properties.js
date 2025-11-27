@@ -67,7 +67,6 @@ function Properties() {
   //const properties = RealEstateData;
   const { properties, propertiesLoading, handleLoadMore, propertiesRefresh } =
     useFetchAllProperties();
-
   const { isMobile, filteredData, setFilteredData } = useUser();
 
   const [openModal, setOpenModal] = useState(false);
