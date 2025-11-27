@@ -1,10 +1,8 @@
 import Motion from "../components/Motion";
-import { Col, Image, Row, Skeleton, Typography, Empty } from "antd";
+import { Image, Typography } from "antd";
 import "../assets/css/contact.css";
 import SplitText from "../components/SplitText";
 import { useUser } from "../contexts/UserContext";
-import PropertyCards from "../components/PropertyCards";
-import { useFavourites } from "../contexts/FavouritesContext";
 
 const { Title, Paragraph } = Typography;
 
@@ -41,23 +39,9 @@ const subTitleStyle = {
   maxWidth: 600,
 };
 
-function Favourites() {
+function UserPage() {
   const { isMobile } = useUser();
-  const { liveFavouriteItems } = useFavourites();
-  const propertiesLoading = false;
-
-  if (propertiesLoading) {
-    return (
-      <Row gutter={[32, 32]}>
-        {Array.from({ length: 6 }).map((_, i) => (
-          <Col key={i} xs={24} sm={12} md={8}>
-            <Skeleton active avatar paragraph={{ rows: 3 }} />
-          </Col>
-        ))}
-      </Row>
-    );
-  }
-
+  
   return (
     <Motion>
       <div style={{ background: "whitesmoke" }}>
@@ -65,7 +49,7 @@ function Favourites() {
         <div style={{ position: "relative" }}>
           <Image
             src={
-              "https://images.unsplash.com/photo-1615876234886-fd9a39fda97f?w=900"
+              "https://images.unsplash.com/photo-1715513008829-2eb86b787ffa?w=900"
             }
             alt="bgImg"
             loading="lazy"
@@ -99,23 +83,9 @@ function Favourites() {
             </Paragraph>
           </div>
         </div>
-
-        <div style={{ margin: "20px 32px" }}>
-          {liveFavouriteItems?.length === 0 ? (
-            <Empty description="Seems like your wishlist is empty. Like some properties to save them for future reference" />
-          ) : (
-            <Row gutter={[24, 24]}>
-              {liveFavouriteItems?.map((c) => (
-                <Col key={c._id || c.key} xs={24} sm={12} md={6}>
-                  <PropertyCards c={c} />
-                </Col>
-              ))}
-            </Row>
-          )}
-        </div>
       </div>
     </Motion>
   );
 }
 
-export default Favourites;
+export default UserPage;

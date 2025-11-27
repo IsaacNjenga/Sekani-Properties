@@ -8,7 +8,7 @@ import {
   Tooltip,
   Popconfirm,
 } from "antd";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import FooterContent from "./Footer";
 import { CloseOutlined, MenuOutlined } from "@ant-design/icons";
 import AuthModal from "./AuthModal";
@@ -27,6 +27,7 @@ const menuItems = [
 ];
 
 function Navbar() {
+  const navigate = useNavigate();
   const { darkMode, isMobile } = useUser();
   const [scrolled, setScrolled] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -203,7 +204,8 @@ function Navbar() {
                             <Avatar
                               size="50"
                               onClick={() => {
-                                setOpen(true);
+                                //setOpen(true);
+                                navigate("/user");
                               }}
                             >
                               {currentUser?.displayName[0]}

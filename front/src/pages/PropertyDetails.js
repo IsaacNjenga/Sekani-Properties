@@ -945,7 +945,9 @@ function PropertyDetails() {
                         fontSize: 16,
                       }}
                     >
-                      Add to favourites
+                      {isInFavourites(property)
+                        ? "Remove from favourites"
+                        : "Add to favourites"}
                     </Button>
                   </Space>
                 </div>

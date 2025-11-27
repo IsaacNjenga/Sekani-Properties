@@ -10,6 +10,7 @@ import axios from "axios";
 import AllReviews from "./pages/AllReviews";
 import PropertyDetails from "./pages/PropertyDetails";
 import Favourites from "./pages/Favourites";
+import UserPage from "./pages/UserPage";
 
 export const lightTheme = {
   backgroundColor: "#f2f5fa",
@@ -44,6 +45,7 @@ function App() {
             <Route path="/favourites" element={<Favourites />} />
             <Route path="/reviews" element={<AllReviews />} />
             <Route path="/properties/property" element={<PropertyDetails />} />
+            <Route path="/user" element={<UserPage />} />
           </Route>
         </Routes>
       </AnimatePresence>
