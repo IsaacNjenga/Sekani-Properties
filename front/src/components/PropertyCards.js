@@ -43,6 +43,7 @@ function PropertyCards({ c }) {
         position: "relative",
         display: "flex",
         flexDirection: "column",
+        height: "100%",
       }}
       bodyStyle={{
         padding: "16px",

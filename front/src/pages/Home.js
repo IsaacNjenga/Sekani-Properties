@@ -93,7 +93,18 @@ const ctaBtn2Style = {
   cursor: "pointer",
 };
 
-const bgCarousel = [bgImg, bgImg2, bgImg3, bgImg4, bgImg5, bgImg6, bgImg7];
+const bgCarousel = [
+  bgImg,
+  bgImg2,
+  bgImg3,
+  bgImg4,
+  bgImg5,
+  bgImg6,
+  bgImg7,
+  "https://images.unsplash.com/photo-1615876234886-fd9a39fda97f?w=900",
+  "https://images.unsplash.com/photo-1616047006789-b7af5afb8c20?w=900",
+  "https://images.unsplash.com/photo-1727192807128-0cee790dcc83?w=900",
+];
 
 const gridData = [
   {

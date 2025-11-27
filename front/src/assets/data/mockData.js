@@ -294,3 +294,293 @@ export const bookedSchedules = [
     bookedSlots: ["10:00", "12:00"],
   },
 ];
+
+export const myReviewsData = [
+  {
+    _id: "691b355ef9cf0b7168c606db",
+    name: "Isaac N",
+    email: "isaac@email.com",
+    rating: 4.5,
+    review: "Very nice piece of property",
+    propertyId: {
+      _id: "6912e3ffaf42a9dfb7c24e81",
+      address: "Apt 5, Kilimani Road, Kilimani",
+      city: "Nairobi",
+      county: "Nairobi County",
+      zip: "00500",
+      price: 180000,
+      bedrooms: 3,
+      bathrooms: 2,
+      squareFeet: 1400,
+      yearBuilt: 2020,
+      propertyType: "Apartment",
+      listingType: "Rent",
+      furnished: true,
+      paymentOptions: ["Credit Card", "Check"],
+      description:
+        "Modern three-bedroom apartment in a sought-after area. Features a fitted kitchen, balconies with great views, and access to a shared rooftop terrace.",
+      amenities: ["Swimming Pool", "Gym"],
+      nearby: ["Yaya Center", "Nairobi Hospital"],
+      status: "Available",
+      img: [
+        "https://res.cloudinary.com/dinsdfwod/image/upload/v1762845572/huighlqe2rqvbcwvn3ec.jpg",
+        "https://res.cloudinary.com/dinsdfwod/image/upload/v1762845572/xwp4xyl89567cbq3ikrl.jpg",
+      ],
+      agent: {
+        name: "John",
+        phone: "+254701234567",
+      },
+      createdBy: {
+        $oid: "68dba3d8f24a6e8df343f415",
+      },
+      createdAt: {
+        $date: "2025-11-11T07:21:35.358Z",
+      },
+      updatedAt: {
+        $date: "2025-11-11T07:21:35.358Z",
+      },
+      __v: 0,
+      vid: [
+        "https://res.cloudinary.com/dinsdfwod/video/upload/v1763712964/keeudcuimr5gd4tikp0w.mp4",
+      ],
+    },
+    createdAt: {
+      $date: "2025-11-17T14:46:54.290Z",
+    },
+    updatedAt: {
+      $date: "2025-11-17T14:46:54.290Z",
+    },
+    __v: 0,
+    title: "Nice place",
+  },
+  {
+    _id: "691b355ef9cf0b7168c60687",
+
+    name: "Isaac N",
+    email: "isaac@email.com",
+    rating: 4.5,
+    review: "Very nice piece of property",
+    propertyId: {
+      _id: "6912e3ffaf42a9dfb7c24e81",
+
+      address: "Apt 5, Kilimani Road, Kilimani",
+      city: "Nairobi",
+      county: "Nairobi County",
+      zip: "00500",
+      price: 180000,
+      bedrooms: 3,
+      bathrooms: 2,
+      squareFeet: 1400,
+      yearBuilt: 2020,
+      propertyType: "Apartment",
+      listingType: "Rent",
+      furnished: true,
+      paymentOptions: ["Credit Card", "Check"],
+      description:
+        "Modern three-bedroom apartment in a sought-after area. Features a fitted kitchen, balconies with great views, and access to a shared rooftop terrace.",
+      amenities: ["Swimming Pool", "Gym"],
+      nearby: ["Yaya Center", "Nairobi Hospital"],
+      status: "Available",
+      img: [
+        "https://res.cloudinary.com/dinsdfwod/image/upload/v1762845572/huighlqe2rqvbcwvn3ec.jpg",
+        "https://res.cloudinary.com/dinsdfwod/image/upload/v1762845572/xwp4xyl89567cbq3ikrl.jpg",
+      ],
+      agent: {
+        name: "John",
+        phone: "+254701234567",
+      },
+      createdBy: {
+        $oid: "68dba3d8f24a6e8df343f415",
+      },
+      createdAt: {
+        $date: "2025-11-11T07:21:35.358Z",
+      },
+      updatedAt: {
+        $date: "2025-11-11T07:21:35.358Z",
+      },
+      __v: 0,
+      vid: [
+        "https://res.cloudinary.com/dinsdfwod/video/upload/v1763712964/keeudcuimr5gd4tikp0w.mp4",
+      ],
+    },
+    createdAt: {
+      $date: "2025-11-17T14:46:54.290Z",
+    },
+    updatedAt: {
+      $date: "2025-11-17T14:46:54.290Z",
+    },
+    __v: 0,
+    title: "Nice place",
+  },
+  {
+    _id: "691b355ef9cf0b7168c827db",
+    name: "Isaac N",
+    email: "isaac@email.com",
+    rating: 4.5,
+    review: "Very nice piece of property",
+    propertyId: {
+      _id: "6912e3ffaf42a9dfb7c24e81",
+      address: "Apt 5, Kilimani Road, Kilimani",
+      city: "Nairobi",
+      county: "Nairobi County",
+      zip: "00500",
+      price: 180000,
+      bedrooms: 3,
+      bathrooms: 2,
+      squareFeet: 1400,
+      yearBuilt: 2020,
+      propertyType: "Apartment",
+      listingType: "Rent",
+      furnished: true,
+      paymentOptions: ["Credit Card", "Check"],
+      description:
+        "Modern three-bedroom apartment in a sought-after area. Features a fitted kitchen, balconies with great views, and access to a shared rooftop terrace.",
+      amenities: ["Swimming Pool", "Gym"],
+      nearby: ["Yaya Center", "Nairobi Hospital"],
+      status: "Available",
+      img: [
+        "https://res.cloudinary.com/dinsdfwod/image/upload/v1762845572/huighlqe2rqvbcwvn3ec.jpg",
+        "https://res.cloudinary.com/dinsdfwod/image/upload/v1762845572/xwp4xyl89567cbq3ikrl.jpg",
+      ],
+      agent: {
+        name: "John",
+        phone: "+254701234567",
+      },
+      createdBy: {
+        $oid: "68dba3d8f24a6e8df343f415",
+      },
+      createdAt: {
+        $date: "2025-11-11T07:21:35.358Z",
+      },
+      updatedAt: {
+        $date: "2025-11-11T07:21:35.358Z",
+      },
+      __v: 0,
+      vid: [
+        "https://res.cloudinary.com/dinsdfwod/video/upload/v1763712964/keeudcuimr5gd4tikp0w.mp4",
+      ],
+    },
+    createdAt: {
+      $date: "2025-11-17T14:46:54.290Z",
+    },
+    updatedAt: {
+      $date: "2025-11-17T14:46:54.290Z",
+    },
+    __v: 0,
+    title: "Nice place",
+  },
+  {
+    _id: "691b355ef9cfd47168c606db",
+    name: "Isaac N",
+    email: "isaac@email.com",
+    rating: 4.5,
+    review: "Very nice piece of property",
+    propertyId: {
+      _id: "6912e3ffaf42a9dfb7c24e81",
+      address: "Apt 5, Kilimani Road, Kilimani",
+      city: "Nairobi",
+      county: "Nairobi County",
+      zip: "00500",
+      price: 180000,
+      bedrooms: 3,
+      bathrooms: 2,
+      squareFeet: 1400,
+      yearBuilt: 2020,
+      propertyType: "Apartment",
+      listingType: "Rent",
+      furnished: true,
+      paymentOptions: ["Credit Card", "Check"],
+      description:
+        "Modern three-bedroom apartment in a sought-after area. Features a fitted kitchen, balconies with great views, and access to a shared rooftop terrace.",
+      amenities: ["Swimming Pool", "Gym"],
+      nearby: ["Yaya Center", "Nairobi Hospital"],
+      status: "Available",
+      img: [
+        "https://res.cloudinary.com/dinsdfwod/image/upload/v1762845572/huighlqe2rqvbcwvn3ec.jpg",
+        "https://res.cloudinary.com/dinsdfwod/image/upload/v1762845572/xwp4xyl89567cbq3ikrl.jpg",
+      ],
+      agent: {
+        name: "John",
+        phone: "+254701234567",
+      },
+      createdBy: {
+        $oid: "68dba3d8f24a6e8df343f415",
+      },
+      createdAt: {
+        $date: "2025-11-11T07:21:35.358Z",
+      },
+      updatedAt: {
+        $date: "2025-11-11T07:21:35.358Z",
+      },
+      __v: 0,
+      vid: [
+        "https://res.cloudinary.com/dinsdfwod/video/upload/v1763712964/keeudcuimr5gd4tikp0w.mp4",
+      ],
+    },
+    createdAt: {
+      $date: "2025-11-17T14:46:54.290Z",
+    },
+    updatedAt: {
+      $date: "2025-11-17T14:46:54.290Z",
+    },
+    __v: 0,
+    title: "Nice place",
+  },
+  {
+    _id: "691b352459cf0b7168c606db",
+    name: "Isaac N",
+    email: "isaac@email.com",
+    rating: 4.5,
+    review: "Very nice piece of property",
+    propertyId: {
+      _id: "6912e3ffaf42a9dfb7c24e81",
+      address: "Apt 5, Kilimani Road, Kilimani",
+      city: "Nairobi",
+      county: "Nairobi County",
+      zip: "00500",
+      price: 180000,
+      bedrooms: 3,
+      bathrooms: 2,
+      squareFeet: 1400,
+      yearBuilt: 2020,
+      propertyType: "Apartment",
+      listingType: "Rent",
+      furnished: true,
+      paymentOptions: ["Credit Card", "Check"],
+      description:
+        "Modern three-bedroom apartment in a sought-after area. Features a fitted kitchen, balconies with great views, and access to a shared rooftop terrace.",
+      amenities: ["Swimming Pool", "Gym"],
+      nearby: ["Yaya Center", "Nairobi Hospital"],
+      status: "Available",
+      img: [
+        "https://res.cloudinary.com/dinsdfwod/image/upload/v1762845572/huighlqe2rqvbcwvn3ec.jpg",
+        "https://res.cloudinary.com/dinsdfwod/image/upload/v1762845572/xwp4xyl89567cbq3ikrl.jpg",
+      ],
+      agent: {
+        name: "John",
+        phone: "+254701234567",
+      },
+      createdBy: {
+        $oid: "68dba3d8f24a6e8df343f415",
+      },
+      createdAt: {
+        $date: "2025-11-11T07:21:35.358Z",
+      },
+      updatedAt: {
+        $date: "2025-11-11T07:21:35.358Z",
+      },
+      __v: 0,
+      vid: [
+        "https://res.cloudinary.com/dinsdfwod/video/upload/v1763712964/keeudcuimr5gd4tikp0w.mp4",
+      ],
+    },
+    createdAt: {
+      $date: "2025-11-17T14:46:54.290Z",
+    },
+    updatedAt: {
+      $date: "2025-11-17T14:46:54.290Z",
+    },
+    __v: 0,
+    title: "Nice place",
+  },
+];

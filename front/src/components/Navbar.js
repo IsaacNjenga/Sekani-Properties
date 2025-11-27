@@ -197,7 +197,8 @@ function Navbar() {
                               src={currentUser?.photoURL}
                               size="50"
                               onClick={() => {
-                                setOpen(true);
+                                //setOpen(true);
+                                navigate("/user");
                               }}
                             />
                           ) : (

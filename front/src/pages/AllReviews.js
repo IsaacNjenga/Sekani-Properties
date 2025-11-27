@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useSearchParams, useNavigate } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import Motion from "../components/Motion";
 import {
   Typography,
@@ -25,7 +25,6 @@ import {
   EnvironmentOutlined,
   PhoneOutlined,
   UserOutlined,
-  ArrowLeftOutlined,
   CloseOutlined,
 } from "@ant-design/icons";
 import { useDrawer } from "../contexts/DrawerContext";
@@ -115,7 +114,7 @@ const reviews = [
 
 function AllReviews() {
   const [searchParams] = useSearchParams();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const { toggleReview, openReview } = useDrawer();
   const { isMobile } = useUser();
   const id = searchParams.get("id");
@@ -224,24 +223,6 @@ function AllReviews() {
           }}
         >
           <Row gutter={[32, 32]}>
-            <Button
-              icon={<ArrowLeftOutlined />}
-              onClick={() => navigate(-1)}
-              style={{
-                position: "absolute",
-                top: 20,
-                left: 20,
-                background: "rgba(255,255,255,0.2)",
-                backdropFilter: "blur(10px)",
-                border: "1px solid rgba(255,255,255,0.3)",
-                color: "#fff",
-                borderRadius: 10,
-                fontFamily: "Raleway",
-                fontWeight: 600,
-              }}
-            >
-              Back
-            </Button>
             {/* Left Column - Reviews */}
             <Col xs={24} lg={16}>
               {/* Reviews Summary Card */}
