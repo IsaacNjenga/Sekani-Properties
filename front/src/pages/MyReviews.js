@@ -7,10 +7,12 @@ import { Card, Collapse, Rate, Tag, Typography, Avatar } from "antd";
 import { myReviewsData } from "../assets/data/mockData";
 import PropertyCards from "../components/PropertyCards";
 import { formatDistanceToNow } from "date-fns";
+import { useUser } from "../contexts/UserContext";
 
 const { Title, Text, Paragraph } = Typography;
 
 const ReviewUI = ({ review, item }) => {
+    const {isMobile} = useUser()
   return (
     <div style={{ padding: "8px 0" }}>
       <Card
@@ -97,7 +99,7 @@ const ReviewUI = ({ review, item }) => {
         </Paragraph>
       </Card>
 
-      <div style={{ margin: "auto", width: "50%" }}>
+      <div style={{ margin: "auto", width: isMobile?'100%':"50%" }}>
         <PropertyCards c={item} />
       </div>
     </div>
@@ -148,7 +150,7 @@ function MyReviews() {
         )}
         items={items}
         style={{
-          background: "#91907556",
+          background: "#9190752b",
         }}
         expandIconPosition="end"
       />

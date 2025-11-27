@@ -1,13 +1,5 @@
-import React, { useEffect, useState } from "react";
-import {
-  Avatar,
-  Button,
-  Drawer,
-  Layout,
-  Menu,
-  Tooltip,
-  Popconfirm,
-} from "antd";
+import { useEffect, useState } from "react";
+import { Avatar, Button, Drawer, Layout, Menu, Tooltip } from "antd";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import FooterContent from "./Footer";
 import { CloseOutlined, MenuOutlined } from "@ant-design/icons";
@@ -31,9 +23,7 @@ function Navbar() {
   const { darkMode, isMobile } = useUser();
   const [scrolled, setScrolled] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [confirmLoading, setConfirmLoading] = useState(false);
-  const [open, setOpen] = useState(false);
-  const { userLoggedIn, currentUser, openAuthModal, setOpenAuthModal, logout } =
+  const { userLoggedIn, currentUser, openAuthModal, setOpenAuthModal } =
     useAuth();
 
   const toggleDrawer = () => setDrawerOpen(!drawerOpen);
@@ -176,43 +166,24 @@ function Navbar() {
                   {userLoggedIn ? (
                     <>
                       <Tooltip title={currentUser.displayName}>
-                        <Popconfirm
-                          title="Logout"
-                          description="Are you sure you want to logout?"
-                          open={open}
-                          onConfirm={() => {
-                            setConfirmLoading(true);
-
-                            setTimeout(() => {
-                              logout();
-                              setOpen(false);
-                              setConfirmLoading(false);
-                            }, 1000);
-                          }}
-                          okButtonProps={{ loading: confirmLoading }}
-                          onCancel={() => setOpen(false)}
-                        >
-                          {currentUser?.photoURL ? (
-                            <Avatar
-                              src={currentUser?.photoURL}
-                              size="50"
-                              onClick={() => {
-                                //setOpen(true);
-                                navigate("/user");
-                              }}
-                            />
-                          ) : (
-                            <Avatar
-                              size="50"
-                              onClick={() => {
-                                //setOpen(true);
-                                navigate("/user");
-                              }}
-                            >
-                              {currentUser?.displayName[0]}
-                            </Avatar>
-                          )}
-                        </Popconfirm>
+                        {currentUser?.photoURL ? (
+                          <Avatar
+                            src={currentUser?.photoURL}
+                            size="50"
+                            onClick={() => {
+                              navigate("/user");
+                            }}
+                          />
+                        ) : (
+                          <Avatar
+                            size="50"
+                            onClick={() => {
+                              navigate("/user");
+                            }}
+                          >
+                            {currentUser?.displayName[0]}
+                          </Avatar>
+                        )}
                       </Tooltip>
                     </>
                   ) : (
@@ -285,7 +256,21 @@ function Navbar() {
                   {item.label}
                 </Link>
               </Menu.Item>
-            ))}
+            ))}{" "}
+            {userLoggedIn && (
+              <Menu.Item>
+                <Link
+                  to={"/user"}
+                  style={{
+                    color: "#333",
+                    textDecoration: "none",
+                    fontFamily: "Alegreya Sans",
+                  }}
+                >
+                  My Account
+                </Link>
+              </Menu.Item>
+            )}
           </Menu>
         </Drawer>
         <Content

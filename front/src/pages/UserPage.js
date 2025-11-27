@@ -9,14 +9,14 @@ import {
   Row,
   Col,
   Statistic,
+  Button,
+  Popconfirm,
 } from "antd";
 import {
   HeartOutlined,
   StarOutlined,
   CalendarOutlined,
-  UserOutlined,
   MailOutlined,
-  PhoneOutlined,
   TrophyOutlined,
   HeartFilled,
   StarFilled,
@@ -24,6 +24,7 @@ import {
 import MyFavourites from "./MyFavourites";
 import MyReviews from "./MyReviews";
 import { useUser } from "../contexts/UserContext";
+import { useAuth } from "../contexts/AuthContext";
 
 const { Title, Text } = Typography;
 
@@ -36,20 +37,6 @@ const MySchedules = () => (
     </Text>
   </div>
 );
-
-// Mock user data
-const mockUser = {
-  name: "Sarah Johnson",
-  email: "sarah.johnson@email.com",
-  phone: "+254 712 345 678",
-  location: "Nairobi, Kenya",
-  memberSince: "January 2024",
-  stats: {
-    favourites: 12,
-    reviews: 8,
-    viewings: 5,
-  },
-};
 
 const tabListNoTitle = [
   {
@@ -89,7 +76,22 @@ const contentListNoTitle = {
 
 function UserPage() {
   const { isMobile } = useUser();
+  const { currentUser, logout } = useAuth();
   const [activeTabKey, setActiveTabKey] = useState("favourites");
+  const [open, setOpen] = useState(false);
+  const [confirmLoading, setConfirmLoading] = useState(false);
+
+  const user = {
+    avatar: currentUser?.photoURL,
+    name: currentUser?.displayName,
+    email: currentUser?.email,
+    memberSince: "January 2024",
+    stats: {
+      favourites: 12,
+      reviews: 8,
+      viewings: 5,
+    },
+  };
 
   const onTabChange = (key) => {
     setActiveTabKey(key);
@@ -106,7 +108,7 @@ function UserPage() {
       <div
         style={{
           position: "relative",
-          height: isMobile ? "400px" : "550px",
+          height: 500,
           overflow: "hidden",
         }}
       >
@@ -135,7 +137,7 @@ function UserPage() {
             width: "100%",
             height: "100%",
             background:
-              "linear-gradient(135deg, rgba(173, 149, 76, 0.61) 0%, rgba(207, 210, 110, 0.53) 100%)",
+              "linear-gradient(135deg, rgba(173, 149, 76, 0.37) 0%, rgba(207, 210, 110, 0.34) 100%)",
           }}
         />
 
@@ -182,21 +184,17 @@ function UserPage() {
             justifyContent: "center",
             flexDirection: "column",
             textAlign: "center",
-            padding: isMobile ? "20px" : "50px",
+            padding: isMobile ? "10px" : "30px",
             color: "#fff",
           }}
         >
-          <Avatar
-            size={isMobile ? 100 : 120}
-            icon={<UserOutlined />}
-            style={{
-              background: "linear-gradient(135deg, #fff 0%, #f0f0f0 100%)",
-              color: "#667eea",
-              marginBottom: 24,
-              border: "4px solid rgba(255,255,255,0.3)",
-              boxShadow: "0 8px 24px rgba(0,0,0,0.2)",
-            }}
-          />
+          {currentUser?.photoURL ? (
+            <Avatar src={currentUser?.photoURL} size={isMobile ? 90 : 100} />
+          ) : (
+            <Avatar size={isMobile ? 90 : 100}>
+              {currentUser?.displayName[0]}
+            </Avatar>
+          )}
 
           <Title
             level={1}
@@ -210,24 +208,18 @@ function UserPage() {
               textShadow: "0 2px 8px rgba(0,0,0,0.2)",
             }}
           >
-            {mockUser.name}
+            {user.name}
           </Title>
 
           <Space
             direction={isMobile ? "vertical" : "horizontal"}
-            size={isMobile ? 8 : 24}
-            style={{ marginBottom: 16 }}
+            size={isMobile ? 8 : 16}
+            style={{ marginBottom: 8 }}
           >
             <Space>
               <MailOutlined style={{ fontSize: 16 }} />
               <Text style={{ color: "rgba(255,255,255,0.95)", fontSize: 15 }}>
-                {mockUser.email}
-              </Text>
-            </Space>
-            <Space>
-              <PhoneOutlined style={{ fontSize: 16 }} />
-              <Text style={{ color: "rgba(255,255,255,0.95)", fontSize: 15 }}>
-                {mockUser.phone}
+                {user.email}
               </Text>
             </Space>
           </Space>
@@ -245,7 +237,7 @@ function UserPage() {
               fontWeight: 500,
             }}
           >
-            Member since {mockUser.memberSince}
+            Member since {user.memberSince}
           </Tag>
         </div>
 
@@ -253,7 +245,7 @@ function UserPage() {
         <div
           style={{
             position: "absolute",
-            bottom: isMobile ? -40 : -20,
+            bottom: isMobile ? 10 : 5,
             left: "50%",
             transform: "translateX(-50%)",
             width: isMobile ? "90%" : "auto",
@@ -262,12 +254,12 @@ function UserPage() {
         >
           <Card
             style={{
-              borderRadius: 20,
+              borderRadius: 12,
               boxShadow: "0 12px 40px rgba(0,0,0,0.15)",
               border: "none",
               background: "white",
             }}
-            bodyStyle={{ padding: isMobile ? "20px 16px" : "24px 48px" }}
+            bodyStyle={{ padding: isMobile ? "20px 16px" : "16px 36px" }}
           >
             <Row gutter={[32, 16]} style={{ textAlign: "center" }}>
               <Col xs={8} sm={8}>
@@ -278,7 +270,7 @@ function UserPage() {
                       <span>Favourites</span>
                     </Space>
                   }
-                  value={mockUser.stats.favourites}
+                  value={user.stats.favourites}
                   valueStyle={{
                     color: "#667eea",
                     fontSize: isMobile ? 24 : 32,
@@ -294,7 +286,7 @@ function UserPage() {
                       <span>Reviews</span>
                     </Space>
                   }
-                  value={mockUser.stats.reviews}
+                  value={user.stats.reviews}
                   valueStyle={{
                     color: "#667eea",
                     fontSize: isMobile ? 24 : 32,
@@ -310,7 +302,7 @@ function UserPage() {
                       <span>Viewings</span>
                     </Space>
                   }
-                  value={mockUser.stats.viewings}
+                  value={user.stats.viewings}
                   valueStyle={{
                     color: "#667eea",
                     fontSize: isMobile ? 24 : 32,
@@ -328,14 +320,15 @@ function UserPage() {
         style={{
           maxWidth: 1200,
           margin: "0 auto",
-          padding: isMobile ? "80px 16px 40px" : "80px 24px 40px",
+          padding: isMobile ? "60px 16px 40px" : "40px 24px 40px",
         }}
       >
         <Card
           style={{
-            borderRadius: 20,
+            borderRadius: 12,
             boxShadow: "0 8px 24px rgba(0,0,0,0.08)",
             border: "none",
+            background: "whitesmoke",
           }}
           bodyStyle={{ padding: 0 }}
           tabList={tabListNoTitle}
@@ -349,7 +342,7 @@ function UserPage() {
             },
           }}
         >
-          <div style={{ padding: isMobile ? "24px 16px" : "32px 24px" }}>
+          <div style={{ padding: isMobile ? "24px 16px" : "16px 12px" }}>
             {contentListNoTitle[activeTabKey]}
           </div>
         </Card>
@@ -406,6 +399,29 @@ function UserPage() {
             </div>
           </div>
         </Card>
+      </div>
+
+      <div style={{ margin: "auto", width: "100%", display: "flex", justifyContent: "center", alignItems: "center" }}>
+        <Popconfirm
+          title="Logout"
+          description="Are you sure you want to logout?"
+          open={open}
+          onConfirm={() => {
+            setConfirmLoading(true);
+
+            setTimeout(() => {
+              logout();
+              setOpen(false);
+              setConfirmLoading(false);
+            }, 1000);
+          }}
+          okButtonProps={{ loading: confirmLoading }}
+          onCancel={() => setOpen(false)}
+        >
+          <Button type="primary" danger onClick={() => setOpen(true)}>
+            Logout
+          </Button>
+        </Popconfirm>
       </div>
     </div>
   );
