@@ -88,28 +88,28 @@ function UserPage() {
     setOpenAuthModal,
     currentUser,
     logout,
-    localUser,
+    //localUser,
   } = useAuth();
   const { client, clientLoading, fetchClient } = useFetchClient();
 
   useEffect(() => {
-    if (localUser) {
-      fetchClient(localUser._id);
+    if (currentUser?.email) {
+      fetchClient(currentUser?.email);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [localUser]);
+  }, [currentUser.email]);
 
-  console.log(client);
+  console.log(client?.avatar);
 
   const user = {
-    avatar: currentUser?.photoURL,
-    name: currentUser?.displayName,
-    email: currentUser?.email,
-    memberSince: "January 2024",
+    avatar: client?.avatar,
+    name: client?.name,
+    email: client?.email,
+    memberSince: client?.createdAt,
     stats: {
-      favourites: 12,
-      reviews: 8,
-      viewings: 5,
+      favourites: client?.stats?.favourites,
+      reviews: client?.stats?.reviews,
+      viewings: client?.stats?.viewings,
     },
   };
 
@@ -125,6 +125,7 @@ function UserPage() {
   if (clientLoading)
     return (
       <Spin
+        size="large"
         fullscreen
         tip="Loading user data..."
         style={{ width: "100%", marginTop: 100 }}
@@ -350,8 +351,6 @@ function UserPage() {
             </Card>
           </div>
         </div>
-
-        <pre>{JSON.stringify(null, client ? client : null, 2)}</pre>
 
         {/* Main Content */}
         <div
