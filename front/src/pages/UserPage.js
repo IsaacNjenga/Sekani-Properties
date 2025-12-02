@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Card,
   Image,
@@ -11,6 +11,7 @@ import {
   Statistic,
   Button,
   Popconfirm,
+  Spin,
 } from "antd";
 import {
   HeartOutlined,
@@ -26,6 +27,7 @@ import MyReviews from "./MyReviews";
 import { useUser } from "../contexts/UserContext";
 import { useAuth } from "../contexts/AuthContext";
 import AuthModal from "../components/AuthModal";
+import useFetchClient from "../hooks/fetchClient";
 
 const { Title, Text } = Typography;
 
@@ -86,14 +88,18 @@ function UserPage() {
     setOpenAuthModal,
     currentUser,
     logout,
-    //localUser,
+    localUser,
   } = useAuth();
+  const { client, clientLoading, fetchClient } = useFetchClient();
 
-  //console.log(localUser._id);
+  useEffect(() => {
+    if (localUser) {
+      fetchClient(localUser._id);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [localUser]);
 
-  // useEffect(() => {
-  //   if (!userLoggedIn) setOpenAuthModal(true);
-  // }, [userLoggedIn]);
+  console.log(client);
 
   const user = {
     avatar: currentUser?.photoURL,
@@ -116,6 +122,15 @@ function UserPage() {
     return;
   }
 
+  if (clientLoading)
+    return (
+      <Spin
+        fullscreen
+        tip="Loading user data..."
+        style={{ width: "100%", marginTop: 100 }}
+      />
+    );
+
   return (
     <>
       <div
@@ -125,6 +140,7 @@ function UserPage() {
           paddingBottom: 40,
         }}
       >
+        {/* banner */}
         <div
           style={{
             position: "relative",
@@ -334,6 +350,8 @@ function UserPage() {
             </Card>
           </div>
         </div>
+
+        <pre>{JSON.stringify(null, client ? client : null, 2)}</pre>
 
         {/* Main Content */}
         <div
