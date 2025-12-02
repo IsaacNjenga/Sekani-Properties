@@ -21,12 +21,14 @@ function PropertyCards({ c }) {
   const { isMobile } = useUser();
   const navigate = useNavigate();
   const { currentUser } = useAuth();
-  const [likes, setLikes] = useState(c?.analytics[0]?.likes || 0);
+  const [likes, setLikes] = useState(0);
+  //const [likes, setLikes] = useState(c?.analytics[0]?.likes || 0);
   const { addToFavourites, removeFromFavourites, isInFavourites } =
     FavouriteFunctions();
 
   useEffect(() => {
-    setLikes(c?.analytics[0]?.likes || 0);
+    setLikes(0);
+    //setLikes(c?.analytics[0]?.likes || 0);
   }, [c]);
 
   if (!c) return;
@@ -49,7 +51,7 @@ function PropertyCards({ c }) {
         height: "100%",
       }}
       bodyStyle={{
-        padding: "16px",
+        padding: "15px",
         background: "linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%)",
       }}
       onMouseEnter={(e) => {
@@ -237,7 +239,8 @@ function PropertyCards({ c }) {
                   color: "#595959",
                 }}
               >
-                {c?.analytics[0]?.clicks || 0}
+                {0}
+                {/* {c?.analytics[0]?.clicks || 0} */}
               </Text>
             </div>
           </div>
@@ -370,7 +373,7 @@ function PropertyCards({ c }) {
         >
           <div>
             <Title
-              level={isMobile ? 5 : 4}
+              level={5}
               style={{
                 fontFamily: "Abril Fatface",
                 margin: 0,
@@ -379,6 +382,7 @@ function PropertyCards({ c }) {
                 fontSize: isMobile ? 12 : 16,
                 color: "#54534cff",
                 letterSpacing: 1,
+                padding: 0,
               }}
             >
               KES {c.price.toLocaleString()}
@@ -391,7 +395,7 @@ function PropertyCards({ c }) {
             style={{
               background: "linear-gradient(135deg, #b0aa94, #b0aa94)",
               borderRadius: 10,
-              padding: "2px 16px",
+              padding: "3px 8px",
               cursor: "pointer",
               transition: "all 0.3s ease",
               boxShadow: "0 4px 12px rgba(102, 126, 234, 0.3)",
@@ -423,7 +427,7 @@ function PropertyCards({ c }) {
               style={{
                 color: "white",
                 fontWeight: 300,
-                fontSize: 14,
+                fontSize: 13,
                 fontFamily: "Raleway",
               }}
             >

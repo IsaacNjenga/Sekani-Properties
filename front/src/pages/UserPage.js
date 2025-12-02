@@ -14,8 +14,6 @@ import {
   Spin,
 } from "antd";
 import {
-  HeartOutlined,
-  StarOutlined,
   CalendarOutlined,
   MailOutlined,
   TrophyOutlined,
@@ -24,30 +22,27 @@ import {
 } from "@ant-design/icons";
 import MyFavourites from "./MyFavourites";
 import MyReviews from "./MyReviews";
+import MySchedules from "./MySchedules";
 import { useUser } from "../contexts/UserContext";
 import { useAuth } from "../contexts/AuthContext";
 import AuthModal from "../components/AuthModal";
 import useFetchClient from "../hooks/fetchClient";
+import { format } from "date-fns";
 
 const { Title, Text } = Typography;
 
-const MySchedules = () => (
-  <div style={{ padding: "40px 20px", textAlign: "center" }}>
-    <div style={{ fontSize: "64px", marginBottom: "16px" }}>📅</div>
-    <Title level={3}>Your Schedules</Title>
-    <Text style={{ color: "#8c8c8c" }}>
-      Coming soon! Schedule property viewings here
-    </Text>
-  </div>
-);
+const titleStyle = {
+  fontFamily: "Raleway",
+  fontSize: 16,
+  fontWeight: 400,
+  color: "#3a3d44ff",};
 
 const tabListNoTitle = [
   {
     key: "favourites",
     label: (
       <Space>
-        <HeartOutlined />
-        <span>My Favourites</span>
+        <span style={titleStyle}>My Favourites</span>
       </Space>
     ),
   },
@@ -55,8 +50,7 @@ const tabListNoTitle = [
     key: "reviews",
     label: (
       <Space>
-        <StarOutlined />
-        <span>My Reviews</span>
+        <span style={titleStyle}>My Reviews</span>
       </Space>
     ),
   },
@@ -64,32 +58,22 @@ const tabListNoTitle = [
     key: "schedule",
     label: (
       <Space>
-        <CalendarOutlined />
-        <span>My Schedules</span>
+        <span style={titleStyle}>My Schedules</span>
       </Space>
     ),
   },
 ];
-
-const contentListNoTitle = {
-  favourites: <MyFavourites />,
-  reviews: <MyReviews />,
-  schedule: <MySchedules />,
-};
 
 function UserPage() {
   const { isMobile } = useUser();
   const [activeTabKey, setActiveTabKey] = useState("favourites");
   const [open, setOpen] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
-  const {
-    userLoggedIn,
-    openAuthModal,
-    setOpenAuthModal,
-    currentUser,
-    logout,
-    //localUser,
-  } = useAuth();
+  const [favouritesData, setFavouritesData] = useState([]);
+  const [reviewsData, setReviewsData] = useState([]);
+  const [schedulesData, setSchedulesData] = useState([]);
+  const { userLoggedIn, openAuthModal, setOpenAuthModal, currentUser, logout } =
+    useAuth();
   const { client, clientLoading, fetchClient } = useFetchClient();
 
   useEffect(() => {
@@ -99,13 +83,23 @@ function UserPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentUser.email]);
 
-  console.log(client?.avatar);
+  useEffect(() => {
+    if (client) {
+      setFavouritesData(client.favourites);
+      setReviewsData(client.reviews);
+      setSchedulesData(client.schedules);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [client]);
 
   const user = {
     avatar: client?.avatar,
     name: client?.name,
     email: client?.email,
-    memberSince: client?.createdAt,
+    memberSince: format(
+      new Date(client?.createdAt ? client?.createdAt : Date.now()),
+      "MMMM yyyy"
+    ),
     stats: {
       favourites: client?.stats?.favourites,
       reviews: client?.stats?.reviews,
@@ -113,6 +107,11 @@ function UserPage() {
     },
   };
 
+  const contentListNoTitle = {
+    favourites: <MyFavourites favouritesData={favouritesData} />,
+    reviews: <MyReviews reviewsData={reviewsData} />,
+    schedule: <MySchedules schedulesData={schedulesData} />,
+  };
   const onTabChange = (key) => {
     setActiveTabKey(key);
   };
@@ -357,13 +356,13 @@ function UserPage() {
           style={{
             maxWidth: 1200,
             margin: "0 auto",
-            padding: isMobile ? "60px 16px 40px" : "40px 24px 40px",
+            padding: isMobile ? "60px 16px 40px" : "40px 18px 40px",
           }}
         >
           <Card
             style={{
               borderRadius: 12,
-              boxShadow: "0 8px 24px rgba(0,0,0,0.08)",
+              boxShadow: "1px 8px 24px rgba(0,0,0,0.12)",
               border: "none",
               background: "whitesmoke",
             }}

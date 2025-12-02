@@ -1,11 +1,10 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNotification } from "../contexts/NotificationContext";
 
 function useFetchClient() {
   const [client, setClient] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [refreshKey, setRefreshKey] = useState(0);
   const openNotification = useNotification();
 
   const fetchClient = async (email) => {
@@ -27,17 +26,10 @@ function useFetchClient() {
     setLoading(false);
   };
 
-  useEffect(() => {
-    fetchClient();
-
-    //eslint-disable-next-line
-  }, [refreshKey]);
-
   return {
     client,
     clientLoading: loading,
     fetchClient,
-    clientRefresh: () => setRefreshKey((prev) => prev + 1),
   };
 }
 

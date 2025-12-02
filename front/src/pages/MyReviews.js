@@ -3,7 +3,7 @@ import {
   CalendarOutlined,
   StarFilled,
 } from "@ant-design/icons";
-import { Card, Collapse, Rate, Tag, Typography, Avatar } from "antd";
+import { Card, Collapse, Rate, Tag, Typography, Avatar, Empty } from "antd";
 import { myReviewsData } from "../assets/data/mockData";
 import PropertyCards from "../components/PropertyCards";
 import { formatDistanceToNow } from "date-fns";
@@ -12,7 +12,7 @@ import { useUser } from "../contexts/UserContext";
 const { Title, Text, Paragraph } = Typography;
 
 const ReviewUI = ({ review, item }) => {
-    const {isMobile} = useUser()
+  const { isMobile } = useUser();
   return (
     <div style={{ padding: "8px 0" }}>
       <Card
@@ -99,15 +99,15 @@ const ReviewUI = ({ review, item }) => {
         </Paragraph>
       </Card>
 
-      <div style={{ margin: "auto", width: isMobile?'100%':"50%" }}>
+      <div style={{ margin: "auto", width: isMobile ? "100%" : "50%" }}>
         <PropertyCards c={item} />
       </div>
     </div>
   );
 };
 
-function MyReviews() {
-  const items = myReviewsData.map((review) => ({
+function MyReviews({ reviewsData }) {
+  const items = reviewsData.map((review) => ({
     key: review._id,
     label: (
       <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
@@ -130,30 +130,35 @@ function MyReviews() {
 
   return (
     <div style={{ padding: 0 }}>
-      <div style={{ marginBottom: 24 }}>
+      <div style={{ marginBottom: 24, padding: "0 20px" }}>
         <Title level={2} style={{ fontFamily: "Raleway", marginBottom: 8 }}>
-          My Reviews
+          <span>My Reviews</span>
+          <StarFilled style={{ color: "gold", marginLeft: 8 }} />
         </Title>
         <Text style={{ color: "#64748b", fontSize: 15 }}>
           View all your property reviews and ratings
         </Text>
       </div>
 
-      <Collapse
-        bordered={false}
-        defaultActiveKey={[myReviewsData[0]?._id]}
-        expandIcon={({ isActive }) => (
-          <CaretRightOutlined
-            rotate={isActive ? 90 : 0}
-            style={{ fontSize: 16, color: "#919075" }}
-          />
-        )}
-        items={items}
-        style={{
-          background: "#9190752b",
-        }}
-        expandIconPosition="end"
-      />
+      {reviewsData?.length === 0 ? (
+        <Empty description="Seems like your reviews list is empty. Be sure to review some properties." />
+      ) : (
+        <Collapse
+          bordered={false}
+          defaultActiveKey={[myReviewsData[0]?._id]}
+          expandIcon={({ isActive }) => (
+            <CaretRightOutlined
+              rotate={isActive ? 90 : 0}
+              style={{ fontSize: 16, color: "#919075" }}
+            />
+          )}
+          items={items}
+          style={{
+            background: "#9190752b",
+          }}
+          expandIconPosition="end"
+        />
+      )}
     </div>
   );
 }
