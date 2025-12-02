@@ -6,7 +6,7 @@ function useFetchProperty() {
   const openNotification = useNotification();
   const [propertyData, setPropertyData] = useState([]);
   const [propertyDataLoading, setPropertyDataLoading] = useState(false);
-  const [refreshKey, setRefreshKey] = useState(false);
+  const [refreshKey, setRefreshKey] = useState(0);
 
   const fetchProperty = async (id) => {
     if (!id) return;

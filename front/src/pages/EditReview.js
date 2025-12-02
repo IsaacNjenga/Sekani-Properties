@@ -57,23 +57,24 @@ function EditReview({
 
       console.log(allValues);
 
-        const res = await axios.put(`update-review?id=${reviewId}`, allValues);
-        if (res.data.success) {
-          openNotification(
-            "success",
-            "Your feedback is highly appreciated",
-            "Thank you!"
-          );
+      const res = await axios.put(`update-review?id=${reviewId}`, allValues);
+      if (res.data.success) {
+        openNotification(
+          "success",
+          "Your feedback is highly appreciated",
+          "Thank you!"
+        );
 
-          setTimeout(() => {
-            toggleEditReview();
-            form.resetFields();
-            setValue(0);
-          }, 2500);
-          propertiesRefresh();
-        }
+        setTimeout(() => {
+          toggleEditReview();
+          form.resetFields();
+          setValue(0);
+        }, 2500);
+        propertiesRefresh();
+      }
     } catch (error) {
       console.error(error);
+      propertiesRefresh();
       openNotification(
         "error",
         "Try again or contact us.",
@@ -81,6 +82,7 @@ function EditReview({
       );
     } finally {
       setLoading(false);
+      propertiesRefresh();
     }
   };
 

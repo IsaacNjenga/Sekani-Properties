@@ -4,14 +4,14 @@ import { useFavourites } from "../contexts/FavouritesContext";
 export function FavouriteFunctions() {
   const { favouriteItems, setFavouriteItems } = useFavourites();
 
-  const addToFavourites = (item) => {
-    const url = `${process.env.REACT_APP_API_URL}/analytics/like/${item._id}`;
+  const addToFavourites = (item, userEmail) => {
+    const url = `${process.env.REACT_APP_API_URL}/analytics/like/${item._id}?email=${userEmail}`;
     setFavouriteItems((prevItems) => [...prevItems, { ...item }]);
     axios.post(url).catch(() => {});
   };
 
-  const removeFromFavourites = (id) => {
-    const url = `${process.env.REACT_APP_API_URL}/analytics/unlike/${id}`;
+  const removeFromFavourites = (id, userEmail) => {
+    const url = `${process.env.REACT_APP_API_URL}/analytics/unlike/${id}?email=${userEmail}`;
     setFavouriteItems((prevItems) =>
       prevItems.filter((item) => item._id !== id)
     );

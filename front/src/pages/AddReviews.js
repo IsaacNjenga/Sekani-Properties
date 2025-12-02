@@ -48,8 +48,6 @@ function AddReviews({
         email: currentUser?.email,
       };
 
-      //console.log(allValues);
-
       const res = await axios.post("create-review", allValues);
       if (res.data.success) {
         openNotification(
@@ -68,6 +66,7 @@ function AddReviews({
       }
     } catch (error) {
       console.error(error);
+      propertiesRefresh();
       openNotification(
         "error",
         "Try again or contact us.",
@@ -75,6 +74,7 @@ function AddReviews({
       );
     } finally {
       setLoading(false);
+      propertiesRefresh();
     }
   };
 

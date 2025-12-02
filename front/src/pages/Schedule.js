@@ -28,6 +28,7 @@ import { useNotification } from "../contexts/NotificationContext";
 import dayjs from "dayjs";
 import axios from "axios";
 import { format } from "date-fns";
+import { useAuth } from "../contexts/AuthContext";
 
 const { Title, Text } = Typography;
 const { TextArea } = Input;
@@ -53,6 +54,7 @@ function Schedule({ content, openSchedule, toggleSchedule, isMobile }) {
   const [selectedSchedule, setSelectedSchedule] = useState(null);
   const [slotsForTheDay, setSlotsForTheDay] = useState([]);
   const [bookedSlotsForTheDay, setBookedSlotsForTheDay] = useState([]);
+  const { currentUser } = useAuth();
 
   const handleDateChange = async (date) => {
     setDateLoading(true);
@@ -120,9 +122,10 @@ function Schedule({ content, openSchedule, toggleSchedule, isMobile }) {
         date: scheduledDate,
         time: scheduledTime,
         propertyId: content?._id,
+        email: currentUser.email,
       };
 
-      //console.log("Scheduled Viewing:", allValues);
+      console.log("Scheduled Viewing:", allValues);
 
       const res = await axios.post("create-schedule", allValues);
       if (res.data.success) {

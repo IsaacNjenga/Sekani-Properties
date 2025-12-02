@@ -401,7 +401,15 @@ function UserPage() {
         </Card>
       </div>
 
-      <div style={{ margin: "auto", width: "100%", display: "flex", justifyContent: "center", alignItems: "center" }}>
+      <div
+        style={{
+          margin: "auto",
+          width: "100%",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
         <Popconfirm
           title="Logout"
           description="Are you sure you want to logout?"

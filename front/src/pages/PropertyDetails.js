@@ -134,7 +134,9 @@ function PropertyDetails() {
     }
 
     try {
-      const res = await axios.delete(`delete-review?id=${reviewId}`);
+      const res = await axios.delete(
+        `delete-review?id=${reviewId}&email=${currentUser.email}`
+      );
       if (res.data.success) {
         openNotification("success", "Your review has been deleted", "Success!");
         propertyRefresh();
@@ -928,11 +930,9 @@ function PropertyDetails() {
                       }
                       onClick={() => {
                         if (isInFavourites(property)) {
-                          removeFromFavourites(property._id);
+                          removeFromFavourites(property._id, currentUser.email);
                         } else {
-                          addToFavourites(property);
-                          //openNotification("success", "", "Added!");
-                        }
+                          addToFavourites(property, currentUser.email);                        }
                       }}
                       style={{
                         background: "rgba(255,255,255,0.1)",

@@ -2,6 +2,7 @@ import { Button, Card, Carousel, Space, Tag, Typography, Tooltip } from "antd";
 import "../assets/css/home.css";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../contexts/UserContext";
+import { useAuth } from "../contexts/AuthContext";
 import {
   EnvironmentOutlined,
   EyeOutlined,
@@ -19,6 +20,7 @@ const { Title, Text } = Typography;
 function PropertyCards({ c }) {
   const { isMobile } = useUser();
   const navigate = useNavigate();
+  const { currentUser } = useAuth();
   const [likes, setLikes] = useState(c?.analytics[0]?.likes || 0);
   const { addToFavourites, removeFromFavourites, isInFavourites } =
     FavouriteFunctions();
@@ -190,10 +192,10 @@ function PropertyCards({ c }) {
                 }}
                 onClick={() => {
                   if (isInFavourites(c)) {
-                    removeFromFavourites(c._id);
+                    removeFromFavourites(c._id, currentUser.email);
                     setLikes((prev) => Math.max(prev - 1, 0));
                   } else {
-                    addToFavourites(c);
+                    addToFavourites(c, currentUser.email);
                     setLikes((prev) => prev + 1);
                     //openNotification("success", "", "Added!");
                   }
