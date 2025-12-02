@@ -21,14 +21,12 @@ function PropertyCards({ c }) {
   const { isMobile } = useUser();
   const navigate = useNavigate();
   const { currentUser } = useAuth();
-  const [likes, setLikes] = useState(0);
-  //const [likes, setLikes] = useState(c?.analytics[0]?.likes || 0);
+  const [likes, setLikes] = useState(c?.analytics[0]?.likes || 0);
   const { addToFavourites, removeFromFavourites, isInFavourites } =
     FavouriteFunctions();
 
   useEffect(() => {
-    setLikes(0);
-    //setLikes(c?.analytics[0]?.likes || 0);
+    setLikes(c?.analytics[0]?.likes || 0);
   }, [c]);
 
   if (!c) return;
@@ -239,8 +237,7 @@ function PropertyCards({ c }) {
                   color: "#595959",
                 }}
               >
-                {0}
-                {/* {c?.analytics[0]?.clicks || 0} */}
+                {c?.analytics[0]?.clicks || 0}
               </Text>
             </div>
           </div>
