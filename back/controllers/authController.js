@@ -39,7 +39,9 @@ const firebaseGoogleLogin = async (req, res) => {
       { expiresIn: "1d" }
     );
 
-    res.status(200).json({ success: true, token, user });
+    res
+      .status(200)
+      .json({ success: true, token, user: { ...user, _id: user._id } });
   } catch (error) {
     console.error("Error on login:", error);
     return res

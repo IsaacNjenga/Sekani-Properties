@@ -13,6 +13,10 @@ export function AuthProvider({ children }) {
   const [userLoggedIn, setUserLoggedIn] = useState(false);
   const [loading, setLoading] = useState(true);
   const [token, setToken] = useState(null);
+  const [localUser, setlocalUser] = useState(() => {
+    const storedLocalUser = localStorage.getItem("user");
+    return storedLocalUser ? JSON.parse(storedLocalUser) : null;
+  });
   const [openAuthModal, setOpenAuthModal] = useState(false);
 
   useEffect(() => {
@@ -35,6 +39,7 @@ export function AuthProvider({ children }) {
     setCurrentUser(userData);
     setToken(userToken);
     setUserLoggedIn(true);
+    setlocalUser(userData);
     localStorage.setItem("user", JSON.stringify(userData));
     localStorage.setItem("token", userToken);
   }
@@ -56,6 +61,7 @@ export function AuthProvider({ children }) {
     token,
     openAuthModal,
     setOpenAuthModal,
+    localUser,
   };
 
   return (

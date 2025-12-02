@@ -109,6 +109,7 @@ function Auth() {
   const handleGoogleSignIn = async () => {
     setLoading(true);
     try {
+      // eslint-disable-next-line no-unused-vars
       const { user, idToken } = await signInWithGoogle();
 
       const res = await axios.post(
@@ -118,6 +119,7 @@ function Auth() {
 
       if (res.data.success) {
         const token = res.data.token;
+        const user = res.data.user;
         login(user, token);
         openNotification(
           "success",

@@ -54,7 +54,7 @@ function Schedule({ content, openSchedule, toggleSchedule, isMobile }) {
   const [selectedSchedule, setSelectedSchedule] = useState(null);
   const [slotsForTheDay, setSlotsForTheDay] = useState([]);
   const [bookedSlotsForTheDay, setBookedSlotsForTheDay] = useState([]);
-  const { currentUser } = useAuth();
+  const { localUser } = useAuth();
 
   const handleDateChange = async (date) => {
     setDateLoading(true);
@@ -122,12 +122,15 @@ function Schedule({ content, openSchedule, toggleSchedule, isMobile }) {
         date: scheduledDate,
         time: scheduledTime,
         propertyId: content?._id,
-        email: currentUser.email,
+        //email: currentUser.email,
       };
 
       console.log("Scheduled Viewing:", allValues);
 
-      const res = await axios.post("create-schedule", allValues);
+      const res = await axios.post(
+        `create-schedule?createdBy=${localUser._id}`,
+        allValues
+      );
       if (res.data.success) {
         openNotification(
           "success",
