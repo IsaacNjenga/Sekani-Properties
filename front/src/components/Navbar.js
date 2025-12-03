@@ -163,9 +163,15 @@ function Navbar() {
                   />
                 </div>
                 <div>
-                  {userLoggedIn ? (
+                  {userLoggedIn && currentUser ? (
                     <>
-                      <Tooltip title={currentUser.displayName}>
+                      <Tooltip
+                        title={
+                          currentUser?.displayName ||
+                          currentUser?.email ||
+                          "User"
+                        }
+                      >
                         {currentUser?.photoURL ? (
                           <Avatar
                             src={currentUser?.photoURL}
@@ -181,7 +187,10 @@ function Navbar() {
                               navigate("/user");
                             }}
                           >
-                            {currentUser?.displayName[0]}
+                            {/* Safe access with fallback */}
+                            {currentUser?.displayName?.[0] ||
+                              currentUser?.email?.[0]?.toUpperCase() ||
+                              "U"}
                           </Avatar>
                         )}
                       </Tooltip>

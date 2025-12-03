@@ -3,7 +3,8 @@ import { Typography } from "antd";
 
 const { Title, Text } = Typography;
 
-function MySchedules() {
+function MySchedules({ schedulesData }) {
+  const clientViewings = schedulesData;
   return (
     <div style={{ padding: 0 }}>
       <div style={{ marginBottom: 24, padding: "0 20px" }}>

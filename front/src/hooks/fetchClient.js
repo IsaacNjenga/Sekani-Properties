@@ -4,6 +4,9 @@ import { useNotification } from "../contexts/NotificationContext";
 
 function useFetchClient() {
   const [client, setClient] = useState(null);
+  const [clientFavourites, setClientFavourites] = useState([]);
+  const [clientReviews, setClientReviews] = useState([]);
+  const [clientViewings, setClientViewings] = useState([]);
   const [loading, setLoading] = useState(false);
   const openNotification = useNotification();
 
@@ -13,7 +16,12 @@ function useFetchClient() {
     try {
       const res = await axios.get(`fetch-client-details?email=${email}`);
       if (res.data.success) {
-        setClient(res.data.clientDetails);
+        const data = res.data.clientDetails || [];
+
+        setClient(data);
+        setClientFavourites(data.favourites || []);
+        setClientReviews(data.reviews || []);
+        setClientViewings(data.viewings || []);
       }
     } catch (error) {
       console.error("Error in fetching client details:", error);
@@ -28,6 +36,9 @@ function useFetchClient() {
 
   return {
     client,
+    clientFavourites,
+    clientReviews,
+    clientViewings,
     clientLoading: loading,
     fetchClient,
   };

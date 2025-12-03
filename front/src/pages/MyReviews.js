@@ -4,7 +4,6 @@ import {
   StarFilled,
 } from "@ant-design/icons";
 import { Card, Collapse, Rate, Tag, Typography, Avatar, Empty } from "antd";
-import { myReviewsData } from "../assets/data/mockData";
 import PropertyCards from "../components/PropertyCards";
 import { formatDistanceToNow } from "date-fns";
 import { useUser } from "../contexts/UserContext";
@@ -107,7 +106,8 @@ const ReviewUI = ({ review, item }) => {
 };
 
 function MyReviews({ reviewsData }) {
-  const items = reviewsData.map((review) => ({
+  const clientReviews = reviewsData;
+  const items = clientReviews?.map((review) => ({
     key: review._id,
     label: (
       <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
@@ -140,12 +140,12 @@ function MyReviews({ reviewsData }) {
         </Text>
       </div>
 
-      {reviewsData?.length === 0 ? (
+      {clientReviews?.length === 0 ? (
         <Empty description="Seems like your reviews list is empty. Be sure to review some properties." />
       ) : (
         <Collapse
           bordered={false}
-          defaultActiveKey={[myReviewsData[0]?._id]}
+          defaultActiveKey={[clientReviews[0]?._id]}
           expandIcon={({ isActive }) => (
             <CaretRightOutlined
               rotate={isActive ? 90 : 0}

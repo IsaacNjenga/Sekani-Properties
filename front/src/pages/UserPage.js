@@ -35,7 +35,8 @@ const titleStyle = {
   fontFamily: "Raleway",
   fontSize: 16,
   fontWeight: 400,
-  color: "#3a3d44ff",};
+  color: "#3a3d44ff",
+};
 
 const tabListNoTitle = [
   {
@@ -68,42 +69,67 @@ function UserPage() {
   const { isMobile } = useUser();
   const [activeTabKey, setActiveTabKey] = useState("favourites");
   const [open, setOpen] = useState(false);
-  const [confirmLoading, setConfirmLoading] = useState(false);
   const [favouritesData, setFavouritesData] = useState([]);
   const [reviewsData, setReviewsData] = useState([]);
   const [schedulesData, setSchedulesData] = useState([]);
+  const [confirmLoading, setConfirmLoading] = useState(false);
+  const { client, clientLoading, fetchClient } = useFetchClient();
   const { userLoggedIn, openAuthModal, setOpenAuthModal, currentUser, logout } =
     useAuth();
-  const { client, clientLoading, fetchClient } = useFetchClient();
 
+  // Effect to handle authentication and fetching
   useEffect(() => {
+    if (!userLoggedIn || !currentUser) {
+      setOpenAuthModal(true);
+      return;
+    }
+
     if (currentUser?.email) {
       fetchClient(currentUser?.email);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentUser.email]);
+  }, [currentUser, userLoggedIn]);
 
+  // Effect to update local state when client data is loaded
   useEffect(() => {
     if (client) {
-      setFavouritesData(client.favourites);
-      setReviewsData(client.reviews);
-      setSchedulesData(client.schedules);
+      setFavouritesData(client.favourites || []);
+      setReviewsData(client.reviews || []);
+      setSchedulesData(client.schedules || []);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [client]);
 
+  const onTabChange = (key) => {
+    setActiveTabKey(key);
+  };
+
+  if (!userLoggedIn || !currentUser) {
+    return (
+      <AuthModal
+        openAuthModal={openAuthModal}
+        setOpenAuthModal={setOpenAuthModal}
+        isMobile={isMobile}
+      />
+    );
+  }
+
+  // Loading state
+  if (clientLoading) {
+    return <Spin size="large" fullscreen tip="Loading..." />;
+  }
+
+  // Safe user object with fallbacks
   const user = {
     avatar: client?.avatar,
-    name: client?.name,
-    email: client?.email,
-    memberSince: format(
-      new Date(client?.createdAt ? client?.createdAt : Date.now()),
-      "MMMM yyyy"
-    ),
+    name: client?.name || currentUser?.displayName || currentUser?.email,
+    email: client?.email || currentUser?.email,
+    memberSince: client?.createdAt
+      ? format(new Date(client.createdAt), "MMMM yyyy")
+      : format(new Date(), "MMMM yyyy"),
     stats: {
-      favourites: client?.stats?.favourites,
-      reviews: client?.stats?.reviews,
-      viewings: client?.stats?.viewings,
+      favourites: client?.stats?.favourites || 0,
+      reviews: client?.stats?.reviews || 0,
+      viewings: client?.stats?.viewings || 0,
     },
   };
 
@@ -112,24 +138,6 @@ function UserPage() {
     reviews: <MyReviews reviewsData={reviewsData} />,
     schedule: <MySchedules schedulesData={schedulesData} />,
   };
-  const onTabChange = (key) => {
-    setActiveTabKey(key);
-  };
-
-  if (!userLoggedIn) {
-    setOpenAuthModal(true);
-    return;
-  }
-
-  if (clientLoading)
-    return (
-      <Spin
-        size="large"
-        fullscreen
-        tip="Loading user data..."
-        style={{ width: "100%", marginTop: 100 }}
-      />
-    );
 
   return (
     <>

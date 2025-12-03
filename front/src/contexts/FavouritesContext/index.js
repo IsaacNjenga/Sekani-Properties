@@ -1,5 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import useFetchAllProperties from "../../hooks/fetchAllProperties";
+import useFetchClient from "../../hooks/fetchClient";
+import { useAuth } from "../AuthContext";
 
 export const FavouritesContext = createContext();
 
@@ -9,14 +11,23 @@ export function useFavourites() {
 
 export function FavouriteProvider({ children }) {
   const { properties } = useFetchAllProperties();
-  const [favouriteItems, setFavouriteItems] = useState(() => {
-    const storedFavourites = localStorage.getItem("favouriteList");
-    return storedFavourites ? JSON.parse(storedFavourites) : [];
-  });
+  const { client, fetchClient } = useFetchClient();
+  const [favouriteItems, setFavouriteItems] = useState([]);
+  const { currentUser } = useAuth();
 
   useEffect(() => {
-    localStorage.setItem("favouriteList", JSON.stringify(favouriteItems));
-  }, [favouriteItems]);
+    if (currentUser?.email) {
+      fetchClient(currentUser?.email);
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentUser]);
+
+  useEffect(() => {
+    if (client) {
+      setFavouriteItems(client.favourites || []);
+    }
+  }, [client]);
 
   // compute merged items
   const liveFavouriteItems = favouriteItems
